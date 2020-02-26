@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2020-02-25T12:08:23.490Z</updated>
+  <updated>2020-02-26T09:30:21.696Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -17,17 +17,42 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Docker基础知识</title>
-    <link href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    <id>http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
-    <published>2020-02-25T07:46:30.000Z</published>
-    <updated>2020-02-25T12:08:23.490Z</updated>
+    <title>Docker基础知识之镜像与容器</title>
+    <link href="http://ctrl98.github.io/2020/02/26/Docker2/"/>
+    <id>http://ctrl98.github.io/2020/02/26/Docker2/</id>
+    <published>2020-02-26T02:26:40.000Z</published>
+    <updated>2020-02-26T09:30:21.696Z</updated>
     
     <summary type="html">
     
       
       
-        &lt;!-- build time:Tue Feb 25 2020 20:09:54 GMT+0800 (GMT+08:00) --&gt;&lt;h1 id=&quot;Docker&quot;&gt;&lt;a href=&quot;#Docker&quot; class=&quot;headerlink&quot; title=&quot;Docker&quot;&gt;&lt;/a&gt;Doc
+        &lt;p&gt;废话不多说，前提条件是你的电脑已安装Docker和完成了基本的配置，还没有的话开车送你去&lt;a href=&quot;/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/&quot; title=&quot;Docker基础知识&quot;&gt;Docker基础
+      
+    
+    </summary>
+    
+    
+      <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
+    
+    
+      <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker基础知识</title>
+    <link href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <id>http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
+    <published>2020-02-25T07:46:30.000Z</published>
+    <updated>2020-02-26T09:33:27.998Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;docker&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#docker&quot;&gt;&lt;/a&gt; Docker&lt;/h2&gt;
+&lt;h3 id=&quot;什么是docker&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是docke
       
     
     </summary>
@@ -45,13 +70,14 @@
     <link href="http://ctrl98.github.io/2020/02/25/First-Blog/"/>
     <id>http://ctrl98.github.io/2020/02/25/First-Blog/</id>
     <published>2020-02-25T06:41:43.000Z</published>
-    <updated>2020-02-25T08:49:56.188Z</updated>
+    <updated>2020-02-26T09:38:25.146Z</updated>
     
     <summary type="html">
     
       
       
-        &lt;!-- build time:Tue Feb 25 2020 20:09:54 GMT+0800 (GMT+08:00) --&gt;&lt;blockquote&gt;&lt;p&gt;其实很早就想着有一个属于自己的博客网站，来记录一下自己的学习过程和生活琐事，把自己学习到的知识写下来，算是给自己的一个总
+        &lt;h3 id=&quot;关于&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#关于&quot;&gt;&lt;/a&gt; 关于&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;其实很早就想着有一个属于自己的博客网站，来记录一下自己的学习过程和生活琐事，把自己学习到的知识写下来，算是给自己的一个总结和交代
       
     
     </summary>

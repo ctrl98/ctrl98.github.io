@@ -1,1 +1,664 @@
-<!-- build time:Tue Feb 25 2020 20:09:56 GMT+0800 (GMT+08:00) --><!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name="renderer" content="webkit"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no,email=no,adress=no"><meta name="theme-color" content="#000000"><meta http-equiv="window-target" content="_top"><title>Docker基础知识 | Lee&#39;s Blog</title><meta name="description" content="Docker什么是Docker百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致。为什么要使用"><meta property="og:type" content="article"><meta property="og:title" content="Docker基础知识"><meta property="og:url" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html"><meta property="og:site_name" content="Lee&#39;s Blog"><meta property="og:description" content="Docker什么是Docker百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致。为什么要使用"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1.jpg"><meta property="og:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/2.jpg"><meta property="article:published_time" content="2020-02-25T07:46:30.000Z"><meta property="article:modified_time" content="2020-02-25T12:08:23.490Z"><meta property="article:author" content="unknown"><meta property="article:tag" content="Docker"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1.jpg"><link rel="canonical" href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html"><link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml"><link rel="icon" href="/logo.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css"><meta name="generator" content="Hexo 4.2.0"></head><body class="main-center" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="slimContent"><div class="navbar-header"><div class="profile-block text-center"><a id="avatar" href="https://github.com/ctrl98" target="_blank"><img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200"></a><h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2><h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3><small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small></div><div class="search" id="search-form-wrap"><form class="search-form sidebar-form"><div class="input-group"><input type="text" class="search-form-input form-control" placeholder="搜索"> <span class="input-group-btn"><button type="submit" class="search-form-submit btn btn-flat" onclick="return!1"><i class="icon icon-search"></i></button></span></div></form><div class="ins-search"><div class="ins-search-mask"></div><div class="ins-search-container"><div class="ins-input-wrapper"><input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech> <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div><div class="ins-section-wrapper"><div class="ins-section-container"></div></div></div></div></div><button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button></div><nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation"><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href="/."><i class="icon icon-home-fill"></i> <span class="menu-title">首页</span></a></li><li class="menu-item menu-item-archives"><a href="/archives"><i class="icon icon-archives-fill"></i> <span class="menu-title">归档</span></a></li><li class="menu-item menu-item-categories"><a href="/categories"><i class="icon icon-folder"></i> <span class="menu-title">分类</span></a></li><li class="menu-item menu-item-tags"><a href="/tags"><i class="icon icon-tags"></i> <span class="menu-title">标签</span></a></li><li class="menu-item menu-item-about"><a href="/about"><i class="icon icon-cup-fill"></i> <span class="menu-title">关于</span></a></li></ul><ul class="social-links"><li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li></ul></nav></div></header><aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar"><div class="slimContent"><div class="widget"><h3 class="widget-title">公告</h3><div class="widget-body"><div id="board"><div class="content"><p>欢迎交流与分享经验!</p></div></div></div></div><div class="widget"><h3 class="widget-title">分类</h3><div class="widget-body"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li></ul></div></div><div class="widget"><h3 class="widget-title">标签</h3><div class="widget-body"><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a><span class="tag-list-count">1</span></li></ul></div></div><div class="widget"><h3 class="widget-title">归档</h3><div class="widget-body"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li></ul></div></div><div class="widget"><h3 class="widget-title">最新文章</h3><div class="widget-body"><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class="item-inner"><p class="item-category"><a class="category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a></p><p class="item-title"><a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="title">Docker基础知识</a></p><p class="item-date"><time datetime="2020-02-25T07:46:30.000Z" itemprop="datePublished">2020-02-25</time></p></div></li><li><div class="item-inner"><p class="item-category"><a class="category-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a></p><p class="item-title"><a href="/2020/02/25/First-Blog/" class="title">第一篇博客文章</a></p><p class="item-date"><time datetime="2020-02-25T06:41:43.000Z" itemprop="datePublished">2020-02-25</time></p></div></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar"><div class="slimContent"><nav id="toc" class="article-toc"><h3 class="toc-title">文章目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker"><span class="toc-number">1.</span> <span class="toc-text">Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是Docker"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">什么是Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么要使用Docker"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">为什么要使用Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应用场景"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Docker的组成部分"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">Docker的组成部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#卸载旧的版本"><span class="toc-number">1.0.0.5.</span> <span class="toc-text">卸载旧的版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安装Docker社区版-个人和中小型企业基本够用"><span class="toc-number">1.0.0.6.</span> <span class="toc-text">安装Docker社区版(个人和中小型企业基本够用)</span></a></li></ol></li></ol></nav></div></aside><main class="main" role="main"><div class="content"><article id="post-Docker基础知识" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting"><div class="article-header"><h1 class="article-title" itemprop="name">Docker基础知识</h1><div class="article-meta"><span class="article-date"><i class="icon icon-calendar-check"></i> <a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date"><time datetime="2020-02-25T07:46:30.000Z" itemprop="datePublished">2020-02-25</time></a></span> <span class="article-category"><i class="icon icon-folder"></i> <a class="article-category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a></span> <span class="article-tag"><i class="icon icon-tags"></i> <a class="article-tag-link" href="/tags/Docker/" rel="tag">Docker</a></span> <span class="article-read hidden-xs"><i class="icon icon-eye-fill" aria-hidden="true"></i> <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span></span></span> <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#comments" class="article-comment-link">评论</a></span> <span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 581(字)</span> <span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span></div></div><div class="article-entry marked-body" itemprop="articleBody"><h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h4 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h4><ul><li>百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</li></ul><p>说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致。</p><h4 id="为什么要使用Docker"><a href="#为什么要使用Docker" class="headerlink" title="为什么要使用Docker"></a>为什么要使用Docker</h4><ul><li><p>Docker 容器的启动可以在秒级实现，这相比传统的虚拟机方式要快得多 。</p></li><li><p>性能很高 ， 系统的开销尽量小 。</p></li><li><p>环境一致，让开发人员专注于开发。</p></li><li><p>应用迁移更便捷。</p></li><li><p>应用更好维护。</p></li></ul><h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ul><li><p>web应用的自动打包和发布</p></li><li><p>自动化测试</p></li><li><p>可持续集成</p></li><li><p>安装各种组件</p></li></ul><h4 id="Docker的组成部分"><a href="#Docker的组成部分" class="headerlink" title="Docker的组成部分"></a>Docker的组成部分</h4><ul><li><p>Docker客户端：个人电脑安装的docker软件、用来连接操作docker。</p></li><li><p>Docker守护进程：例如有容器A、镜像1 （容器时基于镜像来运行的,镜像相当于类，容器则是类的实例）。</p></li><li><p>Docker镜像：从docker仓库中拉去过来，而docker仓库又分共有(docker hub)和私有仓库。</p></li></ul><blockquote><p>以下以 centOS7 系统为基础环境讲述</p></blockquote><h4 id="卸载旧的版本"><a href="#卸载旧的版本" class="headerlink" title="卸载旧的版本"></a>卸载旧的版本</h4><p>如果你的系统中已经有旧版本，那么就卸载他吧， 较旧的 Docker 版本称为 docker 或 docker-engine，卸载后记得要删除相关依赖项。</p><ol><li><p>更新 yum 源：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br></pre></td></tr></table></figure></li><li><p>查看已安装软件是否有Docker：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed</span><br></pre></td></tr></table></figure></li><li><p>或者直接查看有没有安装Docker：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure></li><li><p>如果有的话卸载及相关依赖：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker.x86_64#软件名看你自己的</span><br></pre></td></tr></table></figure></li></ol><h4 id="安装Docker社区版-个人和中小型企业基本够用"><a href="#安装Docker社区版-个人和中小型企业基本够用" class="headerlink" title="安装Docker社区版(个人和中小型企业基本够用)"></a>安装Docker社区版(个人和中小型企业基本够用)</h4><ol><li><p>安装先安装需要的软件包：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure></li><li><p>设置yum源：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo http:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure><p>如果返回结果如下图表明设置成功：</p><p><img src="1.jpg" alt="设置yum源"></p></li><li><p>安装docker：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y docker-ce</span><br></pre></td></tr></table></figure><p>如果返回结果如下图表明安装成功：</p><p><img src="2.jpg" alt=""></p></li><li><p>查看docker安装版本：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker -v</span><br></pre></td></tr></table></figure></li></ol></div><div class="article-footer"><blockquote class="mt-2x"><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>本文链接：</strong> <a href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="Docker基础知识" target="_blank" rel="external">http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！</li></ul></blockquote><div class="panel panel-default panel-badger"><div class="panel-body"><figure class="media"><div class="media-left"><a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg"><img src="/images/avatar.jpg" class="img-rounded w-full" alt=""></a></div><div class="media-body"><h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3><div>得闲饮茶</div></div></figure></div></div></div></article><section id="comments"></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class="bar-inner"><ul class="pager pull-left"><li class="next"><a href="/2020/02/25/First-Blog/" title="第一篇博客文章"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a></li><li class="toggle-toc"><a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button"><span>[&nbsp;</span><span>文章目录</span> <i class="text-collapsed icon icon-anchor"></i> <i class="text-in icon icon-close"></i> <span>]</span></a></li></ul><div class="bar-right"><div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div></div></div></nav></main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><ul class="social-links"><li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li></ul><div class="copyright"></div></footer><script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script src="/js/plugin.min.js"></script><script src="/js/application.js"></script><script>!function(T){var N={TRANSLATION:{POSTS:"文章",PAGES:"页面",CATEGORIES:"分类",TAGS:"标签",UNTITLED:"(未命名)"},ROOT_URL:"/",CONTENT_URL:"/content.json"};T.INSIGHT_CONFIG=N}(window)</script><script src="/js/insight.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script><script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"bf59d22c6ae74084069d",clientSecret:"3ffaadce74810c667059e5b18ebfa9bc193bbf10",repo:"gitalk-comment",owner:"ctrl98",admin:["ctrl98"],id:md5(location.pathname),distractionFreeMode:!0});gitalk.render("comments")</script></body></html><!-- rebuild by neat -->
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Docker基础知识 | Lee&#39;s Blog</title>
+  <meta name="description" content="Docker  什么是Docker  百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。  说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker基础知识">
+<meta property="og:url" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="Docker  什么是Docker  百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。  说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/2.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/3.jpg">
+<meta property="article:published_time" content="2020-02-25T07:46:30.000Z">
+<meta property="article:modified_time" content="2020-02-26T09:33:27.998Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/02/26/Docker2/" class="title">Docker基础知识之镜像与容器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-02-26T02:26:40.000Z" itemprop="datePublished">2020-02-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="title">Docker基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-02-25T07:46:30.000Z" itemprop="datePublished">2020-02-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/02/25/First-Blog/" class="title">第一篇博客文章</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-02-25T06:41:43.000Z" itemprop="datePublished">2020-02-25</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker"><span class="toc-number">1.</span> <span class="toc-text"> Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是docker"><span class="toc-number">1.1.</span> <span class="toc-text"> 什么是Docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要使用docker"><span class="toc-number">1.2.</span> <span class="toc-text"> 为什么要使用Docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用场景"><span class="toc-number">1.3.</span> <span class="toc-text"> 应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker的组成部分"><span class="toc-number">1.4.</span> <span class="toc-text"> Docker的组成部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#卸载旧的版本"><span class="toc-number">1.5.</span> <span class="toc-text"> 卸载旧的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装docker社区版个人和中小型企业基本够用"><span class="toc-number">1.6.</span> <span class="toc-text"> 安装Docker社区版(个人和中小型企业基本够用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置docker镜像源"><span class="toc-number">1.7.</span> <span class="toc-text"> 配置Docker镜像源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker基础命令"><span class="toc-number">1.8.</span> <span class="toc-text"> Docker基础命令</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Docker基础知识" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Docker基础知识
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
+	  <time datetime="2020-02-25T07:46:30.000Z" itemprop="datePublished">2020-02-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Docker/" rel="tag">Docker</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 806(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> Docker</h2>
+<h3 id="什么是docker"><a class="markdownIt-Anchor" href="#什么是docker"></a> 什么是Docker</h3>
+<ul>
+<li>百度百科：Docker容器是一个应用容器引擎， 让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 linux 或 Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</li>
+</ul>
+<p>说白了就是把应用（项目）部署到Docker容器中运行，就好像放在真实的物理机上运行一样，不用担心开发环境和生产环境的不一致。</p>
+<h3 id="为什么要使用docker"><a class="markdownIt-Anchor" href="#为什么要使用docker"></a> 为什么要使用Docker</h3>
+<ul>
+<li>
+<p>Docker 容器的启动可以在秒级实现，这相比传统的虚拟机方式要快得多 。</p>
+</li>
+<li>
+<p>性能很高 ， 系统的开销尽量小 。</p>
+</li>
+<li>
+<p>环境一致，让开发人员专注于开发。</p>
+</li>
+<li>
+<p>应用迁移更便捷。</p>
+</li>
+<li>
+<p>应用更好维护。</p>
+</li>
+</ul>
+<h3 id="应用场景"><a class="markdownIt-Anchor" href="#应用场景"></a> 应用场景</h3>
+<ul>
+<li>
+<p>web应用的自动打包和发布</p>
+</li>
+<li>
+<p>自动化测试</p>
+</li>
+<li>
+<p>可持续集成</p>
+</li>
+<li>
+<p>安装各种组件</p>
+</li>
+</ul>
+<h3 id="docker的组成部分"><a class="markdownIt-Anchor" href="#docker的组成部分"></a> Docker的组成部分</h3>
+<ul>
+<li>
+<p>Docker客户端：个人电脑安装的docker软件、用来连接操作docker。</p>
+</li>
+<li>
+<p>Docker守护进程：例如有容器A、镜像1 （容器时基于镜像来运行的,镜像相当于类，容器则是类的实例）。</p>
+</li>
+<li>
+<p>Docker镜像：从docker仓库中拉去过来，而docker仓库又分共有(docker hub)和私有仓库。</p>
+</li>
+</ul>
+<blockquote>
+<p>以下以 centOS7 系统为基础环境讲述</p>
+</blockquote>
+<h3 id="卸载旧的版本"><a class="markdownIt-Anchor" href="#卸载旧的版本"></a> 卸载旧的版本</h3>
+<p>如果你的系统中已经有旧版本，那么就卸载他吧， 较旧的 Docker 版本称为 docker 或 docker-engine，卸载后记得要删除相关依赖项。</p>
+<ol>
+<li>
+<p>更新 yum 源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看已安装软件是否有Docker：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>或者直接查看有没有安装Docker：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果有的话卸载及相关依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove docker.x86_64#软件名看你自己的</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="安装docker社区版个人和中小型企业基本够用"><a class="markdownIt-Anchor" href="#安装docker社区版个人和中小型企业基本够用"></a> 安装Docker社区版(个人和中小型企业基本够用)</h3>
+<ol>
+<li>
+<p>安装先安装需要的软件包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>设置yum源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo http:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+<p>如果返回结果如下图表明设置成功：</p>
+<p><img src="1.jpg" alt="设置yum源" /></p>
+</li>
+<li>
+<p>安装docker：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y docker-ce</span><br></pre></td></tr></table></figure>
+<p>如果返回结果如下图表明安装成功：</p>
+<p><img src="2.jpg" alt="" /></p>
+</li>
+<li>
+<p>查看docker安装版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="配置docker镜像源"><a class="markdownIt-Anchor" href="#配置docker镜像源"></a> 配置Docker镜像源</h3>
+<ol>
+<li>
+<p>创建文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;etc&#x2F;docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>使用一下命令编辑内容并创建文件—daemon.json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi daemon.json</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>文件内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;registry-mirrors&quot;:[&quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;]&#125;</span><br></pre></td></tr></table></figure>
+<p>镜像也可以用自己的阿里云镜像加速(建议)</p>
+</li>
+<li>
+<p>编辑完后，按 <code>Esc</code>键，然后按 <code>:</code>，输入 <code>wq</code>，保存文件并退出。</p>
+</li>
+<li>
+<p>在/etc/docker目录下使用 <code>ll</code>命令查看文件是否创建成功？</p>
+<p><img src="3.jpg" alt="" /></p>
+</li>
+</ol>
+<h3 id="docker基础命令"><a class="markdownIt-Anchor" href="#docker基础命令"></a> Docker基础命令</h3>
+<p>下面我们来了解一下docker的基础命令</p>
+<ul>
+<li>
+<p>首先是启动docker服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>停止docker服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看docker当前状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>重启docker服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>把docker服务设置成开机自动启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>到这里说明你已经距离入门还有一大段距离~~~干巴爹斯！！！！</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="Docker基础知识" target="_blank" rel="external">http://ctrl98.github.io/2020/02/25/Docker%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/02/26/Docker2/" title="Docker基础知识之镜像与容器"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/02/25/First-Blog/" title="第一篇博客文章"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
