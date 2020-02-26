@@ -17,18 +17,26 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>about | Lee&#39;s Blog</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://ctrl98.github.io/about/index.html">
+  <title>Docker部署Tomcat容器 | Lee&#39;s Blog</title>
+  <meta name="description" content="分析 创建容器的时候对容器中的webapps目录（存放web项目的目录）进行目录挂载，发布web项目只需要把项目上传到宿主机的挂载目录即可，tomcat会自动解压包。  拉取Tomcat镜像 拉取镜像的时候不指定版本号，默认下载tomcat最新版的，这里默认就行。   拉取Tomcat镜像： 1docker pull tomcat  等待Pull complete：    查看镜像列表： 1do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker部署Tomcat容器">
+<meta property="og:url" content="http://ctrl98.github.io/2020/02/26/Docker4/index.html">
 <meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="分析 创建容器的时候对容器中的webapps目录（存放web项目的目录）进行目录挂载，发布web项目只需要把项目上传到宿主机的挂载目录即可，tomcat会自动解压包。  拉取Tomcat镜像 拉取镜像的时候不指定版本号，默认下载tomcat最新版的，这里默认就行。   拉取Tomcat镜像： 1docker pull tomcat  等待Pull complete：    查看镜像列表： 1do">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-25T04:54:31.018Z">
-<meta property="article:modified_time" content="2020-02-25T04:54:31.018Z">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/26/Docker4/1.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/26/Docker4/2.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/26/Docker4/3.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/02/26/Docker4/4.jpg">
+<meta property="article:published_time" content="2020-02-26T11:58:21.000Z">
+<meta property="article:modified_time" content="2020-02-26T12:23:52.774Z">
 <meta property="article:author" content="unknown">
+<meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ctrl98.github.io/2020/02/26/Docker4/1.jpg">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://ctrl98.github.io/about/index.html">
+  <link rel="canonical" href="http://ctrl98.github.io/2020/02/26/Docker4/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
   
@@ -297,123 +305,203 @@
 </aside>
 
   
-  <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
   <div class="slimContent">
-    
-    <div class="widget">
-      <h3 class="widget-title">个人链接</h3>
-      <div class="widget-body">
-        <ul class="link-list lh-2x">
-          
-          <li>
-            Github:
-            <a href="https://github.com/ctrl98" target="_blank">https://github.com/ctrl98</a>
-          </li>
-          
-        </ul>
-      </div>
-    </div>
-    
-    
-    <div class="widget">
-      <h3 class="widget-title">技能</h3>
-      <div class="widget-body">
-        <ul class="skill-list lh-2x">
-          
-          <li class="clearfix">
-            <span>Java</span>
-            <span class="pull-right">★★★☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Spring</span>
-            <span class="pull-right">★★★☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>SSM</span>
-            <span class="pull-right">★★★☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Spring Boot</span>
-            <span class="pull-right">★★★☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Spring Cloud</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>HTML5+CSS3</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Bootstrap</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Vue.js</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Docker</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-          <li class="clearfix">
-            <span>Linux</span>
-            <span class="pull-right">★★☆☆☆</span>
-          </li>
-          
-        </ul>
-      </div>
-    </div>
-    
-    
-    <div class="widget">
-      <h3 class="widget-title">个人标签</h3>
-      <div class="widget-body">
-        
-        <span class="label label-default mb">Java</span>
-        
-        <span class="label label-default mb">后端</span>
-        
-        <span class="label label-default mb">后端开发</span>
-        
-        <span class="label label-default mb">Web前端</span>
-        
-      </div>
-    </div>
-    
-    
-    
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.</span> <span class="toc-text"> 分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#拉取tomcat镜像"><span class="toc-number">2.</span> <span class="toc-text"> 拉取Tomcat镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建并启动tomcat容器"><span class="toc-number">3.</span> <span class="toc-text"> 创建并启动Tomcat容器</span></a></li></ol>
+    </nav>
   </div>
 </aside>
-<main class="main" role="main">
-  <article class="article archives-about article-type-normal" itemscope="">
-  <header class="article-header">
-    <h1 itemprop="title">about</h1>
-    
-    <p class="text-muted">得闲饮茶</p>
-    
-  </header>
-  <div class="article-body">
-    
-  </div>
-</article>
 
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Docker4" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
   
+    <h1 class="article-title" itemprop="name">
+      Docker部署Tomcat容器
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/02/26/Docker4/" class="article-date">
+	  <time datetime="2020-02-26T11:58:21.000Z" itemprop="datePublished">2020-02-26</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>►<a class="article-category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Docker/" rel="tag">Docker</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/26/Docker4/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 256(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="分析"><a class="markdownIt-Anchor" href="#分析"></a> 分析</h4>
+<p>创建容器的时候对容器中的webapps目录（存放web项目的目录）进行目录挂载，发布web项目只需要把项目上传到宿主机的挂载目录即可，tomcat会自动解压包。</p>
+<h4 id="拉取tomcat镜像"><a class="markdownIt-Anchor" href="#拉取tomcat镜像"></a> 拉取Tomcat镜像</h4>
+<p>拉取镜像的时候不指定版本号，默认下载tomcat最新版的，这里默认就行。</p>
+<ul>
+<li>
+<p>拉取Tomcat镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull tomcat</span><br></pre></td></tr></table></figure>
+<p><img src="1.jpg" alt="" /></p>
+<p>等待Pull complete：</p>
+<p><img src="2.jpg" alt="" /></p>
+</li>
+<li>
+<p>查看镜像列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p><img src="3.jpg" alt="" /></p>
+<p>拉取成功</p>
+</li>
+</ul>
+<h4 id="创建并启动tomcat容器"><a class="markdownIt-Anchor" href="#创建并启动tomcat容器"></a> 创建并启动Tomcat容器</h4>
+<ul>
+<li>
+<p>执行一下命令进行创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name&#x3D;mytomcat -p 9000:8080 -v &#x2F;usr&#x2F;local&#x2F;mytomcat&#x2F;webapps:&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps tomcat</span><br></pre></td></tr></table></figure>
+<p>属性解释：</p>
+<p>-di：创建守护式容器</p>
+<p>–name：容器名字</p>
+<p>-p：端口映射</p>
+<p>-v：目录挂载（映射）</p>
+</li>
+</ul>
+<p><em><strong>注意</strong></em></p>
+<blockquote>
+<p>创建容器的时候如出现ipv4的警告信息：</p>
+<p>修改配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;sysctl.conf</span><br></pre></td></tr></table></figure>
+<p>在这文件上添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward&#x3D;1</span><br></pre></td></tr></table></figure>
+<p>重启网络：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>
+<p>查看一下容器列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="4.jpg" alt="" /></p>
+<p>创建成功</p>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/02/26/Docker4/" title="Docker部署Tomcat容器" target="_blank" rel="external">http://ctrl98.github.io/2020/02/26/Docker4/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
   <section id="comments">
   	
            
     
   </section>
 
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/02/26/Docker3/" title="Docker部署mysql Navicat远程连接"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
 
 
 </main>
@@ -465,6 +553,12 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 <script src="/js/insight.js"></script>
 
 
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
