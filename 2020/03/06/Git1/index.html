@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Git Bash基础操作 | Lee&#39;s Blog</title>
+  <meta name="description" content="Git基本操作 安装： 根据系统自己选择下载傻瓜式安装 配置：   用户名： 1$ git config --global user.name &quot;你的账号&quot;   邮箱： 1$ git config --global user.email &quot;你的邮箱账号&quot;   查看全局配置命令： 1$ cat ~&#x2F;.gitconfig   初始化：   新建一个文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git Bash基础操作">
+<meta property="og:url" content="http://ctrl98.github.io/2020/03/06/Git1/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="Git基本操作 安装： 根据系统自己选择下载傻瓜式安装 配置：   用户名： 1$ git config --global user.name &quot;你的账号&quot;   邮箱： 1$ git config --global user.email &quot;你的邮箱账号&quot;   查看全局配置命令： 1$ cat ~&#x2F;.gitconfig   初始化：   新建一个文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ctrl98.github.io/2020/03/06/Git1/1.jpg">
+<meta property="og:image" content="http://ctrl98.github.io/2020/03/06/Git1/2.png">
+<meta property="article:published_time" content="2020-03-06T00:48:45.000Z">
+<meta property="article:modified_time" content="2020-03-06T00:59:41.270Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="版本控制工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ctrl98.github.io/2020/03/06/Git1/1.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/03/06/Git1/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Redis1/" class="title">Redis数据缓存 基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T01:12:22.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Mysql1/" class="title">Mysql 基础知识（一）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T01:05:41.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Git/">Git</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Git1/" class="title">Git Bash基础操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T00:48:45.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/02/27/Docker6/" class="title">使用Dockerfile创建镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-02-27T05:43:51.000Z" itemprop="datePublished">2020-02-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/02/27/Docker5/" class="title">Docker容器的备份、迁移与恢复</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-02-27T04:13:17.000Z" itemprop="datePublished">2020-02-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#git基本操作"><span class="toc-number">1.</span> <span class="toc-text"> Git基本操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git分支"><span class="toc-number">2.</span> <span class="toc-text"> Git分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分支简单合并"><span class="toc-number">3.</span> <span class="toc-text"> 分支简单合并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#远程仓库创建分支显示"><span class="toc-number">4.</span> <span class="toc-text"> 远程仓库创建分支显示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除远程仓库分支"><span class="toc-number">5.</span> <span class="toc-text"> 删除远程仓库分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看git日志"><span class="toc-number">6.</span> <span class="toc-text"> 查看Git日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#合并操作"><span class="toc-number">7.</span> <span class="toc-text"> 合并操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ff-方式"><span class="toc-number">7.1.</span> <span class="toc-text"> –ff 方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#no-ff-方式"><span class="toc-number">7.2.</span> <span class="toc-text"> –no-ff 方式</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#rebase命令"><span class="toc-number">7.2.1.</span> <span class="toc-text"> rebase命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#简单处理合并冲突"><span class="toc-number">8.</span> <span class="toc-text"> 简单处理合并冲突</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git的回滚撤销"><span class="toc-number">9.</span> <span class="toc-text"> Git的回滚撤销</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-工作基本流程"><span class="toc-number">10.</span> <span class="toc-text"> Git 工作基本流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最后附上git命令大全"><span class="toc-number">11.</span> <span class="toc-text"> 最后附上Git命令大全</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Git1" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Git Bash基础操作
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/06/Git1/" class="article-date">
+	  <time datetime="2020-03-06T00:48:45.000Z" itemprop="datePublished">2020-03-06</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Git/">Git</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Git/" rel="tag">Git</a>, <a class="article-tag-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/06/Git1/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.4k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="git基本操作"><a class="markdownIt-Anchor" href="#git基本操作"></a> Git基本操作</h4>
+<p><strong>安装：</strong></p>
+<p>根据系统自己选择下载傻瓜式安装</p>
+<p><strong>配置：</strong></p>
+<ul>
+<li>
+<p>用户名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;你的账号&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>邮箱：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.email &quot;你的邮箱账号&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看全局配置命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~&#x2F;.gitconfig</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>初始化：</strong></p>
+<ul>
+<li>
+<p>新建一个文件夹，再当前目录下打开git bash 执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>查看状态：</strong></p>
+<ul>
+<li>
+<p>在当前目录新建一个README.md文档；</p>
+</li>
+<li>
+<p>查看当前git仓库状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>提交新建文档到缓存区命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add README.md</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再次查看当前git仓库状态：</p>
+</li>
+<li>
+<p>截图中也提示，如果想取消本次提交，可执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached README.md</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>提交新文件到暂存区：</strong></p>
+<ul>
+<li>
+<p>提交命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add README.md</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>当前目录下全部文件都提交：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add -A</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>提交新内容到git本地仓库：</strong></p>
+<ul>
+<li>
+<p>提交命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;add README.md&quot;</span><br></pre></td></tr></table></figure>
+<p>m：message，输入你本次提交的内容或日志</p>
+</li>
+</ul>
+<p><strong>设置要提交到的远程仓库：</strong></p>
+<ul>
+<li>
+<p>先到自己的github创建新的空白远程仓库；</p>
+</li>
+<li>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin https:&#x2F;&#x2F;github.com&#x2F;ctrl98&#x2F;git-test.git</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看当前远程仓库的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote -v</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>提交新内容到远程仓库命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数说明：</p>
+<p>-u：第一次提交的时候加上这个属性，以后提交只需要输入：git push即可</p>
+<p>-origin：远端链接的名字，创建远程仓库时默认</p>
+<p>-master：仓库主干分支</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>克隆远程仓库项目到本地：</strong></p>
+<ul>
+<li>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;ctrl98&#x2F;git-test.git</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>更新远程仓库代码到本地：</strong></p>
+<ul>
+<li>
+<p>远程仓库做了修改，本地仓库还是旧的，可执行拉取命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="git分支"><a class="markdownIt-Anchor" href="#git分支"></a> Git分支</h4>
+<p>分支互相独立，互不影响</p>
+<ul>
+<li>
+<p>创建新的分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch feature1</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看当前分支列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>切换分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout feature1</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看当前分析目录信息，可发现有master主干上的文件：</p>
+</li>
+<li>
+<p>在feature1分支下创建a.txt文件，并编辑文件内容：this is a.txt，保存并退出。</p>
+</li>
+<li>
+<p>commit feature1的文件到本地仓库中。</p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p>再创建一个新的分支并切换到该分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -d feature2</span><br></pre></td></tr></table></figure>
+<p>查看一下该分支的目录文件信息，发现有master的README.md文档和feature1的a.txt文档，也就是说是基于feature1的，新分支的内容是基于上个分支的内容。</p>
+</li>
+<li>
+<p>查看文件内容命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat a.txt</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="分支简单合并"><a class="markdownIt-Anchor" href="#分支简单合并"></a> 分支简单合并</h4>
+<ul>
+<li>
+<p>合并命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge 分支名称</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>创建并切换到分支feature3:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b feature3</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>新建b.txt文件，并编写内容：hello world：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch b.txt;</span><br><span class="line">vi b.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>提交该文件到本地仓库中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add b.txt</span><br><span class="line">git commit -m &quot;add b.txt&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>切换回master主分支中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>删除feature3分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d feature3</span><br></pre></td></tr></table></figure>
+<p>发现无法删除，因为feature3中本地仓库中有提交，提示你要么合并该分支到master，要么就强制删除分支</p>
+</li>
+<li>
+<p>合并feature3到master主分支，Head指针执行master：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge feature3</span><br></pre></td></tr></table></figure>
+<p>提示合并成功</p>
+</li>
+</ul>
+<h4 id="远程仓库创建分支显示"><a class="markdownIt-Anchor" href="#远程仓库创建分支显示"></a> 远程仓库创建分支显示</h4>
+<ul>
+<li>
+<p>切换到需要再远程仓库中显示的分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout feature1</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输入设置命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin feature1</span><br></pre></td></tr></table></figure>
+<p>这个时候远程仓库就会有一个feature1分支显示</p>
+</li>
+<li>
+<p>也可以起别名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin feature1:f1</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="删除远程仓库分支"><a class="markdownIt-Anchor" href="#删除远程仓库分支"></a> 删除远程仓库分支</h4>
+<ul>
+<li>
+<p>本地git命令行切换到要删除远程的分支</p>
+</li>
+<li>
+<p>输入删除命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :feature1</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="查看git日志"><a class="markdownIt-Anchor" href="#查看git日志"></a> 查看Git日志</h4>
+<ul>
+<li>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>更简洁地查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --oneline</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果提交次数多的话，还可以指定查看最新的提交范围：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --oneline -5</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>想要查看某一次提交了什么新的内容，可以先复制日志对应的ID，然后执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show +id</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="合并操作"><a class="markdownIt-Anchor" href="#合并操作"></a> 合并操作</h4>
+<p>清空上面创建的分支，只留下master</p>
+<h5 id="ff-方式"><a class="markdownIt-Anchor" href="#ff-方式"></a> –ff 方式</h5>
+<ul>
+<li>
+<p>创建并切换至f1分支</p>
+</li>
+<li>
+<p>创建fa.txt文件并提交到本地仓库</p>
+</li>
+<li>
+<p>查看日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --oneline</span><br></pre></td></tr></table></figure>
+<p>发现指针HEAD指向了f1</p>
+</li>
+<li>
+<p>切换回master分支进行合并 (默认使用 --ff 模式) ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge f1</span><br></pre></td></tr></table></figure>
+<p>此时使用的是 fast-forward 方式合并策略，也就是默认的  --ff  模式，可以通过 <code>git merge --help</code>查看相关模式， 这种方式不会创建一个新的commit，只会显示f1分支提交的message。</p>
+</li>
+</ul>
+<h5 id="no-ff-方式"><a class="markdownIt-Anchor" href="#no-ff-方式"></a> –no-ff 方式</h5>
+<p>保证了原有开发的提交量的完整性</p>
+<ul>
+<li>
+<p>切换回f1分支</p>
+</li>
+<li>
+<p>创建fb.txt文件并提交到本地仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">touch fb.txt</span><br><span class="line">git add fb.txt</span><br><span class="line">git commit -m &quot;add fb.txt&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>切换回master分支进行合并：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge f1 --no-ff</span><br></pre></td></tr></table></figure>
+<p>这个时候会进入一个界面，产生了一条message，叫 Merge branch ‘f1’，我们可以修改这个message，默认不修改，保存退出，这个时候发行合并的策略变为：Merge made by the ‘recursive’ strategy，此时查看log日志会出现拐弯现象，把f1的commit和合并时的message两个commit都显示出来了。</p>
+</li>
+<li>
+<p>提交到远程仓库，并创建远程仓库分支f1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push</span><br><span class="line">git push origin f1:f1</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>打开github的远程仓库，添加master下的a.txt文件内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update</span><br></pre></td></tr></table></figure>
+<p>这个时候远程仓库是最新的版本，本地是较旧的版本</p>
+</li>
+<li>
+<p>回到本地仓库，同步远程master分支的内容到本地：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>切换到f1分支，f1分支想要拿到master的最新版本，需要merger一下master，才能和master保持同步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge master</span><br></pre></td></tr></table></figure>
+<p>再查看一下日志，发现日志对于本次同步只显示了一条 update  a.txt 的信息，并没有出现拐弯</p>
+</li>
+<li>
+<p>这个时候master有人作了修改，且回到master分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">touch m1.txt</span><br><span class="line">git add m1.txt</span><br><span class="line">git commit -m &quot;add m1.txt&quot;</span><br><span class="line">git log --oneline</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="rebase命令"><a class="markdownIt-Anchor" href="#rebase命令"></a> rebase命令</h6>
+<ul>
+<li>
+<p>再回到f1分支，如果我们使用git rebase命令来合并，将f1这个分支移动到master分支的最后一次提交，会把master所有提交并入过来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rebase master</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再次查看log日志，会发现在f1中会产生一条新的提交，叫&quot;add m1.txt&quot;，重写了项目的提交历史，并且不会带来一条 merge 的commit.</p>
+</li>
+</ul>
+<p><strong>rebase最大的好处：</strong></p>
+<p>就是使得提交的历史不会出现分叉，项目提交历史看着非常整齐，他不会像 git merge 那样引入一条分叉</p>
+<p>**rebase的不好：**安全性和可跟踪性，不要在master上使用rebase命令，rebase命令他不是合并操作，而是复制操作，而merge命令是把两个分支的内容合并到一起。</p>
+<h4 id="简单处理合并冲突"><a class="markdownIt-Anchor" href="#简单处理合并冲突"></a> 简单处理合并冲突</h4>
+<ul>
+<li>
+<p>在f1分支基础上再创建一个f2分支，并随便修改一下a.txt的内容，保存退出提交到本地仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b f2</span><br><span class="line">vi a.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>回到f1分支，同样修改a.txt文件内容并提交到本地仓库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git chrckout f1</span><br><span class="line">vi a.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再次回到f2分支，这个时候想拉取一下f1同学写的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout f2</span><br><span class="line">git merge f1</span><br></pre></td></tr></table></figure>
+<p>这个时候会出现文件冲突，需要解决冲突，查看一下a.txt文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat a.txt</span><br></pre></td></tr></table></figure>
+<p>发现文件内容很乱，显示两个分支上对这个文件的不同修改的内容，要么使用f1的要么使用f2的，然后修改a.txt，就会看到刚才查看到的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi a.txt</span><br></pre></td></tr></table></figure>
+<p>这样修改很麻烦，实际开发中会用工具下来修改</p>
+</li>
+<li>
+<p>使用mergetool命令来检测冲突并解决冲突：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git mergetool</span><br></pre></td></tr></table></figure>
+<p>再次回车使用vimdiff来解决冲突，把不需要保留的内容删除，然后保存退出，再看一下a.txt文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat a.txt</span><br></pre></td></tr></table></figure>
+<p>发现内容已经修改为刚才保留下来的内容，然后再commit一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;update a.txt&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="git的回滚撤销"><a class="markdownIt-Anchor" href="#git的回滚撤销"></a> Git的回滚撤销</h4>
+<ul>
+<li>
+<p>git reset 分支名^</p>
+<p>回到上一次提交的版本，他只是把HEAD指针移动了，并没有删除东西，默认是–mixed模式（本次提交的东西从暂存区撤销，但仍留在工作区中），在master分支下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">touch hello.java</span><br><span class="line">git add hello.java</span><br><span class="line">git commit -m &quot;add hello.java&quot;</span><br></pre></td></tr></table></figure>
+<p>此时查看log，会发现已经有本条提交记录，这个时候想回退上个版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset master^   #  ^符号代表上一次的意思</span><br></pre></td></tr></table></figure>
+<p>查看状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+<p>发现hello.java文件处于未提交状态</p>
+<p>同样也可以直接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset 版本码(查看每条日志前的唯一标识)</span><br></pre></td></tr></table></figure>
+<p>hard模式简单粗暴，直接还原上个版本的东西，暂存区、工作目录都清空本次更新的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>git revert</p>
+<p>此次操作之前和之后的commit和history都会保留，并且把这次撤销作为一次最新的提交，用新的commit来回滚上一个版本；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert 版本号</span><br></pre></td></tr></table></figure>
+<p>执行后会产生一次commit，填写提交的message，直接保存退出，他就把删除了revert那个版本的东西，比如那次提交是新建了一个文件，执行revert后，那个文件就不存在，但是那次提交commit的message就更新为 revert …</p>
+</li>
+</ul>
+<p>所以，在公共分支上使用 <code>git revert</code>，会把提交的信息记录保存下来，可以回溯，在其他分支，可以直接 <code>git reset</code>回退</p>
+<h4 id="git-工作基本流程"><a class="markdownIt-Anchor" href="#git-工作基本流程"></a> Git 工作基本流程</h4>
+<p><img src="1.jpg" alt="git基本介绍" /></p>
+<h4 id="最后附上git命令大全"><a class="markdownIt-Anchor" href="#最后附上git命令大全"></a> 最后附上Git命令大全</h4>
+<p><img src="2.png" alt="Git命令大全" /></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/03/06/Git1/" title="Git Bash基础操作" target="_blank" rel="external">http://ctrl98.github.io/2020/03/06/Git1/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/03/06/Mysql1/" title="Mysql 基础知识（一）"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/02/27/Docker6/" title="使用Dockerfile创建镜像"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
