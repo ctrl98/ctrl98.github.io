@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2020-03-06T11:37:00.335Z</updated>
+  <updated>2020-03-08T08:11:58.120Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -17,11 +17,88 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Spring Cloud Netflix核心组件介绍及搭建</title>
+    <link href="http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/"/>
+    <id>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</id>
+    <published>2020-03-08T08:08:24.000Z</published>
+    <updated>2020-03-08T08:11:58.120Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;单体应用存在的问题耦合度过高&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#单体应用存在的问题耦合度过高&quot;&gt;&lt;/a&gt; 单体应用存在的问题(耦合度过高)&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;随着业务的发展，开发变得越来越&lt;code&gt;复杂&lt;/cod
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis实现一个简单的分布锁</title>
+    <link href="http://ctrl98.github.io/2020/03/08/Redis3/"/>
+    <id>http://ctrl98.github.io/2020/03/08/Redis3/</id>
+    <published>2020-03-08T01:41:07.000Z</published>
+    <updated>2020-03-08T04:06:13.246Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;什么是分布式锁&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是分布式锁&quot;&gt;&lt;/a&gt; 什么是分布式锁&lt;/h4&gt;
+&lt;p&gt;分布式锁在分布式系统中非常常见，比如对公共资源进行操作。&lt;/p&gt;
+&lt;p&gt;如卖车票，同一时刻只能有一个节点将某个特定
+      
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis主从、哨兵及集群模式的配置</title>
+    <link href="http://ctrl98.github.io/2020/03/07/Redis2/"/>
+    <id>http://ctrl98.github.io/2020/03/07/Redis2/</id>
+    <published>2020-03-07T13:02:19.000Z</published>
+    <updated>2020-03-08T01:44:30.300Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;redis主从模式的配置&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#redis主从模式的配置&quot;&gt;&lt;/a&gt; redis主从模式的配置&lt;/h3&gt;
+&lt;p&gt;redis单例提供了一种数据缓存方式和丰富的数据操作&lt;code&gt;api&lt;/code&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Redis数据缓存 基础知识</title>
     <link href="http://ctrl98.github.io/2020/03/06/Redis1/"/>
     <id>http://ctrl98.github.io/2020/03/06/Redis1/</id>
     <published>2020-03-06T01:12:22.000Z</published>
-    <updated>2020-03-06T11:37:00.335Z</updated>
+    <updated>2020-03-08T07:47:46.848Z</updated>
     
     <summary type="html">
     

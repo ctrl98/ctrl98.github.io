@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Redis主从、哨兵及集群模式的配置 | Lee&#39;s Blog</title>
+  <meta name="description" content="redis主从模式的配置 redis单例提供了一种数据缓存方式和丰富的数据操作api ，但是把数据完全存储再单个redis中会有两个问题：数据备份和数据量大造成性能低下。主从模式出现就是为了解决单例所带来的问题。 主从模式指： 使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致。主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取，也就是说，客户端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis主从、哨兵及集群模式的配置">
+<meta property="og:url" content="http://ctrl98.github.io/2020/03/07/Redis2/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="redis主从模式的配置 redis单例提供了一种数据缓存方式和丰富的数据操作api ，但是把数据完全存储再单个redis中会有两个问题：数据备份和数据量大造成性能低下。主从模式出现就是为了解决单例所带来的问题。 主从模式指： 使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致。主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取，也就是说，客户端">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ctrl98.github.io/2020/03/07/Redis2/1.png">
+<meta property="article:published_time" content="2020-03-07T13:02:19.000Z">
+<meta property="article:modified_time" content="2020-03-08T01:44:30.300Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ctrl98.github.io/2020/03/07/Redis2/1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/03/07/Redis2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/08/SpringBoot-Netflix1/" class="title">Spring Cloud Netflix核心组件介绍及搭建</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-08T08:08:24.000Z" itemprop="datePublished">2020-03-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/08/Redis3/" class="title">Redis实现一个简单的分布锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-08T01:41:07.000Z" itemprop="datePublished">2020-03-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/07/Redis2/" class="title">Redis主从、哨兵及集群模式的配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-07T13:02:19.000Z" itemprop="datePublished">2020-03-07</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Redis1/" class="title">Redis数据缓存 基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T01:12:22.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Mysql1/" class="title">Mysql 基础知识（一）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T01:05:41.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis主从模式的配置"><span class="toc-number">1.</span> <span class="toc-text"> redis主从模式的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis中sentinel哨兵配置"><span class="toc-number">2.</span> <span class="toc-text"> redis中sentinel(哨兵)配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建并修改sentinelconf"><span class="toc-number">2.1.</span> <span class="toc-text"> 创建并修改sentinel.conf</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis集群的配置"><span class="toc-number">3.</span> <span class="toc-text"> redis集群的配置</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Redis2" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis主从、哨兵及集群模式的配置
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/07/Redis2/" class="article-date">
+	  <time datetime="2020-03-07T13:02:19.000Z" itemprop="datePublished">2020-03-07</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Redis/" rel="tag">Redis</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/07/Redis2/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 16(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="redis主从模式的配置"><a class="markdownIt-Anchor" href="#redis主从模式的配置"></a> redis主从模式的配置</h3>
+<p>redis单例提供了一种数据缓存方式和丰富的数据操作<code>api</code> ，但是把数据完全存储再单个redis中会有两个问题：数据备份和数据量大造成性能低下。主从模式出现就是为了解决单例所带来的问题。</p>
+<p>主从模式指：</p>
+<p>使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致。主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取，也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。</p>
+<blockquote>
+<p>主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因而可以将写入数据的命令发送给主机执行，而读取数据的命令发送给不同的从机执行，从而达到读写分离的目的。如下图的主机和三个从机。</p>
+</blockquote>
+<p><img src="1.png" alt="" /></p>
+<p><strong>至此redis主从模式的配置可以理解为多个不同的redis实例通过一定的配置告知其相互之间的主从关系。</strong></p>
+<p>主从模式的配置主要的配置点有两个：</p>
+<p>当前实例端口号和当前实例是主机还是从机，是从机的话其主机的ip和端口是什么？</p>
+<p>一般的redis目录下的<code>redis.conf</code>保存的是默认配置，尽量不要对其进行修改.</p>
+<p>这里我们复制三份<code>redis.conf</code>文件，分别命名为<code>6379.conf</code>，<code>6380.conf</code>和<code>6381.conf</code></p>
+<p><code>6379.conf</code>的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br><span class="line">port 6379</span><br></pre></td></tr></table></figure>
+<p><code>6380.conf</code>和<code>6381.conf</code>的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br><span class="line">port 6380</span><br><span class="line">slaveof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br><span class="line">port 6381</span><br><span class="line">slaveof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
+<p>可以看到，端口为6380和6381的实例被配置为端口为6379的实例的从机。</p>
+<p>配置完成后使用<code>redis-server</code>分别执行如下命令启动三个实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.\redis-server 6379.conf</span><br><span class="line">.\redis-server 6380.conf</span><br><span class="line">.\redis-server 6381.conf</span><br></pre></td></tr></table></figure>
+<p>启动之后分别开启三个命令行工具(即redis客户端)分别执行以下命令连接redis实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.\redis-cli -p 6379</span><br><span class="line">.\redis-cli -p 6380</span><br><span class="line">.\redis-cli -p 6381</span><br></pre></td></tr></table></figure>
+<p>分别在三个命令行工具中执行一个get命令，获取键名为msg的数据，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; get msg</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6381&gt; get msg</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<p>可以看到，在三个redis实例中都不存在键为msg的数据，现在我们在主机6379上设置一个键为msg的数据，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; set msg &quot;hello&quot;</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>可以看到设置成功了，此时我们在6380和6381的实例上执行<code>get msg</code>的命令，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; get msg</span><br><span class="line">&quot;hello&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6381&gt; get msg</span><br><span class="line">&quot;hello&quot;</span><br></pre></td></tr></table></figure>
+<p>可以看到，虽然我们只是在6379的实例上设置了msg这条数据，但是在6380和6381的实例上也存有了相应的数据，说明我们成功配置了redis的主从模式。另外，如果不在配置文件中指定主从节点的关系，也可以在启动相关redis实例之后使用<code>slaveof</code>命令来指定当前节点称为某个节点的从节点，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="redis中sentinel哨兵配置"><a class="markdownIt-Anchor" href="#redis中sentinel哨兵配置"></a> redis中sentinel(哨兵)配置</h3>
+<p>redis主从模式解决了数据备份和单例可能存在的性能问题，但是其也引入了新的问题。</p>
+<p>主从模式配置的几个实例，每个实例都会有不同的IP(如果在不同机器上)和端口号，从上面可知，主从模式将读写分配给不同的实例进行从而提高吞吐量，但是也会有另外一个问题，因为每个客户端连接redis都指定了IP和端口号，如果所连接的redis因故障下线，就只能手动去更改客户端配置重新连接，另外如果是主节点故障，那么那些从节点的同步会中断，也需要人工去转移工作。</p>
+<p>为了解决以上问题，redis在2.8版本正式推出sentinel(哨兵)架构。</p>
+<p>每个<code>sentinel</code>节点其实就是一个redis实例。与主从节点不同的是<code>sentinel</code>节点作用是用于监控redis数据节点的，而<code>sentinel</code>节点集合则表示监控一组主从redis实例多个<code>sentinel</code>监控节点的集合。</p>
+<p>比如有主节点<code>master</code>和从节点<code>slave-1</code>、<code>slave-2</code>，为了监控这三个主从节点，这里配置N个<code>sentinel</code>节点<code>sentinel-1</code>，<code>sentinel-2</code>，<code>...</code>，<code>sentinel-N</code>。</p>
+<hr />
+<p>对于一组主从节点，<code>sentinel</code>只是在其外部额外添加的一组用于监控作用的redis实例。在主从节点和<code>sentinel</code>节点集合配置好之后，<code>sentinel</code>节点之间会相互发送消息，以检测其余<code>sentinel</code>节点是否正常工作，并且<code>sentinel</code>节点也会向主从节点发送消息，以检测监控的主从节点是否正常工作。</p>
+<p>前面讲到，<code>sentinel</code>架构的主要作用是解决主从模式下主节点的故障转移工作的。这里如果主节点因为故障下线，那么某个<code>sentinel</code>节点发送检测消息给主节点时，如果在指定时间内收不到回复，那么该<code>sentinel</code>就会主观的判断该主节点已经下线，那么其会发送消息给其余的<code>sentinel</code>节点，询问其是否“认为”该主节点已下线，其余的<code>sentinel</code>收到消息后也会发送检测消息给主节点。</p>
+<p>如果其认为该主节点已经下线，那么其会回复向其询问的<code>sentinel</code>节点，告知其也认为主节点已经下线，当该<code>sentinel</code>节点最先收到超过指定数目（配置文件中配置的数目和当前<code>sentinel</code>节点集合数的一半，这里两个数目的较大值）的<code>sentinel</code>节点回复说当前主节点已下线，那么其就会对主节点进行故障转移工作，故障转移的基本思路是在从节点中选取某个从节点向其发送<code>slaveof no one</code>（假设选取的从节点为127.0.0.1:6380），使其称为独立的节点（也就是新的主节点），然后<code>sentinel</code>向其余的从节点发送<code>slaveof 127.0.0.1 6380</code>命令使它们重新成为新的主节点的从节点。</p>
+<p>重新分配之后<code>sentinel</code>节点集合还会继续监控已经下线的主节点（假设为<code>127.0.0.1:6379</code>），如果其重新上线，那么<code>sentinel</code>会向其发送<code>slaveof</code>命令，使其成为新的主机点的从节点，如此故障转移工作完成。 简单来说就是：当redis服务为主从的时候如果主节点挂掉，则会选取一个从节点为master，当以前的master重启之后不再是master而为slave。</p>
+<h4 id="创建并修改sentinelconf"><a class="markdownIt-Anchor" href="#创建并修改sentinelconf"></a> 创建并修改sentinel.conf</h4>
+<p>复制三个配置文件：<code>sentinel-26379.conf</code>，<code>sentinel-26380.conf</code>和<code>sentinel-26381.conf</code>。分别按照如下示例编辑这三个配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">port 26379  </span><br><span class="line">daemonize yes  </span><br><span class="line">logfile &quot;26379.log&quot;  </span><br><span class="line">dir &#x2F;opt&#x2F;soft&#x2F;redis&#x2F;data  </span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000  </span><br><span class="line">sentinel parallel-syncs mymaster 1  </span><br><span class="line">sentinel failover-timeout mymaster 180000</span><br><span class="line">sentinel myid mm55d2d712b1f3f312b637f9b546f00cdcedc787</span><br><span class="line"></span><br><span class="line">#port 26379</span><br><span class="line">#sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line">#sentinel down-after-milliseconds mymaster 5000</span><br><span class="line">#sentinel failover-timeout mymaster 15000</span><br><span class="line">#sentinel myid 88a3f92f656984fd84c183b6b183d5d264ddc485</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>属性说明</p>
+<ol>
+<li>port：当前Sentinel服务运行的端口</li>
+<li>sentinel monitor mymaster 127.0.0.1 6379 2：Sentinel去监视一个名为mymaster的主redis实例，这个主实例的IP地址为本机地址127.0.0.1，端口号为6379，而将这个主实例判断为失效至少需要2个 Sentinel进程的同意，只要同意Sentinel的数量不达标，自动failover就不会执行</li>
+<li>sentinel down-after-milliseconds mymaster 5000：指定了Sentinel认为Redis实例已经失效所需的毫秒数。当 实例超过该时间没有返回PING，或者直接返回错误，那么Sentinel将这个实例标记为主观下线。只有一个 Sentinel进程将实例标记为主观下线并不一定会引起实例的自动故障迁移：只有在足够数量的Sentinel都将一个实例标记为主观下线之后，实例才会被标记为客观下线，这时自动故障迁移才会执行</li>
+<li>sentinel failover-timeout mymaster 15000：如果在该时间（ms）内未能完成failover操作，则认为该failover失败</li>
+<li>myid：区分每个监控的哨兵的身份</li>
+</ol>
+</blockquote>
+<p>分别使用三个配置文件使用如下命令启用<code>sentinel</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;src&#x2F;redis-sentinel sentinel-26379.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-sentinel sentinel-26380.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-sentinel sentinel-26381.conf</span><br></pre></td></tr></table></figure>
+<p>由于<code>sentinel</code>节点也是一个redis实例，因而我们可以通过如下命令使用<code>redis-cli</code>连接<code>sentinel</code>节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;src&#x2F;redis-cli -p 26379</span><br></pre></td></tr></table></figure>
+<p>连上<code>sentinel</code>节点之后我们可以通过如下命令查看<code>sentinel</code>状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; info sentinel</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Sentinel</span><br><span class="line">sentinel_masters:1</span><br><span class="line">sentinel_tilt:0</span><br><span class="line">sentinel_running_scripts:0</span><br><span class="line">sentinel_scripts_queue_length:0</span><br><span class="line">sentinel_simulate_failure_flags:0</span><br><span class="line">master0:name&#x3D;mymaster,status&#x3D;ok,address&#x3D;127.0.0.1:6379,slaves&#x3D;2,sentinels&#x3D;3</span><br></pre></td></tr></table></figure>
+<p>可以看到，<code>sentinel</code>检测到主从节点总共有三个，其中一个主节点，两个从节点，并且<code>sentinel</code>节点总共也有三个。启动完成之后，我们可以通过主动下线主节点来模拟<code>sentinel</code>的故障转移过程。首先我们连接上端口为6379的主节点，使用如下命令查看主从节点状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Replication</span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip&#x3D;127.0.0.1,port&#x3D;6380,state&#x3D;online,offset&#x3D;45616,lag&#x3D;1</span><br><span class="line">slave1:ip&#x3D;127.0.0.1,port&#x3D;6381,state&#x3D;online,offset&#x3D;45616,lag&#x3D;1</span><br><span class="line">master_repl_offset:45616</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:45615</span><br></pre></td></tr></table></figure>
+<p>可以看到，当前主节点有两个从节点，端口分别为6380和6381。然后我们对主节点执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; shutdown save</span><br></pre></td></tr></table></figure>
+<p>然后我们连接上端口号为6380的从节点，并执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; info replication</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Replication</span><br><span class="line">role:master</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip&#x3D;127.0.0.1,port&#x3D;6381,state&#x3D;online,offset&#x3D;12344,lag&#x3D;0</span><br><span class="line">master_repl_offset:12477</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:12476</span><br></pre></td></tr></table></figure>
+<p>可以看到，当端口为6379的实例下线之后，端口为6380的实例被重新竞选为新的主节点，并且端口为6381的实例被设置为6380的实例的从节点。如果我们此时重新启用端口为6379的节点，然后再查看主从状态，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Replication</span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip&#x3D;127.0.0.1,port&#x3D;6381,state&#x3D;online,offset&#x3D;59918,lag&#x3D;0</span><br><span class="line">slave1:ip&#x3D;127.0.0.1,port&#x3D;6379,state&#x3D;online,offset&#x3D;59918,lag&#x3D;1</span><br><span class="line">master_repl_offset:60051</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:60050</span><br></pre></td></tr></table></figure>
+<p>可以看到，端口为6379的redis实例重新连接后，<code>sentinel</code>节点检测到其重新连接，那么对其发送命令，使其成为新的主节点的从节点。</p>
+<hr />
+<h3 id="redis集群的配置"><a class="markdownIt-Anchor" href="#redis集群的配置"></a> redis集群的配置</h3>
+<p>redis集群是在redis 3.0版本推出的一个功能，其有效的解决了redis在分布式方面的需求。当遇到单机内存，并发和流量瓶颈等问题时，可采用<code>Cluster</code>方案达到负载均衡的目的。并且从另一方面讲，redis中<code>sentinel</code>有效的解决了故障转移的问题，也解决了主节点下线客户端无法识别新的可用节点的问题，但是如果是从节点下线了，<code>sentinel</code>是不会对其进行故障转移的，并且连接从节点的客户端也无法获取到新的可用从节点，而这些问题在<code>Cluster</code>中都得到了有效的解决。</p>
+<p>对于redis集群的配置，首先将redis安装目录下的<code>redis.conf</code>文件复制六份，分别取名为：<code>cluster-6379.conf</code>、<code>cluster-6380.conf</code>、<code>cluster-6381.conf</code>、<code>cluster-6382.conf</code>、<code>cluster-6383.conf</code>、<code>cluster-6384.conf</code>。对于一个高可用的集群方案，集群每个节点都将为其分配一个从节点，以防止数据节点因为故障下线，这里使用六份配置文件定义六个redis实例，其中三个作为主节点，剩余三个分别作为其从节点。对于这六份配置文件，以其中一份为例，以下是其需要修改的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 6379</span><br><span class="line">cluster-enabled yes</span><br><span class="line">cluster-node-timeout 15000</span><br><span class="line">cluster-config-file &quot;nodes-6379.conf&quot;</span><br><span class="line">pidfile &#x2F;var&#x2F;run&#x2F;redis_6379.pid</span><br><span class="line">logfile &quot;cluster-6379.log&quot;</span><br><span class="line">dbfilename dump-cluster-6379.rdb</span><br><span class="line">appendfilename &quot;appendonly-cluster-6379.aof&quot;</span><br></pre></td></tr></table></figure>
+<p>对于其余的配置文件，只需要将其中对应项的端口号和带有端口号的文件名修改为当前要指定的端口号和端口号的文件名即可。配置文件配置好之后使用如下命令启动集群中的每个实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;src&#x2F;redis-server cluster-6379.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-server cluster-6380.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-server cluster-6381.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-server cluster-6382.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-server cluster-6383.conf</span><br><span class="line">.&#x2F;src&#x2F;redis-server cluster-6384.conf</span><br></pre></td></tr></table></figure>
+<p>仔细阅读上述配置文件可发现，当前配置和启动过程中并没有指定这六个实例的主从关系，也没有对16384个槽位进行分配。因而我们还需要进行进一步的配置，槽位的分配和主从关系的设定有两种方式进行，一种是使用<code>redis-cli</code>连接到集群节点上后使用<code>cluster meet</code>命令连接其他的节点，如我们首先执行如下命令连接到6379端口的节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;src&#x2F;redis-cli -p 6379</span><br></pre></td></tr></table></figure>
+<p>连接上后使用<code>cluster meet</code>命令分别连接其余节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt;cluster meet 127.0.0.1 6380</span><br><span class="line">127.0.0.1:6379&gt;cluster meet 127.0.0.1 6381</span><br><span class="line">127.0.0.1:6379&gt;cluster meet 127.0.0.1 6382</span><br><span class="line">127.0.0.1:6379&gt;cluster meet 127.0.0.1 6383</span><br><span class="line">127.0.0.1:6379&gt;cluster meet 127.0.0.1 6384</span><br></pre></td></tr></table></figure>
+<p>连接好后可以使用<code>cluster nodes</code>命令查看当前集群状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; cluster nodes</span><br><span class="line">4fa7eac4080f0b667ffeab9b87841da49b84a6e4 127.0.0.1:6384 master - 0 1468073975551 5 connected</span><br><span class="line">cfb28ef1deee4e0fa78da86abe5d24566744411e 127.0.0.1:6379 myself,master - 0 0 0 connected</span><br><span class="line">be9485a6a729fc98c5151374bc30277e89a461d8 127.0.0.1:6383 master - 0 1468073978579 4 connected</span><br><span class="line">40622f9e7adc8ebd77fca0de9edfe691cb8a74fb 127.0.0.1:6382 master - 0 1468073980598 3 connected</span><br><span class="line">8e41673d59c9568aa9d29fb174ce733345b3e8f1 127.0.0.1:6380 master - 0 1468073974541 1 connected</span><br><span class="line">40b8d09d44294d2e23c7c768efc8fcd153446746 127.0.0.1:6381 master - 0 1468073979589 2 connected</span><br></pre></td></tr></table></figure>
+<p>可以看到配置的六个节点都已经加入到了集群中，但是其现在还不能使用，因为还没有将16384个槽分配到集群节点中。虚拟槽的分配可以使用<code>redis-cli</code>分别连接到6379，6380和6381端口的节点中，然后分别执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt;cluster addslots &#123;0...5461&#125;</span><br><span class="line">127.0.0.1:6380&gt;cluster addslots &#123;5462...10922&#125;</span><br><span class="line">127.0.0.1:6381&gt;cluster addslots &#123;10923...16383&#125;</span><br></pre></td></tr></table></figure>
+<p>添加完槽位后可使用<code>cluster info</code>命令查看当前集群状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:ok</span><br><span class="line">cluster_slots_assigned:16384</span><br><span class="line">cluster_slots_ok:16384</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:6</span><br><span class="line">cluster_size:3</span><br><span class="line">cluster_current_epoch:5</span><br><span class="line">cluster_my_epoch:0</span><br><span class="line">cluster_stats_messages_sent:4874</span><br><span class="line">cluster_stats_messages_received:4726</span><br></pre></td></tr></table></figure>
+<p>这里我们将16384个虚拟槽位分配给了三个节点，而剩余的三个节点我们通过如下命令将其配置为这三个节点的从节点，从而达到高可用的目的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6382&gt;cluster replicate cfb28ef1deee4e0fa78da86abe5d24566744411e</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6383&gt;cluster replicate 8e41673d59c9568aa9d29fb174ce733345b3e8f1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6384&gt;cluster replicate 40b8d09d44294d2e23c7c768efc8fcd153446746</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>如此，所有的集群节点都配置完毕，并且处于可用状态。这里可以使用<code>cluster nodes</code>命令查看当前节点的状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; cluster nodes</span><br><span class="line">4fa7eac4080f0b667ffeab9b87841da49b84a6e4 127.0.0.1:6384 slave 40b8d09d44294d2e23c7c768efc8fcd153446746 0 1468076865939 5 connected</span><br><span class="line">cfb28ef1deee4e0fa78da86abe5d24566744411e 127.0.0.1:6379 myself,master - 0 0 0 connected 0-5461</span><br><span class="line">be9485a6a729fc98c5151374bc30277e89a461d8 127.0.0.1:6383 slave 8e41673d59c9568aa9d29fb174ce733345b3e8f1 0 1468076868966 4 connected</span><br><span class="line">40622f9e7adc8ebd77fca0de9edfe691cb8a74fb 127.0.0.1:6382 slave cfb28ef1deee4e0fa78da86abe5d24566744411e 0 1468076869976 3 connected</span><br><span class="line">8e41673d59c9568aa9d29fb174ce733345b3e8f1 127.0.0.1:6380 master - 0 1468076870987 1 connected 5462-10922</span><br><span class="line">40b8d09d44294d2e23c7c768efc8fcd153446746 127.0.0.1:6381 master - 0 1468076867957 2 connected 10923-16383</span><br></pre></td></tr></table></figure>
+<p>我们使用<code>redis-cli</code>使用如下命令连接集群：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;src&#x2F;redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+<p>注意连接集群模式的redis实例时需要加上参数<code>-c</code>，表示连接的是集群模式的实例。连接上后执行<code>get</code>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; get hello</span><br><span class="line">-&gt; Redirected to slot [866] located at 127.0.0.1:6379</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<p>可以看到，在6380端口的实例上执行<code>get</code>命令时，其首先会为当前的键通过一致哈希算法计算其所在的槽位，并且判断该槽位不在当前redis实例中，因而重定向到目标实例上执行该命令，最后发现没有该键对应的值，因而返回了一个（nil）。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/03/07/Redis2/" title="Redis主从、哨兵及集群模式的配置" target="_blank" rel="external">http://ctrl98.github.io/2020/03/07/Redis2/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/03/08/Redis3/" title="Redis实现一个简单的分布锁"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/03/06/Redis1/" title="Redis数据缓存 基础知识"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

@@ -17,21 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>第一篇博客文章 | Lee&#39;s Blog</title>
-  <meta name="description" content="关于 其实很早就想着有一个属于自己的博客网站，来记录一下自己的学习过程和生活琐事，把自己学习到的知识写下来，算是给自己的一个总结和交代。然后也可以把自己生活上遇到的愉快的、难忘的或是不愉快的事情记录下来，以后当自己翻看自己写过的记录过的东西，也不失为一份回忆。">
+  <title>Redis实现一个简单的分布锁 | Lee&#39;s Blog</title>
+  <meta name="description" content="什么是分布式锁 分布式锁在分布式系统中非常常见，比如对公共资源进行操作。 如卖车票，同一时刻只能有一个节点将某个特定座位的票卖出去；如避免缓存失效带来的大量请求访问数据库的问题  分布式锁需要解决的问题  互斥性：任意时刻只能有一个客户端获取锁 安全性：锁只能被持有该锁的客户端删除 死锁：某个客户端获取到锁，因某些原因宕机，使得其他客户端再也获取不了 容错：某个redis节点宕机，客户端仍然可以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一篇博客文章">
-<meta property="og:url" content="http://ctrl98.github.io/2020/02/25/First-Blog/index.html">
+<meta property="og:title" content="Redis实现一个简单的分布锁">
+<meta property="og:url" content="http://ctrl98.github.io/2020/03/08/Redis3/index.html">
 <meta property="og:site_name" content="Lee&#39;s Blog">
-<meta property="og:description" content="关于 其实很早就想着有一个属于自己的博客网站，来记录一下自己的学习过程和生活琐事，把自己学习到的知识写下来，算是给自己的一个总结和交代。然后也可以把自己生活上遇到的愉快的、难忘的或是不愉快的事情记录下来，以后当自己翻看自己写过的记录过的东西，也不失为一份回忆。">
+<meta property="og:description" content="什么是分布式锁 分布式锁在分布式系统中非常常见，比如对公共资源进行操作。 如卖车票，同一时刻只能有一个节点将某个特定座位的票卖出去；如避免缓存失效带来的大量请求访问数据库的问题  分布式锁需要解决的问题  互斥性：任意时刻只能有一个客户端获取锁 安全性：锁只能被持有该锁的客户端删除 死锁：某个客户端获取到锁，因某些原因宕机，使得其他客户端再也获取不了 容错：某个redis节点宕机，客户端仍然可以">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-25T06:41:43.000Z">
-<meta property="article:modified_time" content="2020-02-26T09:38:25.146Z">
+<meta property="article:published_time" content="2020-03-08T01:41:07.000Z">
+<meta property="article:modified_time" content="2020-03-08T04:06:13.246Z">
 <meta property="article:author" content="unknown">
-<meta property="article:tag" content="个人">
+<meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://ctrl98.github.io/2020/02/25/First-Blog/index.html">
+  <link rel="canonical" href="http://ctrl98.github.io/2020/03/08/Redis3/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
   
@@ -305,21 +305,21 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于"><span class="toc-number">1.</span> <span class="toc-text"> 关于</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是分布式锁"><span class="toc-number">1.</span> <span class="toc-text"> 什么是分布式锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分布式锁需要解决的问题"><span class="toc-number">2.</span> <span class="toc-text"> 分布式锁需要解决的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text"> 实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何解决setnx长期有效的问题"><span class="toc-number">4.</span> <span class="toc-text"> 如何解决setnx长期有效的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决"><span class="toc-number">5.</span> <span class="toc-text"> 解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#大量的key同时过期的注意事项"><span class="toc-number">6.</span> <span class="toc-text"> 大量的key同时过期的注意事项</span></a></li></ol>
     </nav>
   </div>
 </aside>
 
 <main class="main" role="main">
   <div class="content">
-  <article id="post-First-Blog" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-Redis3" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      第一篇博客文章
+      Redis实现一个简单的分布锁
     </h1>
   
 
@@ -327,20 +327,20 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/02/25/First-Blog/" class="article-date">
-	  <time datetime="2020-02-25T06:41:43.000Z" itemprop="datePublished">2020-02-25</time>
+	<a href="/2020/03/08/Redis3/" class="article-date">
+	  <time datetime="2020-03-08T01:41:07.000Z" itemprop="datePublished">2020-03-08</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a>
+	<a class="article-tag-link" href="/tags/Redis/" rel="tag">Redis</a>
   </span>
 
 
@@ -353,21 +353,66 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/25/First-Blog/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/08/Redis3/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 121(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 881(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h3 id="关于"><a class="markdownIt-Anchor" href="#关于"></a> 关于</h3>
-<p><strong>其实很早就想着有一个属于自己的博客网站，来记录一下自己的学习过程和生活琐事，把自己学习到的知识写下来，算是给自己的一个总结和交代。然后也可以把自己生活上遇到的愉快的、难忘的或是不愉快的事情记录下来，以后当自己翻看自己写过的记录过的东西，也不失为一份回忆。</strong></p>
+        <h4 id="什么是分布式锁"><a class="markdownIt-Anchor" href="#什么是分布式锁"></a> 什么是分布式锁</h4>
+<p>分布式锁在分布式系统中非常常见，比如对公共资源进行操作。</p>
+<p>如卖车票，同一时刻只能有一个节点将某个特定座位的票卖出去；如避免缓存失效带来的大量请求访问数据库的问题</p>
+<h4 id="分布式锁需要解决的问题"><a class="markdownIt-Anchor" href="#分布式锁需要解决的问题"></a> 分布式锁需要解决的问题</h4>
+<ul>
+<li>互斥性：任意时刻只能有一个客户端获取锁</li>
+<li>安全性：锁只能被持有该锁的客户端删除</li>
+<li>死锁：某个客户端获取到锁，因某些原因宕机，使得其他客户端再也获取不了</li>
+<li>容错：某个redis节点宕机，客户端仍然可以获取锁</li>
+</ul>
+<h4 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h4>
+<p><code>SETNX key value</code>：如果key不存在，则创建并赋值</p>
+<p>时间复杂度：o(1)</p>
+<p>返回值：成功返回1，失败返回0</p>
+<p>该操作是原子性的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get locknx</span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; setnx locknx test</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; setnx locknx task</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; get locknx</span><br><span class="line">&quot;test&quot;</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>开始设置成功，说明目前该线程没有被占用，可以执行目前的代码块，如果设置失败，说明该线程目前被其他程序占用该资源，等待设置成功后再释放。。。</p>
+<p>发现再后续再赋值locknx的时候失败了，说明此时该值是长期有效的。</p>
+<h4 id="如何解决setnx长期有效的问题"><a class="markdownIt-Anchor" href="#如何解决setnx长期有效的问题"></a> 如何解决setnx长期有效的问题</h4>
+<p>EXPIRE key seconds</p>
+<ul>
+<li>设置key的生存时间，当key过期时，会被删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; expire locknx 2</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; setnx locknx task</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; get locknx</span><br><span class="line">&quot;task&quot;</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>发现再设置的时候已经成功了</p>
+<p>在实际代码中可以进行对返回值的判断：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">RedisService redisService = SpringUtils.getBean(RedisService.Class);</span><br><span class="line"><span class="keyword">long</span> status = redisService.setnx(key,<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (status == <span class="number">1</span>)&#123;</span><br><span class="line">	redisService.expire(key,expire)</span><br><span class="line">	<span class="comment">//执行独占资源逻辑</span></span><br><span class="line">	doOcuppieWork();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当有客户端请求该资源时发现status的值为0，说明有程序在占用该资源，后面的就不能执行了，线程进入阻塞，直到status的返回值为1为止。</p>
+<p>然后这段程序会有风险，如果程序在执行完setnx后直接挂掉了，并没有进入到expire设置时间，这样key就永远不会过期，一直被占用着，导致其他程序再也获取不了该线程。</p>
+<h4 id="解决"><a class="markdownIt-Anchor" href="#解决"></a> 解决</h4>
+<p>将setnx和expire柔和在一起</p>
+<p>SET key value [EX seconds] [PX milliseconds] [NX|XX]</p>
+<ul>
+<li>EX seconds：设置键的过期时间为second秒</li>
+<li>PX milliseconds：设置键的过期时间为second毫秒</li>
+<li>NX：只有键不存在时，才对键进行设置操作</li>
+<li>XX：只有键已经存在时，才对键进行设置操作</li>
+<li>SET操作返回值，成功ok，失败返回nil</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; set locktarget 12345 ex 10 nx</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; set locktarget 1234 ex 10 nx</span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; set locktarget 54321 ex 10 nx</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>过了10秒之后发现设置成功，符合redis的原子性操作。</p>
+<p>因此伪代码也可以设置成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RedisService redisService = SpringUtils.getBean(RedisService.Class);</span><br><span class="line">String result = redisService.set(lockkey,requestId,SET_NOT_EXIST,SET_WITH_EXPIRE_TIME,expiretime);</span><br><span class="line"><span class="keyword">if</span> (<span class="string">"ok"</span>.equals(result))&#123;</span><br><span class="line">    <span class="comment">//执行独占资源逻辑</span></span><br><span class="line">	doOcuppieWork();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就能保证分布式锁操作的原子性了。</p>
+<h4 id="大量的key同时过期的注意事项"><a class="markdownIt-Anchor" href="#大量的key同时过期的注意事项"></a> 大量的key同时过期的注意事项</h4>
+<p>集中过期，由于清除大量过期的key很耗时，会出现卡顿现象</p>
+<p>解决：在设置key的过期时间的时候，给每个key加上随机值</p>
 
       
     </div>
@@ -377,7 +422,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://ctrl98.github.io/2020/02/25/First-Blog/" title="第一篇博客文章" target="_blank" rel="external">http://ctrl98.github.io/2020/02/25/First-Blog/</a>
+      <a href="http://ctrl98.github.io/2020/03/08/Redis3/" title="Redis实现一个简单的分布锁" target="_blank" rel="external">http://ctrl98.github.io/2020/03/08/Redis3/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -424,9 +469,13 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/02/25/Docker1/" title="Docker基础知识"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/03/08/SpringBoot-Netflix1/" title="Spring Cloud Netflix核心组件介绍及搭建"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
+    
+    <li class="next">
+      <a href="/2020/03/07/Redis2/" title="Redis主从、哨兵及集群模式的配置"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
     
     
     <li class="toggle-toc">
