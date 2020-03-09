@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>浅谈Spring的IOC/AOP | Lee&#39;s Blog</title>
+  <meta name="description" content="什么是耦合（高&#x2F;低？） 耦合，就是模块间关联的程度，每个模块之间的联系越多，也就是其耦合性越强，那么独立性也就越差了，所以我们在软件设计中，应该尽量做到低耦合，高内聚。 生活中的例子： 家里有一条串灯，上面有很多灯泡，如果灯坏了，你需要将整个灯带都换掉，这就是高耦合的表现，因为灯和灯带之间是紧密相连，不可分割的，但是如果灯泡可以随意拆卸，并不影响整个灯带，那么这就叫做低耦合。 代码例子： 12F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈Spring的IOC&#x2F;AOP">
+<meta property="og:url" content="http://ctrl98.github.io/2020/03/09/Spring1/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="什么是耦合（高&#x2F;低？） 耦合，就是模块间关联的程度，每个模块之间的联系越多，也就是其耦合性越强，那么独立性也就越差了，所以我们在软件设计中，应该尽量做到低耦合，高内聚。 生活中的例子： 家里有一条串灯，上面有很多灯泡，如果灯坏了，你需要将整个灯带都换掉，这就是高耦合的表现，因为灯和灯带之间是紧密相连，不可分割的，但是如果灯泡可以随意拆卸，并不影响整个灯带，那么这就叫做低耦合。 代码例子： 12F">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ctrl98.github.io/2020/03/09/Spring1/1.jpg">
+<meta property="article:published_time" content="2020-03-09T02:14:25.000Z">
+<meta property="article:modified_time" content="2020-03-09T05:59:14.872Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ctrl98.github.io/2020/03/09/Spring1/1.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/03/09/Spring1/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Spring/">Spring</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/09/Spring1/" class="title">浅谈Spring的IOC/AOP</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-09T02:14:25.000Z" itemprop="datePublished">2020-03-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/08/SpringBoot-Netflix1/" class="title">Spring Cloud Netflix核心组件介绍及搭建</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-08T08:08:24.000Z" itemprop="datePublished">2020-03-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/08/Redis3/" class="title">Redis实现一个简单的分布锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-08T01:41:07.000Z" itemprop="datePublished">2020-03-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/07/Redis2/" class="title">Redis主从、哨兵及集群模式的配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-07T13:02:19.000Z" itemprop="datePublished">2020-03-07</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/06/Redis1/" class="title">Redis数据缓存 基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-06T01:12:22.000Z" itemprop="datePublished">2020-03-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是耦合高低"><span class="toc-number">1.</span> <span class="toc-text"> 什么是耦合（高&#x2F;低？）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#spring-框架好在哪里"><span class="toc-number">2.</span> <span class="toc-text"> Spring 框架好在哪里？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#spring-框架的结构"><span class="toc-number">3.</span> <span class="toc-text"> Spring 框架的结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#核心容器-corecontainer"><span class="toc-number">3.1.</span> <span class="toc-text"> 核心容器 CoreContainer</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据访问集成data-accessintegration"><span class="toc-number">3.2.</span> <span class="toc-text"> 数据访问&#x2F;集成（Data Access&#x2F;Integration）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#web-模块"><span class="toc-number">3.3.</span> <span class="toc-text"> Web 模块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#其余模块"><span class="toc-number">3.4.</span> <span class="toc-text"> 其余模块</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#spring-ioc原理"><span class="toc-number">4.</span> <span class="toc-text"> Spring IOC原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#java-反射"><span class="toc-number">4.1.</span> <span class="toc-text"> Java 反射</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#spring-入门程序"><span class="toc-number">4.2.</span> <span class="toc-text"> Spring 入门程序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#依赖注入di"><span class="toc-number">4.3.</span> <span class="toc-text"> 依赖注入DI</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#di实现方式"><span class="toc-number">4.4.</span> <span class="toc-text"> DI实现方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#spring-aop原理"><span class="toc-number">5.</span> <span class="toc-text"> Spring AOP原理</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Spring1" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      浅谈Spring的IOC/AOP
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/09/Spring1/" class="article-date">
+	  <time datetime="2020-03-09T02:14:25.000Z" itemprop="datePublished">2020-03-09</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Spring/" rel="tag">Spring</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/09/Spring1/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 11(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="什么是耦合高低"><a class="markdownIt-Anchor" href="#什么是耦合高低"></a> 什么是耦合（高/低？）</h4>
+<p>耦合，就是模块间关联的程度，每个模块之间的联系越多，也就是其耦合性越强，那么独立性也就越差了，所以我们在软件设计中，应该尽量做到<strong>低耦合</strong>，高内聚。</p>
+<p><strong>生活中的例子</strong>：</p>
+<p>家里有一条串灯，上面有很多灯泡，如果灯坏了，你需要将整个灯带都换掉，这就是高耦合的表现，因为灯和灯带之间是紧密相连，不可分割的，但是如果灯泡可以随意拆卸，并不影响整个灯带，那么这就叫做低耦合。</p>
+<p><strong>代码例子：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Father f &#x3D; new Son();</span><br><span class="line">f.method();</span><br></pre></td></tr></table></figure>
+<p>Son类继承自Father类，通过 <code>new</code>来创建依赖的对象调用方法</p>
+<p>此时如果你想把Son换成Girl类，那么所有 <code>new Son()</code>的地方都要修改，这只是简单的举例，在实际开发中有上百个类，你不可能这样去操作。</p>
+<p>这时候我们把对象的创建交给Spring，那么效率就大大地提升了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Father f &#x3D; BeanFactory().getBean(B名称);</span><br><span class="line">f.method();</span><br></pre></td></tr></table></figure>
+<p>只需要修改getBean里的参数即可。</p>
+<hr />
+<h4 id="spring-框架好在哪里"><a class="markdownIt-Anchor" href="#spring-框架好在哪里"></a> Spring 框架好在哪里？</h4>
+<ul>
+<li><strong>降低耦合度</strong>：Spring神奇的 IoC 容器，可以控制对象间的依赖关系，解决了硬编码问题</li>
+<li><strong>AOP 编程支持</strong>：Spring 提供了面向切面编程</li>
+<li><strong>方便集成各种优秀框架</strong>：Spring 不排斥各种优秀的开源框架</li>
+<li><strong>方便程序测试</strong>：Spring 支持 junit4</li>
+<li><strong>声明式事务的支持</strong>：Spring 帮助我们从普通的事物管理代码中解放出来，通过配置就可以完成对事务的管理</li>
+<li><strong>降低 JavaEE API 的使用难度</strong>：Spring 将 JavaEE 中一些比较难用的 API (JDBC、JavaMail、远程调用等) 进行了封装，使得它们的使用难度大大降低</li>
+</ul>
+<hr />
+<h4 id="spring-框架的结构"><a class="markdownIt-Anchor" href="#spring-框架的结构"></a> Spring 框架的结构</h4>
+<p>Spring框架是一个分层的架构，根据不同的功能，分成了多个模块，而这些模块都是可以单独或者组合使用。</p>
+<p><img src="1.jpg" alt="" /></p>
+<p>CoreContainer是Spring框架的最核心部分，其他模块都是基于该模块建立的。</p>
+<h5 id="核心容器-corecontainer"><a class="markdownIt-Anchor" href="#核心容器-corecontainer"></a> 核心容器 CoreContainer</h5>
+<p>提供 Spring框架的基本功能，分为图中四个模块，核心容器中重要的组件就是 BeanFactory ，本质就是实现了工厂模式，且它使用了 IoC（控制反转）模式，将程序的配置以及依赖性规范与实际程序的代码分开。</p>
+<ul>
+<li>
+<p><strong>Beans</strong>：提供了 BeanFactory，Spring中将管理对象称作 Bean</p>
+</li>
+<li>
+<p><strong>Core</strong>：提供 Spring 框架的基本组成部分，包括我们首先要学习的 IoC 和 DI</p>
+</li>
+<li>
+<p><strong>Context</strong>：访问定义和配置任何对象的媒介，以前两者为基础，ApplicationContext 接口是这部分的重点</p>
+</li>
+<li>
+<p><strong>spEL (Spring Expression Language)</strong>：一个比较强大的运行时查询和操作数据的表达式语言</p>
+</li>
+</ul>
+<h5 id="数据访问集成data-accessintegration"><a class="markdownIt-Anchor" href="#数据访问集成data-accessintegration"></a> 数据访问/集成（Data Access/Integration）</h5>
+<ul>
+<li>
+<p><strong>JDBC</strong>：提供了一个JDBC抽象层，减少了一些重复无聊的JDBC代码，提升了开发效率</p>
+</li>
+<li>
+<p><strong>ORM</strong>：提供了对流行对象关系映射API的集成层 （JPA、JDO、Hibernate、 mybatis ）</p>
+</li>
+<li>
+<p><strong>OXM</strong>：提供了一个支持对象/XML映射实现的抽象层（  JAXB、Castor、XMLBeans、JiBX 、XStrea ）</p>
+</li>
+<li>
+<p><strong>JMS</strong>：Java消息服务， 包含用于生产和消费消息的功能</p>
+</li>
+<li>
+<p><strong>Transactions</strong>：事务模块，用于支持实现特殊接口和所有的POJO的类的编程和声明式事物管理</p>
+</li>
+</ul>
+<h5 id="web-模块"><a class="markdownIt-Anchor" href="#web-模块"></a> Web 模块</h5>
+<ul>
+<li>
+<p><strong>Web</strong>：提供了基本的 Web 的集成功能，例如多部分文件上传功能，以及初始化了一个使用了Servlet监听器和面向Web应用程序上下文的 IoC 容器，它还包含一个HTTP客户端和Spring远程支持的相关部分</p>
+</li>
+<li>
+<p><strong>Servelt</strong>：包含 Spring 模型—视图—控制器 (MVC) ，用来实现Web应用</p>
+</li>
+<li>
+<p><strong>WebSocket</strong>：Spring4.0以后新增的模块，它提供了WebSocket和SocketJS的实现</p>
+</li>
+<li>
+<p><strong>Portlet</strong>：就好像是Servlet一般，它提供了Portlet环境下的MVC实现</p>
+</li>
+</ul>
+<h5 id="其余模块"><a class="markdownIt-Anchor" href="#其余模块"></a> 其余模块</h5>
+<ul>
+<li>
+<p><strong>AOP</strong>：提供了面向切面编程的能力，允许定义方法拦截器和切入点，按功能分离代码，降低耦合性，可以实现一些面向对象编程中不太好实现的功能</p>
+</li>
+<li>
+<p><strong>Aspects</strong>：提供与 AspectJ 的继承，是一个功能强大且成熟的面向切面编程的框架</p>
+</li>
+<li>
+<p><strong>Instrumentation</strong>：提供了类工具的支持和类加载器的实现，可以在特定的应用服务器中使用</p>
+</li>
+<li>
+<p><strong>Messaging</strong>： 它提供了对消息传递体系结构和协议的支持</p>
+</li>
+<li>
+<p><strong>Test</strong>：其支持使用 JUnit 或者 TestNG，可以实现单元测试，集合测试等测试流程</p>
+</li>
+</ul>
+<hr />
+<h4 id="spring-ioc原理"><a class="markdownIt-Anchor" href="#spring-ioc原理"></a> Spring IOC原理</h4>
+<p>Inversion of Control，控制反转。是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。</p>
+<p>通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中。</p>
+<p>IoC 内部核心原理就是反射技术，涉及到 Bean 对象的初始化构建等步骤。</p>
+<h5 id="java-反射"><a class="markdownIt-Anchor" href="#java-反射"></a> Java 反射</h5>
+<p>Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。</p>
+<p>在日常的第三方应用开发过程中，经常会遇到某个类的某个成员变量、方法或是属性是私有的或是只对系统应用开放，这时候就可以利用Java的反射机制通过反射来获取所需的私有成员或是方法。</p>
+<p>反射机制相关类：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Class类</td>
+<td>代表类的实体，在运行的Java应用程序中表示类和接口</td>
+</tr>
+<tr>
+<td>Field类</td>
+<td>代表类的成员变量（成员变量也称为类的属性）</td>
+</tr>
+<tr>
+<td>Method类</td>
+<td>代表类的方法</td>
+</tr>
+<tr>
+<td>Constructor类</td>
+<td>代表类的构造方法</td>
+</tr>
+</tbody>
+</table>
+<p>对于每个类都有自己得子方法，这里不作过多解释，推荐一篇反射文章—详细请看 <strong><a href="https://www.jianshu.com/p/9be58ee20dee" target="_blank" rel="noopener">Java高级特性——反射</a></strong></p>
+<h5 id="spring-入门程序"><a class="markdownIt-Anchor" href="#spring-入门程序"></a> Spring 入门程序</h5>
+<p>使用Eclipse创建一个名为Demo的项目，添加Spring相关的依赖包，commons-logging-1.2.jar、spring-beans-4.3.6.RELEASE.jar、spring-context-4.3.6.RELEASE.jar、spring-core-4.3.6.RELEASE.jar、spring-expression-4.3.6.RELEASE.jar。</p>
+<p>在项目的src目录下，创建一个org.ioc包，并在包下创建接口UserDao，然后接口中定义一个say()方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> interface <span class="title">UserDao</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着在ioc报下创建该接口的实现类UserDaoImpl，实现接口中的方法，并输出一条语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserDaoImpl</span> <span class="keyword">implements</span> <span class="title">UserDao</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"userDao say Hello World"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在src下创建spring的配置文件applicationContext.xml，并配置一个id为userDao的Bean：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userDao"</span> <span class="attr">class</span>=<span class="string">"org.ioc.UserDaoImpl"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该段代码表示在spring容器中创建一个id为userDao的bean实例，其中class属性用于指定需要实例化的Bean类。</p>
+<p>在ioc包下，创建测试类TestIoc，编写main方法，在mian方法里面初始化spring容器，加载配置文件，获取userDao对象实例，最后调用say()方法输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestIoc</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"applicationContext.xml"</span>);</span><br><span class="line">        </span><br><span class="line">        UserDao userDao = (UserDao)applicationContext.getBean(<span class="string">"userDao"</span>);</span><br><span class="line">        userDao.say();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后控制台输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">userDao say Hello World</span><br></pre></td></tr></table></figure>
+<p>从测试方法可以看出，并没有通过new关键字来创建UserDao接口的实现类对象，而是通过Spring容器来获取实现类对象，这就是Spring IOC 容器的工作机制。</p>
+<h5 id="依赖注入di"><a class="markdownIt-Anchor" href="#依赖注入di"></a> 依赖注入DI</h5>
+<p>控制反转（IoC）是一种思想，而依赖注入（Dependency Injection）则是实现这种思想的方法。</p>
+<p>其实泛概念上两者是接近的，可以简单的理解为一个概念的不同角度描述。</p>
+<p>DI的作用是在使用Spring框架创建对象时，动态地将其所依赖的对象注入Bean组件中。</p>
+<p>上面写程序的时候，通过控制反转，使得 Spring 可以创建对象，这样减低了耦合性，但是每个类或模块之间的依赖是不可能完全消失的，而这种依赖关系，我们可以完全交给 spring 来维护。</p>
+<h5 id="di实现方式"><a class="markdownIt-Anchor" href="#di实现方式"></a> DI实现方式</h5>
+<blockquote>
+<p>构造方法注入：基于构造方法的依赖注入通过调用带参数的构造方法来实现，每个参数代表一个依赖。</p>
+</blockquote>
+<p>这一种的前提就是：<strong>类中必须提供一个和参数列表相对应的构造函数</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoServiceImpl</span> <span class="keyword">implements</span> <span class="title">DemoService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DemoServiceImpl</span><span class="params">(String username, Integer phone, Date birthday)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">        <span class="keyword">this</span>.age = phone;</span><br><span class="line">        <span class="keyword">this</span>.birthday = birthday;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addDemo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"username: "</span> + username</span><br><span class="line">                + <span class="string">", phone: "</span> + age</span><br><span class="line">                + <span class="string">", birthday: "</span> + birthday);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在ApplicationContext.xml文件中添加如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"demoService"</span> <span class="attr">class</span>=<span class="string">"org.service.impl.DemoServiceImpl"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"詹姆斯"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"phone"</span> <span class="attr">value</span>=<span class="string">"35"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">ref</span>=<span class="string">"bir"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"bir"</span> <span class="attr">class</span>=<span class="string">"java.util.Date"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>属性解析：</p>
+<ul>
+<li>
+<p><strong>constructor-arg</strong></p>
+</li>
+<li>
+<p>给谁赋值：</p>
+</li>
+<li>
+<p>index：指定参数在构造函数参数列表的索引位置</p>
+</li>
+<li>
+<p>type：指定参数在构造函数中的数据类型</p>
+</li>
+<li>
+<p>name：指定参数在构造函数中的名称（更常用）</p>
+</li>
+<li>
+<p>赋什么值：</p>
+</li>
+<li>
+<p>value：这里可以写基本数据类型和 String</p>
+</li>
+<li>
+<p>ref：这里可以引入另一个bean，帮助我们给其他类型赋值（例如文中 birthday ）</p>
+</li>
+</ul>
+<p>测试后发现可以打印出我们在配置文件配置的value值。</p>
+<p>上面就是使用类的构造函数给成员变量进行赋值，但特别的是，这里是通过配置，使用 Spring 框架进行注入。</p>
+<blockquote>
+<p>setter方法注入：通过调用无参构造器或无参静态工厂方法实例化bean后调用该bean的setter。</p>
+</blockquote>
+<p>修改以上配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"demoService"</span><span class="attr">class</span>=<span class="string">"cn.service.impl.DemoServiceImpl"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"詹姆斯"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"age"</span> <span class="attr">value</span>=<span class="string">"35"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">ref</span>=<span class="string">"bir"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"bir"</span> <span class="attr">class</span>=<span class="string">"java.util.Date"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>property</strong></p>
+<ul>
+<li>name：与成员变量名无关，与set方法后的名称有关，例如 setUsername() 获取到的就是username，并且已经小写了开头</li>
+<li>value：这里可以写基本数据类型和 String</li>
+<li>ref：这里可以引入另一个bean，帮助我们给其他类型赋值（例如文中 birthday ）</li>
+</ul>
+<p>实现的效果和上面的一样</p>
+<hr />
+<h4 id="spring-aop原理"><a class="markdownIt-Anchor" href="#spring-aop原理"></a> Spring AOP原理</h4>
+<p>Aspect Oriented Programming，面向切面编程。通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP 是 OOP 的延续，是软件开发中的一个热点，也是 Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。其中，最常用的使用场景一般有日志模块、权限模块、事物模块。</p>
+<p>AOP 的内部原理其实就是动态代理和反射了。主要涉及到的反射类：</p>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>InvocationHandler</td>
+<td>通过这个接口定义横切的逻辑，然后通过反射机制调用目标类的方法，这样就能动态地把非业务逻辑和业务逻辑动态得拼接在一起</td>
+</tr>
+<tr>
+<td>proxy</td>
+<td>提供创建动态代理类得静态方法，通常利用INvocationHandler创建代理实例，来间接得调用代理的方法</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Spring 中实现动态代理有两种方式可选。</strong></p>
+<p><strong>JDK 动态代理</strong></p>
+<p>必须实现 InvocationHandler 接口，然后通过 <strong>Proxy.newProxyInstance(ClassLoader</strong></p>
+<p><strong>loader, Class[] interfaces, InvocationHandler h)</strong> 获得动态代理对象。</p>
+<p>CGLIB 动态代理</p>
+<p>使用 CGLIB 动态代理，被代理类**不需要强制实现接口。**CGLIB 不能对声明为 final的方法进行代理，因为 CGLIB 原理是动态生成被代理类的子类。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/03/09/Spring1/" title="浅谈Spring的IOC/AOP" target="_blank" rel="external">http://ctrl98.github.io/2020/03/09/Spring1/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/03/08/SpringBoot-Netflix1/" title="Spring Cloud Netflix核心组件介绍及搭建"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
