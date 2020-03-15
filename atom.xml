@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2020-03-09T05:59:14.872Z</updated>
+  <updated>2020-03-15T01:49:16.108Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,108 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring Cloud Alibaba 链路追踪</title>
+    <link href="http://ctrl98.github.io/2020/03/14/Spring-Cloud-Alibaba3/"/>
+    <id>http://ctrl98.github.io/2020/03/14/Spring-Cloud-Alibaba3/</id>
+    <published>2020-03-14T01:46:06.000Z</published>
+    <updated>2020-03-15T01:49:16.108Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;链路追踪&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#链路追踪&quot;&gt;&lt;/a&gt; 链路追踪&lt;/h2&gt;
+&lt;h3 id=&quot;什么是链路追踪&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是链路追踪&quot;&gt;&lt;/a&gt; 什么
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Cloud Alibaba 服务配置</title>
+    <link href="http://ctrl98.github.io/2020/03/13/Spring-Cloud-Alibaba2/"/>
+    <id>http://ctrl98.github.io/2020/03/13/Spring-Cloud-Alibaba2/</id>
+    <published>2020-03-13T11:49:38.000Z</published>
+    <updated>2020-03-13T13:08:28.742Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;nacos-config-服务端初始化&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#nacos-config-服务端初始化&quot;&gt;&lt;/a&gt; Nacos Config 服务端初始化&lt;/h2&gt;
+&lt;h3 id=&quot;分布式配置中心&quot;&gt;&lt;a clas
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Cloud Alibaba 微服务框架入门</title>
+    <link href="http://ctrl98.github.io/2020/03/11/Spring-Cloud-Alibaba1/"/>
+    <id>http://ctrl98.github.io/2020/03/11/Spring-Cloud-Alibaba1/</id>
+    <published>2020-03-11T07:49:49.000Z</published>
+    <updated>2020-03-13T11:50:59.041Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;简介&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#简介&quot;&gt;&lt;/a&gt; 简介&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;2018 年 10 月 31 日&lt;/strong&gt; ，&lt;strong&gt;Spring Cloud Alibaba 正式入驻了 Sp
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Security OAuth2.0 认证授权</title>
+    <link href="http://ctrl98.github.io/2020/03/10/Spring-Security-Oauth2/"/>
+    <id>http://ctrl98.github.io/2020/03/10/Spring-Security-Oauth2/</id>
+    <published>2020-03-10T08:09:22.000Z</published>
+    <updated>2020-03-10T09:00:06.959Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;基本概念&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#基本概念&quot;&gt;&lt;/a&gt; 基本概念&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;h5 id=&quot;什么是认证&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是认证&quot;&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="权限框架" scheme="http://ctrl98.github.io/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="OAuth2.0" scheme="http://ctrl98.github.io/tags/OAuth2-0/"/>
+    
+  </entry>
   
   <entry>
     <title>浅谈Spring的IOC/AOP</title>
@@ -46,7 +148,7 @@
     <link href="http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/"/>
     <id>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</id>
     <published>2020-03-08T08:08:24.000Z</published>
-    <updated>2020-03-08T08:11:58.120Z</updated>
+    <updated>2020-03-11T08:05:01.983Z</updated>
     
     <summary type="html">
     
@@ -54,7 +156,8 @@
       
         &lt;h3 id=&quot;单体应用存在的问题耦合度过高&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#单体应用存在的问题耦合度过高&quot;&gt;&lt;/a&gt; 单体应用存在的问题(耦合度过高)&lt;/h3&gt;
 &lt;ol&gt;
-&lt;li&gt;随着业务的发展，开发变得越来越&lt;code&gt;复杂&lt;/cod
+&lt;li&gt;
+&lt;p&gt;随着业务的发展，开发变得越来越&lt;code&gt;复杂&lt;
       
     
     </summary>
