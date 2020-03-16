@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Lee&#39;s Blog</title>
+  <title>Lee&#39;s Notes</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2020-03-15T01:49:16.108Z</updated>
+  <updated>2020-03-16T10:45:33.101Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring Cloud Alibaba 异步通信</title>
+    <link href="http://ctrl98.github.io/2020/03/15/Spring-Cloud-Alibaba4/"/>
+    <id>http://ctrl98.github.io/2020/03/15/Spring-Cloud-Alibaba4/</id>
+    <published>2020-03-15T06:48:20.000Z</published>
+    <updated>2020-03-16T10:45:33.101Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;消息队列的流派&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#消息队列的流派&quot;&gt;&lt;/a&gt; 消息队列的流派&lt;/h2&gt;
+&lt;h3 id=&quot;什么是-mq&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是-mq&quot;&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring Cloud Alibaba 链路追踪</title>
