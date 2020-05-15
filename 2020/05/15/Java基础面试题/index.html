@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Java基础面试题 | Lee&#39;s Notes</title>
+  <meta name="description" content="Java基础知识  1、 为什么 Java 中只有值传递？ 参数传递给方法（或函数）的一些专业术语 按值调用(call by value)表示方法接收的是调用者提供的值 按引用调用（call by reference)表示方法接收的是调用者提供的变量地址 一个方法可以修改传递引用所对应的变量值，而不能修改传递值调用所对应的变量值。 Java 程序设计语言总是采用按值调用。也就是说，方法得到的是所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础面试题">
+<meta property="og:url" content="http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="Lee&#39;s Notes">
+<meta property="og:description" content="Java基础知识  1、 为什么 Java 中只有值传递？ 参数传递给方法（或函数）的一些专业术语 按值调用(call by value)表示方法接收的是调用者提供的值 按引用调用（call by reference)表示方法接收的是调用者提供的变量地址 一个方法可以修改传递引用所对应的变量值，而不能修改传递值调用所对应的变量值。 Java 程序设计语言总是采用按值调用。也就是说，方法得到的是所">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/1/16ffc91a38aadaa0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/2/1/16ffe957e28f0252?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="g:%5CJava%5C%E7%AE%80%E5%8E%86%5CJava%E9%9B%86%E5%90%881.jpg">
+<meta property="og:image" content="g:%5CJava%5C%E7%AE%80%E5%8E%86%5CJava%E9%9B%86%E5%90%882.jpg">
+<meta property="article:published_time" content="2020-05-15T00:25:50.000Z">
+<meta property="article:modified_time" content="2020-05-15T00:28:02.402Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/2/1/16ffc91a38aadaa0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Notes" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>无名无迹 得闲饮茶</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/">权限框架</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2-0/" rel="tag">OAuth2.0</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM%E6%A1%86%E6%9E%B6/" rel="tag">SSM框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">Mysql面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:31:54.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">SSM面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:29:04.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">Java基础面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:25:50.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/25/Redis4/" class="title">Redis 持久化方式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-25T10:36:33.000Z" itemprop="datePublished">2020-03-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/24/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%911/" class="title">Java 多线程与并发基础原理一</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-24T02:33:16.000Z" itemprop="datePublished">2020-03-24</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#java基础知识"><span class="toc-number">1.</span> <span class="toc-text"> Java基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-为什么-java-中只有值传递"><span class="toc-number">1.1.</span> <span class="toc-text"> 1、 为什么 Java 中只有值传递？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-与-equals重要"><span class="toc-number">1.2.</span> <span class="toc-text"> 2、 &#x3D;&#x3D;与 equals(重要)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-hashcode-与-equals重要"><span class="toc-number">1.3.</span> <span class="toc-text"> 3、hashCode 与 equals（重要）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#31-hashcode介绍"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 3.1、hashCode（）介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#32-为什么要有-hashcode"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 3.2、为什么要有 hashCode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#33-hashcode与-equals的相关规定"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.3、hashCode（）与 equals（）的相关规定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#34-为什么两个对象有相同的-hashcode-值它们也不一定是相等的"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 3.4、为什么两个对象有相同的 hashcode 值，它们也不一定是相等的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#35-有没有可能两个不相等的对象有相同的hashcode"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 3.5、有没有可能两个不相等的对象有相同的hashcode</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-string-和-stringbuffer-stringbuilder-的区别是什么string-为什么是不可变的"><span class="toc-number">1.4.</span> <span class="toc-text"> 4、 String 和 StringBuffer、StringBuilder 的区别是什么？String 为什么是不可变的？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#string-真的是不可变的吗"><span class="toc-number">1.4.1.</span> <span class="toc-text"> String 真的是不可变的吗？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-什么是反射机制反射机制的应用场景有哪些"><span class="toc-number">1.5.</span> <span class="toc-text"> 5、什么是反射机制？反射机制的应用场景有哪些？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#51-反射机制介绍"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 5.1 反射机制介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#52-静态编译和动态编译"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 5.2 静态编译和动态编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#53-获取一个对象对应的反射类在-java-中有下列方法可以获取一个对象的反射类"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 5.3 获取一个对象对应的反射类，在 Java 中有下列方法可以获取一个对象的反射类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#54-反射的应用场景"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 5.4 反射的应用场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#55反射中classforname和classloader区别"><span class="toc-number">1.5.5.</span> <span class="toc-text"> 5.5反射中，Class.forName和ClassLoader区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-什么是-jdk什么是-jre什么是-jvm三者之间的联系与区别"><span class="toc-number">1.6.</span> <span class="toc-text"> 6、 什么是 JDK?什么是 JRE？什么是 JVM？三者之间的联系与区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#61-jvm"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 6.1 JVM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#62-jdk-和-jre"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 6.2 JDK 和 JRE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#63-总结"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 6.3 总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-接口和抽象类的区别是什么"><span class="toc-number">1.7.</span> <span class="toc-text"> 7、接口和抽象类的区别是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-重载和重写的区别"><span class="toc-number">1.8.</span> <span class="toc-text"> 8、重载和重写的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#重载"><span class="toc-number">1.8.1.</span> <span class="toc-text"> 重载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重写"><span class="toc-number">1.8.2.</span> <span class="toc-text"> 重写</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-java-面向对象编程三大特性-封装-继承-多态"><span class="toc-number">1.9.</span> <span class="toc-text"> 9、 Java 面向对象编程三大特性: 封装 继承 多态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#封装"><span class="toc-number">1.9.1.</span> <span class="toc-text"> 封装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#继承"><span class="toc-number">1.9.2.</span> <span class="toc-text"> 继承</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多态"><span class="toc-number">1.9.3.</span> <span class="toc-text"> 多态</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-java-支持的数据类型有哪些"><span class="toc-number">1.10.</span> <span class="toc-text"> 10、Java 支持的数据类型有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-什么是自动拆装箱"><span class="toc-number">1.11.</span> <span class="toc-text"> 11、什么是自动拆装箱？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-与-的区别"><span class="toc-number">1.12.</span> <span class="toc-text"> 12、 &amp; 与 &amp;&amp; 的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-是否可以在-static-环境中访问非-static-变量"><span class="toc-number">1.13.</span> <span class="toc-text"> 13、是否可以在 static 环境中访问非 static 变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-final-finally-finalize-的区别"><span class="toc-number">1.14.</span> <span class="toc-text"> 14、final, finally, finalize 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-bio-nio-aio区别"><span class="toc-number">1.15.</span> <span class="toc-text"> 15、Bio、Nio、Aio区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-error和exception的区别checkedexceptionruntimeexception的区别"><span class="toc-number">1.16.</span> <span class="toc-text"> 16、error和exception的区别，CheckedException，RuntimeException的区别。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-序列化与反序列化"><span class="toc-number">1.17.</span> <span class="toc-text"> 17、序列化与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-jdk动态代理与cglib实现的区别"><span class="toc-number">1.18.</span> <span class="toc-text"> 18、JDK动态代理与cglib实现的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java多线程"><span class="toc-number">2.</span> <span class="toc-text"> Java多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-java中实现多线程有几种方法"><span class="toc-number">2.1.</span> <span class="toc-text"> 1、Java中实现多线程有几种方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么是线程和进程"><span class="toc-number">2.2.</span> <span class="toc-text"> 2、什么是线程和进程?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#21-何为进程"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 2.1 何为进程?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-何为线程"><span class="toc-number">2.2.2.</span> <span class="toc-text"> 2.2 何为线程?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-说说并发与并行的区别"><span class="toc-number">2.3.</span> <span class="toc-text"> 2、说说并发与并行的区别?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-什么是线程死锁如何避免死锁"><span class="toc-number">2.4.</span> <span class="toc-text"> 4、什么是线程死锁?如何避免死锁?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-notify和notifyall有什么区别"><span class="toc-number">2.5.</span> <span class="toc-text"> 3、notify()和notifyAll()有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-说说-sleep-方法和-wait-方法区别和共同点"><span class="toc-number">2.6.</span> <span class="toc-text"> 6、说说 sleep() 方法和 wait() 方法区别和共同点?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-为什么我们调用-start-方法时会执行-run-方法为什么我们不能直接调用-run-方法"><span class="toc-number">2.7.</span> <span class="toc-text"> 7、为什么我们调用 start() 方法时会执行 run() 方法，为什么我们不能直接调用 run() 方法？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-java线程池的原理线程池有哪些线程池工厂有哪些线程池类型及其线程池参数是什么"><span class="toc-number">2.8.</span> <span class="toc-text"> 6、Java线程池的原理？线程池有哪些？线程池工厂有哪些线程池类型，及其线程池参数是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-cas机制是什么如何解决aba问题"><span class="toc-number">2.9.</span> <span class="toc-text"> 9、CAS机制是什么，如何解决ABA问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-说几种实现幂等的方式"><span class="toc-number">2.10.</span> <span class="toc-text"> 10、说几种实现幂等的方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java集合"><span class="toc-number">3.</span> <span class="toc-text"> Java集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结构图"><span class="toc-number">3.1.</span> <span class="toc-text"> 结构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-arraylist和linkedlist有什么区别"><span class="toc-number">3.2.</span> <span class="toc-text"> 1、ArrayList和LinkedList有什么区别。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-hashset-treeset"><span class="toc-number">3.3.</span> <span class="toc-text"> 2、HashSet、TreeSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-hashset-是如何保证不重复的"><span class="toc-number">3.4.</span> <span class="toc-text"> 3、HashSet 是如何保证不重复的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-list集合和set集合的区别"><span class="toc-number">3.5.</span> <span class="toc-text"> 4、List集合和Set集合的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-collection包结构其与collections的区别"><span class="toc-number">3.6.</span> <span class="toc-text"> 5、Collection包结构，其与Collections的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-hashmap和hashtable的区别"><span class="toc-number">3.7.</span> <span class="toc-text"> 6、 HashMap和HashTable的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-hashmap-是线程安全的吗为什么不是线程安全的"><span class="toc-number">3.8.</span> <span class="toc-text"> 6、HashMap 是线程安全的吗，为什么不是线程安全的?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-hashmap-的扩容过程"><span class="toc-number">3.9.</span> <span class="toc-text"> 7、HashMap 的扩容过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-hashmaphashtableconcurrenthashmap的共同点和区别"><span class="toc-number">3.10.</span> <span class="toc-text"> 8、HashMap，HashTable，ConcurrentHashMap的共同点和区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-hashmap死循环"><span class="toc-number">3.11.</span> <span class="toc-text"> 9、HashMap死循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-说说listsetmap三者的区别"><span class="toc-number">3.12.</span> <span class="toc-text"> 9、说说List,Set,Map三者的区别？</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Java基础面试题" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java基础面试题
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-date">
+	  <time datetime="2020-05-15T00:25:50.000Z" itemprop="datePublished">2020-05-15</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/#comments" class="article-comment-link">Comments</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 9.5k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 35(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="java基础知识"><a class="markdownIt-Anchor" href="#java基础知识"></a> Java基础知识</h2>
+<h3 id="1-为什么-java-中只有值传递"><a class="markdownIt-Anchor" href="#1-为什么-java-中只有值传递"></a> 1、 为什么 Java 中只有值传递？</h3>
+<p>参数传递给方法（或函数）的一些专业术语</p>
+<p><strong>按值调用(call by value)表示方法接收的是调用者提供的值</strong></p>
+<p><strong>按引用调用（call by reference)表示方法接收的是调用者提供的变量地址</strong></p>
+<p><strong>一个方法可以修改传递引用所对应的变量值，而不能修改传递值调用所对应的变量值。</strong></p>
+<p><strong>Java 程序设计语言总是采用按值调用。也就是说，方法得到的是所有参数值的一个拷贝，也就是说，方法不能修改传递给它的任何参数变量的内容。</strong></p>
+<blockquote>
+<p><strong>example 1</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    int num1 &#x3D; 10;</span><br><span class="line">    int num2 &#x3D; 20;</span><br><span class="line"></span><br><span class="line">    swap(num1, num2);</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;num1 &#x3D; &quot; + num1);</span><br><span class="line">    System.out.println(&quot;num2 &#x3D; &quot; + num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void swap(int a, int b) &#123;</span><br><span class="line">    int temp &#x3D; a;</span><br><span class="line">    a &#x3D; b;</span><br><span class="line">    b &#x3D; temp;</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;a &#x3D; &quot; + a);</span><br><span class="line">    System.out.println(&quot;b &#x3D; &quot; + b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; 20</span><br><span class="line">b &#x3D; 10</span><br><span class="line">num1 &#x3D; 10</span><br><span class="line">num2 &#x3D; 20</span><br></pre></td></tr></table></figure>
+<p><strong>我们已经知道了一个方法不能修改一个基本数据类型的参数，而对象引用作为参数就不一样，请看 example2.</strong></p>
+<blockquote>
+<p><strong>example 2</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    int[] arr &#x3D; &#123; 1, 2, 3, 4, 5 &#125;;</span><br><span class="line">    System.out.println(arr[0]);</span><br><span class="line">    change(arr);</span><br><span class="line">    System.out.println(arr[0]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void change(int[] array) &#123;</span><br><span class="line">    &#x2F;&#x2F; 将数组的第一个元素变为0</span><br><span class="line">    array[0] &#x3D; 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p><strong>实现一个改变对象参数状态的方法并不是一件难事。理由很简单，方法得到的是对象引用的拷贝，对象引用及其他的拷贝同时引用同一个对象。</strong></p>
+<p><strong>有些程序员（甚至本书的作者）认为 Java 程序设计语言对对象采用的是引用调用，实际上，这种理解是不对的。由于这种误解具有一定的普遍性，所以下面给出一个反例来详细地阐述一下这个问题。</strong></p>
+<blockquote>
+<p><strong>example 3</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        &#x2F;&#x2F; TODO Auto-generated method stub</span><br><span class="line">        Student s1 &#x3D; new Student(&quot;小张&quot;);</span><br><span class="line">        Student s2 &#x3D; new Student(&quot;小李&quot;);</span><br><span class="line">        Test.swap(s1, s2);</span><br><span class="line">        System.out.println(&quot;s1:&quot; + s1.getName());</span><br><span class="line">        System.out.println(&quot;s2:&quot; + s2.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void swap(Student x, Student y) &#123;</span><br><span class="line">        Student temp &#x3D; x;</span><br><span class="line">        x &#x3D; y;</span><br><span class="line">        y &#x3D; temp;</span><br><span class="line">        System.out.println(&quot;x:&quot; + x.getName());</span><br><span class="line">        System.out.println(&quot;y:&quot; + y.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x:小李</span><br><span class="line">y:小张</span><br><span class="line">s1:小张</span><br><span class="line">s2:小李</span><br></pre></td></tr></table></figure>
+<p>通过上面两张图可以很清晰的看出： <strong>方法并没有改变存储在变量 s1 和 s2 中的对象引用。swap 方法的参数 x 和 y 被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝</strong></p>
+<h3 id="2-与-equals重要"><a class="markdownIt-Anchor" href="#2-与-equals重要"></a> 2、 ==与 equals(重要)</h3>
+<p><strong>==</strong> :  基本数据类型<mark>比较的是值，引用数据类型</mark>比较的是内存地址</p>
+<p><strong>equals()</strong> :</p>
+<p>情况 1：类没有覆盖 equals()方法。则通过 equals()比较该类的两个对象时，等价于通过“==”比较这两个对象。</p>
+<p>情况 2：类覆盖了 equals()方法。一般，我们都覆盖 equals()方法来两个对象的内容相等；若它们的内容相等，则返回 true(即，认为这两个对象相等)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">int i &#x3D; 1;</span><br><span class="line">int x &#x3D; 1;</span><br><span class="line"></span><br><span class="line">String a &#x3D; &quot;123&quot;;</span><br><span class="line">String aa &#x3D; &quot;123&quot;;</span><br><span class="line">String b &#x3D; a;</span><br><span class="line">String c &#x3D; new String(&quot;123&quot;);</span><br><span class="line">String d &#x3D; c;</span><br><span class="line"></span><br><span class="line">System.out.println(a &#x3D;&#x3D; aa);       true</span><br><span class="line">System.out.println(i &#x3D;&#x3D; x);        true</span><br><span class="line">System.out.println(a &#x3D;&#x3D; b);        true</span><br><span class="line">System.out.println(a.equals(b));   true</span><br><span class="line">System.out.println(a &#x3D;&#x3D; c);        false</span><br><span class="line">System.out.println(a.equals(c));   true</span><br><span class="line">System.out.println(a &#x3D;&#x3D; d);        false</span><br><span class="line">System.out.println(a.equals(d));   true</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<ul>
+<li>String 中的 equals 方法是被重写过的，因为 object 的 equals 方法是比较的对象的内存地址，而 String 的 equals 方法比较的是对象的值。</li>
+<li>当创建 String 类型的对象时，虚拟机会在常量池中查找有没有已经存在的值和要创建的值相同的对象，如果有就把它赋给当前引用。如果没有就在常量池中重新创建一个 String 对象。</li>
+</ul>
+<h3 id="3-hashcode-与-equals重要"><a class="markdownIt-Anchor" href="#3-hashcode-与-equals重要"></a> 3、hashCode 与 equals（重要）</h3>
+<h4 id="31-hashcode介绍"><a class="markdownIt-Anchor" href="#31-hashcode介绍"></a> 3.1、hashCode（）介绍</h4>
+<p>hashCode() 的作用是获取哈希码，也称为散列码；</p>
+<p>它实际上是返回一个 int 整数。这个哈希码的作用是确定该对象在哈希表中的索引位置；</p>
+<p>hashCode() 定义在 JDK 的 Object.java 中，这就意味着 Java 中的任何类都包含有 hashCode() 函数；</p>
+<p>另外需要注意的是： Object 的 hashcode 方法是本地方法，也就是用 c 语言或 c++ 实现的，该方法通常用来将对象的 内存地址 转换为整数之后返回；</p>
+<h4 id="32-为什么要有-hashcode"><a class="markdownIt-Anchor" href="#32-为什么要有-hashcode"></a> 3.2、为什么要有 hashCode</h4>
+<p><strong>以“HashSet 如何检查重复”为例子来说明为什么要有 hashCode：</strong></p>
+<p>当你把对象加入 HashSet 时，HashSet 会先计算对象的 hashcode 值来判断对象加入的位置，同时也会与其他已经加入的对象的 hashcode 值作比较，如果没有相符的 hashcode，HashSet 会假设对象没有重复出现。但是如果发现有相同 hashcode 值的对象，这时会调用 equals（）方法来检查 hashcode 相等的对象是否真的相同。如果两者相同，HashSet 就不会让其加入操作成功。如果不同的话，就会重新散列到其他位置。（摘自我的 Java 启蒙书《Head fist java》第二版）。这样我们就大大减少了 equals 的次数，相应就大大提高了执行速度。</p>
+<h4 id="33-hashcode与-equals的相关规定"><a class="markdownIt-Anchor" href="#33-hashcode与-equals的相关规定"></a> 3.3、hashCode（）与 equals（）的相关规定</h4>
+<ol>
+<li>如果两个对象相等，则 hashcode 一定也是相同的</li>
+<li>两个对象相等,对两个对象分别调用 equals 方法都返回 true</li>
+<li>两个对象有相同的 hashcode 值，它们也不一定是相等的</li>
+<li><strong>因此，equals 方法被覆盖过，则 hashCode 方法也必须被覆盖</strong></li>
+<li>hashCode()的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）</li>
+</ol>
+<h4 id="34-为什么两个对象有相同的-hashcode-值它们也不一定是相等的"><a class="markdownIt-Anchor" href="#34-为什么两个对象有相同的-hashcode-值它们也不一定是相等的"></a> 3.4、为什么两个对象有相同的 hashcode 值，它们也不一定是相等的？</h4>
+<p>因为 hashCode() 所使用的杂凑算法也许刚好会让多个对象传回相同的杂凑值。越糟糕的杂凑算法越容易碰撞，但这也与数据值域分布的特性有关（所谓碰撞也就是指的是不同的对象得到相同的 hashCode）。</p>
+<p>我们刚刚也提到了 HashSet,如果 HashSet 在对比的时候，同样的 hashcode 有多个对象，它会使用 equals() 来判断是否真的相同。也就是说 hashcode 只是用来缩小查找成本。</p>
+<h4 id="35-有没有可能两个不相等的对象有相同的hashcode"><a class="markdownIt-Anchor" href="#35-有没有可能两个不相等的对象有相同的hashcode"></a> 3.5、有没有可能两个不相等的对象有相同的hashcode</h4>
+<p>有可能.在产生hash冲突时,两个不相等的对象就会有相同的 hashcode 值.当hash冲突产生时,一般有以下几种方式来处理:</p>
+<p>（1）拉链法:每个哈希表节点都有一个next指针,多个哈希表节点可以用next指针构成一个单向链表，被分配到同一个索引上的多个节点可以用这个单向链表进行存储；</p>
+<p>（2）开放定址法:一旦发生了冲突,就去寻找下一个空的散列地址,只要散列表足够大,空的散列地址总能找到,并将记录存入；</p>
+<p>（3）再哈希:又叫双哈希法,有多个不同的Hash函数.当发生冲突时,使用第二个,第三个….等哈希函数计算地址,直到无冲突；</p>
+<h3 id="4-string-和-stringbuffer-stringbuilder-的区别是什么string-为什么是不可变的"><a class="markdownIt-Anchor" href="#4-string-和-stringbuffer-stringbuilder-的区别是什么string-为什么是不可变的"></a> 4、 String 和 StringBuffer、StringBuilder 的区别是什么？String 为什么是不可变的？</h3>
+<p><strong>可变性</strong></p>
+<ul>
+<li>
+<p>String 类中使用 final 关键字修饰字符数组来保存字符串，<code>private final char value[]</code>，所以 String 对象是不可变的。</p>
+</li>
+<li>
+<p>而 StringBuilder 与 StringBuffer 都继承自 AbstractStringBuilder 类，在 AbstractStringBuilder 中也是使用字符数组保存字符串<code>char[]value</code> 但是没有用 final 关键字修饰，所以这两种对象都是可变的。</p>
+</li>
+</ul>
+<p><strong>线程安全性</strong></p>
+<p>String 中的对象是不可变的，也就可以理解为常量，线程安全。</p>
+<p>StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。</p>
+<p>StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。</p>
+<p><strong>性能</strong></p>
+<ol>
+<li>操作少量的数据: 适用 String</li>
+<li>单线程操作字符串缓冲区下操作大量数据: 适用 StringBuilder</li>
+<li>多线程操作字符串缓冲区下操作大量数据: 适用 StringBuffer</li>
+</ol>
+<h4 id="string-真的是不可变的吗"><a class="markdownIt-Anchor" href="#string-真的是不可变的吗"></a> String 真的是不可变的吗？</h4>
+<p>我觉得如果别人问这个问题的话，回答不可变就可以了。下面只是给大家看两个有代表性的例子：</p>
+<p><strong>1) String 不可变但不代表引用不可以变</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str &#x3D; &quot;Hello&quot;;</span><br><span class="line">str &#x3D; str + &quot; World&quot;;</span><br><span class="line">System.out.println(&quot;str&#x3D;&quot; + str);</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str&#x3D;Hello World</span><br></pre></td></tr></table></figure>
+<p>解析：</p>
+<p>实际上，原来 String 的内容是不变的，只是 str 由原来指向&quot;Hello&quot;的内存地址转为指向&quot;Hello World&quot;的内存地址而已，也就是说多开辟了一块内存区域给&quot;Hello World&quot;字符串。</p>
+<h3 id="5-什么是反射机制反射机制的应用场景有哪些"><a class="markdownIt-Anchor" href="#5-什么是反射机制反射机制的应用场景有哪些"></a> 5、什么是反射机制？反射机制的应用场景有哪些？</h3>
+<h4 id="51-反射机制介绍"><a class="markdownIt-Anchor" href="#51-反射机制介绍"></a> 5.1 反射机制介绍</h4>
+<p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为 java 语言的反射机制。</p>
+<h4 id="52-静态编译和动态编译"><a class="markdownIt-Anchor" href="#52-静态编译和动态编译"></a> 5.2 静态编译和动态编译</h4>
+<ul>
+<li>**静态编译：**在编译时确定类型，绑定对象</li>
+<li>**动态编译：**运行时确定类型，绑定对象</li>
+</ul>
+<h4 id="53-获取一个对象对应的反射类在-java-中有下列方法可以获取一个对象的反射类"><a class="markdownIt-Anchor" href="#53-获取一个对象对应的反射类在-java-中有下列方法可以获取一个对象的反射类"></a> 5.3 获取一个对象对应的反射类，在 Java 中有下列方法可以获取一个对象的反射类</h4>
+<ul>
+<li>通过 getClass() 方法</li>
+<li>通过 Class.forName() 方法</li>
+<li>使用 类.class</li>
+<li>通过类加载器实现，getClassLoader()</li>
+</ul>
+<p><strong>Java获取反射的三种方法</strong></p>
+<p>1.通过new对象</p>
+<p>2.通过路径</p>
+<p>3.通过类名</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123; </span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> id; </span><br><span class="line">	String name; </span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">boolean</span> sex; </span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">float</span> score; </span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Get</span> </span>&#123;</span><br><span class="line"> <span class="comment">//获取反射机制三种方式</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123; </span><br><span class="line">  	<span class="comment">//方式一(通过建立对象) </span></span><br><span class="line">  	Student stu = <span class="keyword">new</span> Student(); </span><br><span class="line"> 	Class classobj1 = stu.getClass();</span><br><span class="line">   	System.out.println(classobj1.getName());</span><br><span class="line">   	</span><br><span class="line">    <span class="comment">//方式二（所在通过路径-相对路径） </span></span><br><span class="line">    Class classobj2 = Class.forName(<span class="string">"fanshe.Student"</span>); 	</span><br><span class="line">    System.out.println(classobj2.getName()); </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//方式三（通过类名） </span></span><br><span class="line">    Class classobj3 = Student<span class="class">.<span class="keyword">class</span></span>; </span><br><span class="line">    System.out.println(classobj3.getName()); </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="54-反射的应用场景"><a class="markdownIt-Anchor" href="#54-反射的应用场景"></a> 5.4 反射的应用场景</h4>
+<p><strong>反射是框架设计的灵魂。</strong></p>
+<h4 id="55反射中classforname和classloader区别"><a class="markdownIt-Anchor" href="#55反射中classforname和classloader区别"></a> 5.5反射中，Class.forName和ClassLoader区别</h4>
+<p>Class.forName和ClassLoader都可以对类进行加载</p>
+<p><strong>ClassLoader</strong>：负责加载 Java 类的字节代码到 Java 虚拟机中。</p>
+<p><strong>Class.forName</strong>：其实是调用了ClassLoader。</p>
+<p>所以区别就是在类加载的时候，<strong>class.forName有参数控制是否对类进行初始化</strong>。</p>
+<h3 id="6-什么是-jdk什么是-jre什么是-jvm三者之间的联系与区别"><a class="markdownIt-Anchor" href="#6-什么是-jdk什么是-jre什么是-jvm三者之间的联系与区别"></a> 6、 什么是 JDK?什么是 JRE？什么是 JVM？三者之间的联系与区别</h3>
+<h4 id="61-jvm"><a class="markdownIt-Anchor" href="#61-jvm"></a> 6.1 JVM</h4>
+<p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。</p>
+<p>在 Java 中，JVM 可以理解的代码就叫做<code>字节码</code>（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。因此，Java 程序无须重新编译便可在多种不同操作系统的计算机上运行。</p>
+<h4 id="62-jdk-和-jre"><a class="markdownIt-Anchor" href="#62-jdk-和-jre"></a> 6.2 JDK 和 JRE</h4>
+<p>JDK 是 Java Development Kit，它是功能齐全的 Java SDK。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。</p>
+<p>JRE 是 Java 运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。</p>
+<h4 id="63-总结"><a class="markdownIt-Anchor" href="#63-总结"></a> 6.3 总结</h4>
+<p><strong>Jdk包含Jre包含JVM</strong></p>
+<h3 id="7-接口和抽象类的区别是什么"><a class="markdownIt-Anchor" href="#7-接口和抽象类的区别是什么"></a> 7、接口和抽象类的区别是什么?</h3>
+<ol>
+<li>接口的方法默认是 public，所有方法在接口中不能有实现，抽象类可以有非抽象的方法</li>
+<li>接口中的实例变量默认是 final 类型的，而抽象类中则不一定</li>
+<li>一个类可以实现多个接口，但最多只能实现一个抽象类</li>
+<li>一个类实现接口的话要实现接口的所有方法，而抽象类不一定</li>
+<li>接口不能用 new 实例化，但可以声明，但是必须引用一个实现该接口的对象 从设计层面来说，抽象是对类的抽象，是一种模板设计，接口是行为的抽象，是一种行为的规范。</li>
+</ol>
+<p>注意：Java8 后接口可以有默认实现( default )。</p>
+<h3 id="8-重载和重写的区别"><a class="markdownIt-Anchor" href="#8-重载和重写的区别"></a> 8、重载和重写的区别</h3>
+<h4 id="重载"><a class="markdownIt-Anchor" href="#重载"></a> 重载</h4>
+<p>发生在同一个类中，<strong>方法名必须相同，参数类型不同、个数不同、顺序不同，方法返回值和访问修饰符可以不同</strong>。</p>
+<h4 id="重写"><a class="markdownIt-Anchor" href="#重写"></a> 重写</h4>
+<p>**重写是子类对父类的允许访问的方法的实现过程进行重新编写,发生在子类中，方法名、参数列表必须相同，返回值范围小于等于父类，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。**另外，如果父类方法访问修饰符为 private 则子类就不能重写该方法。<strong>也就是说方法提供的行为改变，而方法的外貌并没有改变。</strong></p>
+<h3 id="9-java-面向对象编程三大特性-封装-继承-多态"><a class="markdownIt-Anchor" href="#9-java-面向对象编程三大特性-封装-继承-多态"></a> 9、 Java 面向对象编程三大特性: 封装 继承 多态</h3>
+<h4 id="封装"><a class="markdownIt-Anchor" href="#封装"></a> 封装</h4>
+<p>封装把一个对象的属性私有化，同时提供一些可以被外界访问的属性的方法，如果属性不想被外界访问，我们大可不必提供方法给外界访问。但是如果一个类没有提供给外界访问的方法，那么这个类也没有什么意义了。</p>
+<h4 id="继承"><a class="markdownIt-Anchor" href="#继承"></a> 继承</h4>
+<p>继承是使用已存在的类的定义作为基础建立新类的技术，新类的定义可以增加新的数据或新的功能，也可以用父类的功能，但不能选择性地继承父类。通过使用继承我们能够非常方便地复用以前的代码。</p>
+<p><strong>关于继承如下 3 点请记住：</strong></p>
+<ol>
+<li>子类拥有父类对象所有的属性和方法（包括私有属性和私有方法），但是父类中的私有属性和方法子类是无法访问，<strong>只是拥有</strong>。</li>
+<li>子类可以拥有自己属性和方法，即子类可以对父类进行扩展。</li>
+<li>子类可以用自己的方式实现父类的方法。（以后介绍）。</li>
+</ol>
+<h4 id="多态"><a class="markdownIt-Anchor" href="#多态"></a> 多态</h4>
+<p>所谓多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在由程序运行期间才能决定。</p>
+<p>在 Java 中有两种形式可以实现多态：继承（多个子类对同一方法的重写）和接口（实现接口并覆盖接口中同一方法）。</p>
+<h3 id="10-java-支持的数据类型有哪些"><a class="markdownIt-Anchor" href="#10-java-支持的数据类型有哪些"></a> 10、Java 支持的数据类型有哪些？</h3>
+<p>整数值型：byte(1个字节)，short(2个字节)，int(4个字节)，long(8个字节)</p>
+<p>字符型：char(2个字节)</p>
+<p>浮点类型：float(4个字节)，double (8个字节)</p>
+<p>布尔型：boolean(没有明确说明)</p>
+<p>整数默认 int 型，小数默认是 double 型。Float 和 long 类型的必须加后缀。比如 float f = 100f。</p>
+<p>首先知道 String 是引用类型不是基本类型，引用类型声明的变量是指该变量在内存中实际存储的是一个引用地址，实体在堆中。引用类型包括类、接口、数组等。String 类还是 final 修饰的。</p>
+<h3 id="11-什么是自动拆装箱"><a class="markdownIt-Anchor" href="#11-什么是自动拆装箱"></a> 11、什么是自动拆装箱？</h3>
+<p>11.1、</p>
+<p>自动装箱和拆箱就是基本类型和引用类型之间的转换，至于为什么要转换，因为基本类型转换为引用类型后，就可以 new 对象，从而调用包装类中封装好的方法进行基本类型之间的转换</p>
+<p>11.2、</p>
+<p>装箱就是自动将基本数据类型转换为包装器类型（int–&gt;Integer）；调用方法：Integer的valueOf(int) 方法</p>
+<p>拆箱就是自动将包装器类型转换为基本数据类型（Integer–&gt;int）。调用方法：Integer的intValue方法</p>
+<p>在Java SE5之前，如果要生成一个数值为10的Integer对象，必须这样进行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer i &#x3D; new Integer(10);</span><br></pre></td></tr></table></figure>
+<p>而在从Java SE5开始就提供了自动装箱的特性，如果要生成一个数值为10的Integer对象，只需要这</p>
+<p>样就可以了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer i &#x3D; 10;</span><br></pre></td></tr></table></figure>
+<h3 id="12-与-的区别"><a class="markdownIt-Anchor" href="#12-与-的区别"></a> 12、 &amp; 与 &amp;&amp; 的区别？</h3>
+<p>如果 &amp;&amp; 左边的表达式的值是 false，右边的表达式会被直接短路掉，不会进行运算。</p>
+<h3 id="13-是否可以在-static-环境中访问非-static-变量"><a class="markdownIt-Anchor" href="#13-是否可以在-static-环境中访问非-static-变量"></a> 13、是否可以在 static 环境中访问非 static 变量？</h3>
+<p>不可以、因为非static变量是属于类的、类没有创建出来就不可以访问。</p>
+<h3 id="14-final-finally-finalize-的区别"><a class="markdownIt-Anchor" href="#14-final-finally-finalize-的区别"></a> 14、final, finally, finalize 的区别</h3>
+<ul>
+<li>final: 用于声明属性,方法和类, 分别表示属性不可变, 方法不可覆盖, 类不可继承.</li>
+<li>finally:是异常处理语句结构的一部分，表示总是执行.</li>
+<li>finalize: 是Object类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法，可以覆盖此方法提供垃圾收集时的其他资源回收，例如关闭文件等. JVM不保证此方法总被调用.</li>
+</ul>
+<h3 id="15-bio-nio-aio区别"><a class="markdownIt-Anchor" href="#15-bio-nio-aio区别"></a> 15、Bio、Nio、Aio区别</h3>
+<p><strong>BIO</strong></p>
+<p>就是传统的 <a href="http://java.io" target="_blank" rel="noopener">java.io</a> 包，它是基于流模型实现的，交互的方式是同步、阻塞方式，也就是说在读入输入流或者输出流时，在读写动作完成之前，线程会一直阻塞在那里，它们之间的调用时可靠的线性顺序。它的有点就是代码比较简单、直观；缺点就是 IO 的效率和扩展性很低，容易成为应用性能瓶颈。</p>
+<p><strong>NIO</strong></p>
+<p>是 Java 1.4 引入的 java.nio 包，提供了 Channel、Selector、Buffer 等新的抽象，可以构建多路复用的、同步非阻塞 IO 程序，同时提供了更接近操作系统底层高性能的数据操作方式。</p>
+<p><strong>AIO</strong></p>
+<p>是 Java 1.7 之后引入的包，是 NIO 的升级版本，提供了异步非堵塞的 IO 操作方式，所以人们叫它 AIO（Asynchronous IO），异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。</p>
+<h3 id="16-error和exception的区别checkedexceptionruntimeexception的区别"><a class="markdownIt-Anchor" href="#16-error和exception的区别checkedexceptionruntimeexception的区别"></a> 16、error和exception的区别，CheckedException，RuntimeException的区别。</h3>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/1/16ffc91a38aadaa0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img" /></p>
+<p><strong>Error:</strong> 表示编译时或者系统错误，如虚拟机相关的错误，OutOfMemoryError等，error是无法处理的。</p>
+<p><strong>Exception:</strong> 代码异常，Java程序员关心的基类型通常是Exception。它能被程序本身可以处理，这也是它跟Error的区别。</p>
+<p>它可以分为RuntimeException（运行时异常）和CheckedException（可检查的异常）。 常见的RuntimeException异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- NullPointerException 空指针异常</span><br><span class="line">- ArithmeticException 出现异常的运算条件时，抛出此异常</span><br><span class="line">- IndexOutOfBoundsException 数组索引越界异常</span><br><span class="line">- ClassNotFoundException 找不到类异常</span><br><span class="line">- IllegalArgumentException 非法参数异常</span><br></pre></td></tr></table></figure>
+<p>常见的 Checked Exception 异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- IOException 操作输入流和输出流时可能出现的异常</span><br><span class="line">- ClassCastException 类型转换异常类</span><br></pre></td></tr></table></figure>
+<h3 id="17-序列化与反序列化"><a class="markdownIt-Anchor" href="#17-序列化与反序列化"></a> 17、序列化与反序列化</h3>
+<ul>
+<li>序列化是指将对象转换为字节序列的过程，而反序列化则是将字节序列转换为对象的过程。</li>
+<li>Java对象序列化是将实现了Serializable接口的对象转换成一个字节序列，能够通过网络传输、文件存储等方式传输 ，传输过程中却不必担心数据在不同机器、不同环境下发生改变，也不必关心字节的顺序或其他任何细节，并能够在以后将这个字节序列完全恢复为原来的对象。</li>
+</ul>
+<h3 id="18-jdk动态代理与cglib实现的区别"><a class="markdownIt-Anchor" href="#18-jdk动态代理与cglib实现的区别"></a> 18、JDK动态代理与cglib实现的区别</h3>
+<ul>
+<li>java动态代理是利用反射机制生成一个实现代理接口的匿名类，在调用具体方法前调用InvokeHandler来处理。</li>
+<li>cglib动态代理是利用asm开源包，对代理对象类的class文件加载进来，通过修改其字节码生成子类来处理。</li>
+<li>JDK动态代理只能对实现了接口的类生成代理，而不能针对类</li>
+<li>cglib是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法。因为是继承，所以该类或方法最好不要声明成final</li>
+</ul>
+<hr />
+<h2 id="java多线程"><a class="markdownIt-Anchor" href="#java多线程"></a> Java多线程</h2>
+<h3 id="1-java中实现多线程有几种方法"><a class="markdownIt-Anchor" href="#1-java中实现多线程有几种方法"></a> 1、Java中实现多线程有几种方法</h3>
+<p>（1）继承Thread类；</p>
+<p>（2）实现Runnable接口；</p>
+<p>（3）实现Callable接口通过FutureTask包装器来创建Thread线程；</p>
+<p>（4）使用ExecutorService、Callable、Future实现有返回结果的多线程（也就是使用了ExecutorService来管理前面的三种方式）。</p>
+<h3 id="2-什么是线程和进程"><a class="markdownIt-Anchor" href="#2-什么是线程和进程"></a> 2、什么是线程和进程?</h3>
+<h4 id="21-何为进程"><a class="markdownIt-Anchor" href="#21-何为进程"></a> 2.1 何为进程?</h4>
+<p>进程是程序的一次执行过程，是<strong>系统运行程序的基本单位</strong>，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。</p>
+<p>在 Java 中，当我们启动 main 函数时其实就是启动了一个 <strong>JVM 的进程</strong>，而 main 函数所在的线程就是这个进程中的一个线程，也称主线程。</p>
+<h4 id="22-何为线程"><a class="markdownIt-Anchor" href="#22-何为线程"></a> 2.2 何为线程?</h4>
+<p>线程与进程相似，但线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的是同类的多个线程共享进程的<strong>堆</strong>和<strong>方法区</strong>资源，但每个线程有自己的<strong>程序计数器</strong>、<strong>虚拟机栈</strong>和<strong>本地方法栈</strong>，所以系统在产生一个线程，或是在各个线程之间作切换工作时，负担要比进程小得多，也正因为如此，线程也被称为轻量级进程。</p>
+<h3 id="2-说说并发与并行的区别"><a class="markdownIt-Anchor" href="#2-说说并发与并行的区别"></a> 2、说说并发与并行的区别?</h3>
+<ul>
+<li><strong>并发：</strong> 同一时间段，多个任务都在执行 (单位时间内不一定同时执行)；</li>
+<li><strong>并行：</strong> 单位时间内，多个任务同时执行。</li>
+</ul>
+<h3 id="4-什么是线程死锁如何避免死锁"><a class="markdownIt-Anchor" href="#4-什么是线程死锁如何避免死锁"></a> 4、什么是线程死锁?如何避免死锁?</h3>
+<p>15.1. 认识线程死锁</p>
+<p>多个线程同时被阻塞，它们中的一个或者全部都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。</p>
+<p>比如线程 A 持有资源 2，线程 B 持有资源 1，他们同时都想申请对方的资源，所以这两个线程就会互相等待而进入死锁状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource1 = <span class="keyword">new</span> Object();<span class="comment">//资源 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object resource2 = <span class="keyword">new</span> Object();<span class="comment">//资源 2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (resource1) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resource1"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"waiting get resource2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (resource2) &#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resource2"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="string">"线程 1"</span>).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (resource2) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"get resource2"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + <span class="string">"waiting get resource1"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (resource1) &#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + <span class="string">"get resource1"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="string">"线程 2"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thread[线程 1,5,main]get resource1</span><br><span class="line">Thread[线程 2,5,main]get resource2</span><br><span class="line">Thread[线程 1,5,main]waiting get resource2</span><br><span class="line">Thread[线程 2,5,main]waiting get resource1</span><br></pre></td></tr></table></figure>
+<p>产生死锁必须具备以下四个条件：</p>
+<ol>
+<li>互斥条件：该资源任意一个时刻只由一个线程占用。</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
+<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h3 id="3-notify和notifyall有什么区别"><a class="markdownIt-Anchor" href="#3-notify和notifyall有什么区别"></a> 3、notify()和notifyAll()有什么区别？</h3>
+<p>notify可能会导致死锁，而notifyAll则不会</p>
+<p>任何时候只有一个线程可以获得锁，也就是说只有一个线程可以运行synchronized 中的代码使用notifyAll,可以唤醒所有处于wait状态的线程，使其重新进入锁的争夺队列中，而notify只能唤醒一个。</p>
+<p>wait() 应配合while循环使用，不应使用if，务必在wait()调用前后都检查条件，如果不满足，必须调用notify()唤醒另外的线程来处理，自己继续wait()直至条件满足再往下执行。</p>
+<p>notify() 是对notifyAll()的一个优化，但它有很精确的应用场景，并且要求正确使用。不然可能导致死锁。正确的场景应该是 WaitSet中等待的是相同的条件，唤醒任一个都能正确处理接下来的事项，如果唤醒的线程无法正确处理，务必确保继续notify()下一个线程，并且自身需要重新回到WaitSet中。</p>
+<h3 id="6-说说-sleep-方法和-wait-方法区别和共同点"><a class="markdownIt-Anchor" href="#6-说说-sleep-方法和-wait-方法区别和共同点"></a> 6、说说 sleep() 方法和 wait() 方法区别和共同点?</h3>
+<p>两者最主要的区别在于：<strong>sleep 方法没有释放锁，而 wait 方法释放了锁</strong> 。</p>
+<p>两者都可以暂停线程的执行。</p>
+<p>Wait 通常被用于线程间交互/通信，sleep 通常被用于暂停执行。</p>
+<p>wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的 notify() 或者 notifyAll() 方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout)超时后线程会自动苏醒。</p>
+<h3 id="7-为什么我们调用-start-方法时会执行-run-方法为什么我们不能直接调用-run-方法"><a class="markdownIt-Anchor" href="#7-为什么我们调用-start-方法时会执行-run-方法为什么我们不能直接调用-run-方法"></a> 7、为什么我们调用 start() 方法时会执行 run() 方法，为什么我们不能直接调用 run() 方法？</h3>
+<p>new 一个 Thread，线程进入了新建状态;调用 start() 方法，会启动一个线程并使线程进入了就绪状态，当分配到时间片后就可以开始运行了。 start() 会执行线程的相应准备工作，然后自动执行 run() 方法的内容，这是真正的多线程工作。</p>
+<p>而直接执行 run() 方法，会把 run 方法当成一个 main 线程下的普通方法去执行，并不会在某个线程中执行它，所以这并不是多线程工作。</p>
+<p><strong>总结： 调用 start 方法方可启动线程并使线程进入就绪状态，而 run 方法只是 thread 的一个普通方法调用，还是在主线程里执行。</strong></p>
+<h3 id="6-java线程池的原理线程池有哪些线程池工厂有哪些线程池类型及其线程池参数是什么"><a class="markdownIt-Anchor" href="#6-java线程池的原理线程池有哪些线程池工厂有哪些线程池类型及其线程池参数是什么"></a> 6、Java线程池的原理？线程池有哪些？线程池工厂有哪些线程池类型，及其线程池参数是什么？</h3>
+<p>对于Java线程池，这个流程图比较重要：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/1/16ffe957e28f0252?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img" /></p>
+<h3 id="9-cas机制是什么如何解决aba问题"><a class="markdownIt-Anchor" href="#9-cas机制是什么如何解决aba问题"></a> 9、CAS机制是什么，如何解决ABA问题？</h3>
+<p><strong>CAS涉及三个操作数</strong></p>
+<ul>
+<li>1.需要读写的内存地址V</li>
+<li>2.进行比较的预期原值A</li>
+<li>3.拟写入的新值B 如果内存位置的值V与预期原A值相匹配，那么处理器会自动将该位置值更新为新值B。</li>
+</ul>
+<p>CAS思想：要进行更新时，认为位置V上的值还是跟A值相等，如果是是相等，就认为它没有被别的线程更改过，即可更新为B值。否则，认为它已经被别的线程修改过，不更新为B的值，返回当前位置V最新的值。</p>
+<h3 id="10-说几种实现幂等的方式"><a class="markdownIt-Anchor" href="#10-说几种实现幂等的方式"></a> 10、说几种实现幂等的方式</h3>
+<p>什么是<strong>幂等性</strong>？一次和多次请求某一个资源对于资源本身应该具有同样的结果。就是说，其任意多次执行对资源本身所产生的影响均与一次执行的影响相同。</p>
+<p>实现幂等一般有以下几种方式：</p>
+<ul>
+<li>悲观锁方式（如数据库的悲观锁，select…for update）</li>
+<li>乐观锁方式 (如CAS算法)</li>
+<li>唯一性约束（如唯一索引）</li>
+<li>分布式锁 （redis分布式锁等）</li>
+</ul>
+<hr />
+<h2 id="java集合"><a class="markdownIt-Anchor" href="#java集合"></a> Java集合</h2>
+<h3 id="结构图"><a class="markdownIt-Anchor" href="#结构图"></a> 结构图</h3>
+<p><img src="G:%5CJava%5C%E7%AE%80%E5%8E%86%5CJava%E9%9B%86%E5%90%881.jpg" alt="Java集合1" /></p>
+<p><img src="G:%5CJava%5C%E7%AE%80%E5%8E%86%5CJava%E9%9B%86%E5%90%882.jpg" alt="Java集合2" /></p>
+<h3 id="1-arraylist和linkedlist有什么区别"><a class="markdownIt-Anchor" href="#1-arraylist和linkedlist有什么区别"></a> 1、ArrayList和LinkedList有什么区别。</h3>
+<p>思路：从它们的底层数据结构、效率、开销进行阐述</p>
+<ul>
+<li>ArrayList是<strong>数组</strong>的数据结构，LinkedList是<strong>链表</strong>的数据结构。</li>
+<li><strong>随机访问的时候，ArrayList的效率比较高</strong>，因为LinkedList要移动指针，而ArrayList是基于索引(index)的数据结构，可以直接映射到。</li>
+<li><strong>插入、删除数据时，LinkedList的效率比较高</strong>，因为ArrayList要移动数据。</li>
+<li>LinkedList比ArrayList开销更大，因为LinkedList的节点除了存储数据，还需要存储引用。</li>
+</ul>
+<h3 id="2-hashset-treeset"><a class="markdownIt-Anchor" href="#2-hashset-treeset"></a> 2、HashSet、TreeSet</h3>
+<p>HashSet底层是HashMap，排列无序，不可以重复，因为底层的HashMap的键不允许重复；</p>
+<p>TreeSet底层是TreeMap，排列无序，不可以重复；</p>
+<h3 id="3-hashset-是如何保证不重复的"><a class="markdownIt-Anchor" href="#3-hashset-是如何保证不重复的"></a> 3、HashSet 是如何保证不重复的？</h3>
+<p>向 HashSet 中 add ()元素时，判断元素是否存在的依据，不仅要比较hash值，同时还要结合 equles 方法比较。HashSet 中的 add ()方法会使用 HashMap 的 add ()方法。</p>
+<p>以下是 HashSet 部分源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private static final Object PRESENT &#x3D; new Object(); </span><br><span class="line">private transient HashMap&lt;E,Object&gt; map; </span><br><span class="line">public HashSet()&#123; </span><br><span class="line">	map &#x3D; new HashMap&lt;&gt;(); </span><br><span class="line">&#125;</span><br><span class="line">public boolean add(E e)&#123; </span><br><span class="line">	return map.put(e, PRESENT)&#x3D;&#x3D;null; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HashMap 的 key 是唯一的，由上面的代码可以看出 HashSet 添加进去的值就是作为 HashMap 的key。所以不会重复（ HashMap 比较key是否相等是先比较 hashcode 在比较 equals ）。</p>
+<h3 id="4-list集合和set集合的区别"><a class="markdownIt-Anchor" href="#4-list集合和set集合的区别"></a> 4、List集合和Set集合的区别</h3>
+<p>List , Set 都是继承自 Collection 接口</p>
+<p>List 特点：元素有放入顺序，元素可重复 ，</p>
+<p>Set 特点：元素无放入顺序，元素不可重复，重复元素会覆盖掉，（元素虽然无放入顺序，但是元素在set中的位置是有该元素的 HashCode 决定的，其位置其实是固定的，加入Set 的 Object 必须定义 equals ()方法 ，另外list支持for循环，也就是通过下标来遍历，也可以用迭代器，但是set只能用迭代，因为他无序，无法用下标来取得想要的值。）</p>
+<p><strong>Set和List对比 ：</strong></p>
+<p>Set：检索元素效率低下，<strong>删除和插入效率高</strong>，插入和删除不会引起元素位置改变。</p>
+<p>List：和数组类似，List可以动态增长，<strong>查找元素效率高</strong>，插入删除元素效率低，因为会引起其他元素位置改变。</p>
+<h3 id="5-collection包结构其与collections的区别"><a class="markdownIt-Anchor" href="#5-collection包结构其与collections的区别"></a> 5、Collection包结构，其与Collections的区别</h3>
+<p>Collection是集合类的上级接口，子接口有 Set、List、LinkedList、ArrayList、Vector、Stack、Set；</p>
+<p>Collections是集合类的一个帮助类，它包含有各种有关集合操作的静态多态方法，用于实现对各种集合的搜索、排序、线程安全化等操作。此类不能实例化，就像一个工具类，服务于Java的Collection框架。</p>
+<h3 id="6-hashmap和hashtable的区别"><a class="markdownIt-Anchor" href="#6-hashmap和hashtable的区别"></a> 6、 HashMap和HashTable的区别</h3>
+<p><strong>（1）两者父类不同</strong></p>
+<p>HashMap是继承自AbstractMap类；</p>
+<p>Hashtable是继承自Dictionary类；</p>
+<p><strong>（2）对null的支持不同</strong></p>
+<p>HashMap：key 和 value都可以为null，key不可重复，value可重复；</p>
+<p>HashTable：key和value都不能为null，key不可重复，value可重复；</p>
+<p><strong>（3）安全性不同</strong></p>
+<p>HashMap是线程不安全的，在多线程并发的环境下，可能会产生死锁等问题，因此需要开发人员自己处理多线程的安全问题。</p>
+<p>HashTable是线程安全的，它的每个方法上都有synchronized 关键字，因此可直接用于多线程中。虽然HashMap是线程不安全的，但是它的效率远远高于HashTable，这样设计是合理的，因为大部分的使用场景都是单线程。当需要多线程操作的时候可以使用线程安全的ConcurrentHashMap。</p>
+<p>ConcurrentHashMap虽然也是线程安全的，但是它的效率比Hashtable要高好多倍。因为ConcurrentHashMap使用了分段锁，并不对整个数据进行锁定。</p>
+<p><strong>（5）计算hash值的方法不同</strong></p>
+<h3 id="6-hashmap-是线程安全的吗为什么不是线程安全的"><a class="markdownIt-Anchor" href="#6-hashmap-是线程安全的吗为什么不是线程安全的"></a> 6、HashMap 是线程安全的吗，为什么不是线程安全的?</h3>
+<p>不是线程安全的；</p>
+<p>如果有两个线程A和B，都进行插入数据，刚好这两条不同的数据经过哈希计算后得到的哈希码是一样的，且该位置还没有其他的数据。所以这两个线程都会进入我在上面标记为1的代码中。假设一种情况，线程A通过if判断，该位置没有哈希冲突，进入了if语句，还没有进行数据插入，这时候 CPU 就把资源让给了线程B，线程A停在了if语句里面，线程B判断该位置没有哈希冲突（线程A的数据还没插入），也进入了if语句，线程B执行完后，轮到线程A执 行，现在线程A直接在该位置插入而不用再判断。这时候，你会发现线程A把线程B插入的数据给覆盖了。发生了线程不安全情况。本来在 HashMap 中，发生哈希冲突是可以用链表法或者红黑树来解决的，但是在多线程中，可能就直接给覆盖了。</p>
+<h3 id="7-hashmap-的扩容过程"><a class="markdownIt-Anchor" href="#7-hashmap-的扩容过程"></a> 7、HashMap 的扩容过程</h3>
+<p>当向容器添加元素的时候，会判断当前容器的元素个数，如果大于等于阈值 — 即当前数组的长度乘以加载因子的值的时候，就要自动扩容啦。</p>
+<p>扩容( resize )就是重新计算容量，向 HashMap 对象里不停的添加元素，而 HashMap 对象内部的数组无法装载更多的元素时，对象就需要扩大数组的长度，以便能装入更多的元素。当然 Java 里的数组是无法自动扩容的，方法是使用一个新的数组代替已有的容量小的数组，就像我们用一个小桶装水，如果想装更多的水，就得换大水桶。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HashMap hashMap&#x3D;new HashMap(cap);</span><br><span class="line"></span><br><span class="line">cap&#x3D;3， hashMap 的容量为4； </span><br><span class="line">cap&#x3D;4， hashMap 的容量为4；</span><br><span class="line">cap&#x3D;5， hashMap 的容量为8； </span><br><span class="line">cap&#x3D;9， hashMap 的容量为16；</span><br></pre></td></tr></table></figure>
+<p>如果 cap 是2的n次方，则容量为 cap ，否则为大于 cap 的第一个2的n次方的数。</p>
+<h3 id="8-hashmaphashtableconcurrenthashmap的共同点和区别"><a class="markdownIt-Anchor" href="#8-hashmaphashtableconcurrenthashmap的共同点和区别"></a> 8、HashMap，HashTable，ConcurrentHashMap的共同点和区别</h3>
+<p>思路：可以从它们的底层结构、是否允许存储null，是否线性安全等几个维度进行描述，最后可以向面试官描述一下<strong>HashMap的死循环</strong>问题，以及ConcurrentHashMap为啥放弃分段锁。</p>
+<p><strong>HashMap</strong></p>
+<ul>
+<li>底层由链表+数组实现；</li>
+<li>可以存储null键和null值；</li>
+<li>线性不安全；</li>
+<li>初始容量为16，扩容每次都是2的n次幂；</li>
+<li>加载因子为0.75，当Map中元素总数超过Entry数组的0.75，触发扩容操作；</li>
+<li>并发情况下，HashMap进行put操作会引起死循环，导致CPU利用率接近100%；</li>
+</ul>
+<p><strong>HashTable</strong></p>
+<ul>
+<li>HashTable的底层也是由链表+数组实现；</li>
+<li>无论key还是value都不能为null；</li>
+<li>它是线性安全的，使用了synchronized关键字；</li>
+</ul>
+<p><strong>ConcurrentHashMap</strong></p>
+<ul>
+<li>ConcurrentHashMap的底层是数组+链表/红黑树</li>
+<li>不能存储null键和值</li>
+<li>ConcurrentHashMap是线程安全的</li>
+<li>ConcurrentHashMap使用 <strong>锁分段技术</strong> 确保线性安全</li>
+<li>JDK8为何又放弃分段锁，是因为多个分段锁浪费内存空间，竞争同一个锁的概率非常小，分段锁反而会造成效率低。</li>
+<li>JDK8的实现已经抛弃了Segment分段锁机制，利用 <strong>CAS+Synchronized</strong> 来保证并发更新的安全。数据结构采用：数组+链表/红黑树</li>
+</ul>
+<h3 id="9-hashmap死循环"><a class="markdownIt-Anchor" href="#9-hashmap死循环"></a> 9、HashMap死循环</h3>
+<p><strong>原因分析：</strong></p>
+<p>在内部，HashMap使用一个Entry数组保存key、value数据，当一对key、value被加入时，会通过一个hash算法得到数组的下标index，算法很简单，根据key的hash值，对数组的大小取模 hash &amp; (length-1)，并把结果插入数组该位置，如果该位置上已经有元素了，就说明存在hash冲突，这样会在index位置生成链表。</p>
+<p>如果存在hash冲突，最惨的情况，就是所有元素都定位到同一个位置，形成一个长长的链表，这样get一个值时，最坏情况需要遍历所有节点，性能变成了O(n)，所以元素的hash值算法和HashMap的初始化大小很重要。</p>
+<p>当插入一个新的节点时，如果不存在相同的key，则会判断当前内部元素是否已经达到阈值（默认是数组大小的0.75），如果已经达到阈值，会对数组进行扩容，也会对链表中的元素进行rehash。</p>
+<p><strong>jdk1.8以前：</strong></p>
+<p>在并发的情况，发生扩容时，可能会产生循环链表，在执行get的时候，会触发死循环，引起CPU的100%问题，所以一定要避免在并发环境下使用HashMap。</p>
+<p>曾经有人把这个问题报给了Sun，不过Sun不认为这是一个bug，因为在HashMap本来就不支持多线程使用，要并发就用ConcurrentHashmap。</p>
+<p><strong>jdk1.8以后：</strong></p>
+<p>底层改成数组+链表/红黑树，插入链表时头插法改成了尾插法</p>
+<h3 id="9-说说listsetmap三者的区别"><a class="markdownIt-Anchor" href="#9-说说listsetmap三者的区别"></a> 9、说说List,Set,Map三者的区别？</h3>
+<p>List(对付顺序的好帮手)： List接口存储一组不唯一（可以有多个元素引用相同的对象），有序的对象</p>
+<p>Set(注重独一无二的性质): 不允许重复的集合。不会有多个元素引用相同的对象。</p>
+<p>Map(用Key来搜索的专家): 使用键值对存储。Map会维护与Key有关联的值。两个Key可以引用相同的对象，但Key不能重复，典型的Key是String类型，但也可以是任何对象。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" title="Java基础面试题" target="_blank" rel="external">http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/</a>
+    </li>
+    
+    <!-- <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>无名无迹 得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/" title="SSM面试题"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/03/25/Redis4/" title="Redis 持久化方式"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

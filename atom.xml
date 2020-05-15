@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2020-03-25T11:20:24.571Z</updated>
+  <updated>2020-05-15T00:32:56.637Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,85 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mysql面试题</title>
+    <link href="http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2020-05-15T00:31:54.000Z</published>
+    <updated>2020-05-15T00:32:56.637Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;什么是mysql&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是mysql&quot;&gt;&lt;/a&gt; 什么是MySQL?&lt;/h2&gt;
+&lt;p&gt;MySQL 是一种关系型数据库，在Java企业级开发中非常常用，因为 MySQL 是开源免费的，并且方便扩
+      
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="MySQL" scheme="http://ctrl98.github.io/tags/MySQL/"/>
+    
+      <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SSM面试题</title>
+    <link href="http://ctrl98.github.io/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>http://ctrl98.github.io/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2020-05-15T00:29:04.000Z</published>
+    <updated>2020-05-15T00:30:27.476Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;spring&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#spring&quot;&gt;&lt;/a&gt; Spring&lt;/h3&gt;
+&lt;h4 id=&quot;1-spring是什么&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#1-spri
+      
+    
+    </summary>
+    
+    
+      <category term="SSM框架" scheme="http://ctrl98.github.io/categories/SSM%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="SSM框架" scheme="http://ctrl98.github.io/tags/SSM%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java基础面试题</title>
+    <link href="http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2020-05-15T00:25:50.000Z</published>
+    <updated>2020-05-15T00:28:02.402Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;java基础知识&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#java基础知识&quot;&gt;&lt;/a&gt; Java基础知识&lt;/h2&gt;
+&lt;h3 id=&quot;1-为什么-java-中只有值传递&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; h
+      
+    
+    </summary>
+    
+    
+      <category term="Java基础" scheme="http://ctrl98.github.io/categories/Java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="Java基础" scheme="http://ctrl98.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis 持久化方式</title>
@@ -201,7 +280,7 @@
     <link href="http://ctrl98.github.io/2020/03/09/Spring1/"/>
     <id>http://ctrl98.github.io/2020/03/09/Spring1/</id>
     <published>2020-03-09T02:14:25.000Z</published>
-    <updated>2020-03-09T05:59:14.872Z</updated>
+    <updated>2020-04-05T01:27:02.455Z</updated>
     
     <summary type="html">
     
@@ -226,7 +305,7 @@
     <link href="http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/"/>
     <id>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</id>
     <published>2020-03-08T08:08:24.000Z</published>
-    <updated>2020-03-11T08:05:01.983Z</updated>
+    <updated>2020-03-26T08:02:12.619Z</updated>
     
     <summary type="html">
     
@@ -454,85 +533,6 @@
       <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
     
       <category term="Tomcat" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/"/>
-    
-    
-      <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker部署mysql Navicat远程连接</title>
-    <link href="http://ctrl98.github.io/2020/02/26/Docker3/"/>
-    <id>http://ctrl98.github.io/2020/02/26/Docker3/</id>
-    <published>2020-02-26T10:53:17.000Z</published>
-    <updated>2020-02-26T12:01:13.768Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;拉取mysql57镜像&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#拉取mysql57镜像&quot;&gt;&lt;/a&gt; 拉取Mysql5.7镜像&lt;/h4&gt;
-&lt;p&gt;这里拉取的Mysql版本是5.7版本&lt;/p&gt;
-&lt;p&gt;这里不再作搜索，直接拉取：&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-    
-      <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
-    
-      <category term="MySQL" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/"/>
-    
-    
-      <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker基础知识之镜像与容器</title>
-    <link href="http://ctrl98.github.io/2020/02/26/Docker2/"/>
-    <id>http://ctrl98.github.io/2020/02/26/Docker2/</id>
-    <published>2020-02-26T02:26:40.000Z</published>
-    <updated>2020-02-27T04:10:33.214Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;废话不多说，前提条件是你的电脑已安装Docker和完成了基本的配置，还没有的话开车送你去&lt;a href=&quot;/2020/02/25/Docker1/&quot; title=&quot;Docker基础知识&quot;&gt;Docker基础知识&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;docker镜像&quot;&gt;&lt;a cla
-      
-    
-    </summary>
-    
-    
-      <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
-    
-    
-      <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker基础知识</title>
-    <link href="http://ctrl98.github.io/2020/02/25/Docker1/"/>
-    <id>http://ctrl98.github.io/2020/02/25/Docker1/</id>
-    <published>2020-02-25T07:46:30.000Z</published>
-    <updated>2020-02-26T09:33:27.998Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;docker&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#docker&quot;&gt;&lt;/a&gt; Docker&lt;/h2&gt;
-&lt;h3 id=&quot;什么是docker&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是docke
-      
-    
-    </summary>
-    
-    
-      <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
     
     
       <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>

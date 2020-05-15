@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
+    <lastmod>2020-05-15</lastmod>
+  </url>  <url>
+    <loc>http://ctrl98.github.io/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
+    <lastmod>2020-05-15</lastmod>
+  </url>  <url>
+    <loc>http://ctrl98.github.io/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/</loc>
+    <lastmod>2020-05-15</lastmod>
+  </url>  <url>
+    <loc>http://ctrl98.github.io/2020/03/09/Spring1/</loc>
+    <lastmod>2020-04-05</lastmod>
+  </url>  <url>
+    <loc>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</loc>
+    <lastmod>2020-03-26</lastmod>
+  </url>  <url>
     <loc>http://ctrl98.github.io/2020/03/25/Redis4/</loc>
     <lastmod>2020-03-25</lastmod>
   </url>  <url>
@@ -25,14 +40,8 @@
     <loc>http://ctrl98.github.io/2020/03/11/Spring-Cloud-Alibaba1/</loc>
     <lastmod>2020-03-13</lastmod>
   </url>  <url>
-    <loc>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</loc>
-    <lastmod>2020-03-11</lastmod>
-  </url>  <url>
     <loc>http://ctrl98.github.io/2020/03/10/Spring-Security-Oauth2/</loc>
     <lastmod>2020-03-10</lastmod>
-  </url>  <url>
-    <loc>http://ctrl98.github.io/2020/03/09/Spring1/</loc>
-    <lastmod>2020-03-09</lastmod>
   </url>  <url>
     <loc>http://ctrl98.github.io/2020/03/06/Redis1/</loc>
     <lastmod>2020-03-08</lastmod>

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Mysql面试题 | Lee&#39;s Notes</title>
+  <meta name="description" content="什么是MySQL? MySQL 是一种关系型数据库，在Java企业级开发中非常常用，因为 MySQL 是开源免费的，并且方便扩展。阿里巴巴数据库系统也大量用到了 MySQL，因此它的稳定性是有保障的。MySQL是开放源代码的，因此任何人都可以在 GPL(General Public License) 的许可下下载并根据个性化的需要对其进行修改。MySQL的默认端口号是3306。  什么是数据库连">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql面试题">
+<meta property="og:url" content="http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="Lee&#39;s Notes">
+<meta property="og:description" content="什么是MySQL? MySQL 是一种关系型数据库，在Java企业级开发中非常常用，因为 MySQL 是开源免费的，并且方便扩展。阿里巴巴数据库系统也大量用到了 MySQL，因此它的稳定性是有保障的。MySQL是开放源代码的，因此任何人都可以在 GPL(General Public License) 的许可下下载并根据个性化的需要对其进行修改。MySQL的默认端口号是3306。  什么是数据库连">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/22/16df1abc22e9484a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="article:published_time" content="2020-05-15T00:31:54.000Z">
+<meta property="article:modified_time" content="2020-05-15T00:32:56.637Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/10/22/16df1abc22e9484a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Notes" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">23h59m59s</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>无名无迹 得闲饮茶</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/">权限框架</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2-0/" rel="tag">OAuth2.0</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM%E6%A1%86%E6%9E%B6/" rel="tag">SSM框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">Mysql面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:31:54.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">SSM面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:29:04.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/15/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" class="title">Java基础面试题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-15T00:25:50.000Z" itemprop="datePublished">2020-05-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/25/Redis4/" class="title">Redis 持久化方式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-25T10:36:33.000Z" itemprop="datePublished">2020-03-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/24/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%911/" class="title">Java 多线程与并发基础原理一</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-24T02:33:16.000Z" itemprop="datePublished">2020-03-24</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是mysql"><span class="toc-number">1.</span> <span class="toc-text"> 什么是MySQL?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是数据库连接池"><span class="toc-number">2.</span> <span class="toc-text"> 什么是数据库连接池？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存储引擎"><span class="toc-number">3.</span> <span class="toc-text"> 存储引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#innodb和myisam的区别"><span class="toc-number">3.1.</span> <span class="toc-text"> InnoDB和MyISAM的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事务相关"><span class="toc-number">4.</span> <span class="toc-text"> 事务相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是事务"><span class="toc-number">4.1.</span> <span class="toc-text"> 什么是事务?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事物的四大特性acid"><span class="toc-number">4.2.</span> <span class="toc-text"> 事物的四大特性(ACID)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并发事务带来哪些问题"><span class="toc-number">4.3.</span> <span class="toc-text"> 并发事务带来哪些问题?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事务隔离级别有哪些"><span class="toc-number">4.4.</span> <span class="toc-text"> 事务隔离级别有哪些?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引相关"><span class="toc-number">5.</span> <span class="toc-text"> 索引相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#聚簇索引和非聚簇索引"><span class="toc-number">5.1.</span> <span class="toc-text"> 聚簇索引和非聚簇索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#回表查询"><span class="toc-number">5.2.</span> <span class="toc-text"> 回表查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#覆盖索引"><span class="toc-number">5.3.</span> <span class="toc-text"> 覆盖索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建立索引的原则"><span class="toc-number">5.4.</span> <span class="toc-text"> 建立索引的原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#做过哪些mysql索引相关优化"><span class="toc-number">5.5.</span> <span class="toc-text"> 做过哪些MySQL索引相关优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#简要说一下数据库范式"><span class="toc-number">5.6.</span> <span class="toc-text"> 简要说一下数据库范式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql如何为表字段添加索引"><span class="toc-number">5.7.</span> <span class="toc-text"> Mysql如何为表字段添加索引？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大表优化"><span class="toc-number">6.</span> <span class="toc-text"> 大表优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-限定数据的范围"><span class="toc-number">6.1.</span> <span class="toc-text"> 1. 限定数据的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-读写分离"><span class="toc-number">6.2.</span> <span class="toc-text"> 2. 读&#x2F;写分离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-垂直分区"><span class="toc-number">6.3.</span> <span class="toc-text"> 3. 垂直分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-水平分区"><span class="toc-number">6.4.</span> <span class="toc-text"> 4. 水平分区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#锁"><span class="toc-number">7.</span> <span class="toc-text"> 锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-number">7.1.</span> <span class="toc-text"> 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innodb存储引擎中的锁"><span class="toc-number">7.2.</span> <span class="toc-text"> InnoDB存储引擎中的锁</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#表锁"><span class="toc-number">7.2.1.</span> <span class="toc-text"> 表锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#页锁"><span class="toc-number">7.2.2.</span> <span class="toc-text"> 页锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#行锁"><span class="toc-number">7.2.3.</span> <span class="toc-text"> 行锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锁的类型"><span class="toc-number">7.3.</span> <span class="toc-text"> 锁的类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#乐观锁与悲观锁的区别"><span class="toc-number">8.</span> <span class="toc-text"> 乐观锁与悲观锁的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#悲观锁"><span class="toc-number">8.1.</span> <span class="toc-text"> 悲观锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观锁"><span class="toc-number">8.2.</span> <span class="toc-text"> 乐观锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两种锁的使用场景"><span class="toc-number">8.3.</span> <span class="toc-text"> 两种锁的使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观锁常见的两种实现方式"><span class="toc-number">8.4.</span> <span class="toc-text"> 乐观锁常见的两种实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-版本号机制"><span class="toc-number">8.4.1.</span> <span class="toc-text"> 1. 版本号机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-cas算法"><span class="toc-number">8.4.2.</span> <span class="toc-text"> 2. CAS算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观锁的缺点"><span class="toc-number">8.5.</span> <span class="toc-text"> 乐观锁的缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-aba-问题"><span class="toc-number">8.5.1.</span> <span class="toc-text"> 1 ABA 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-循环时间长开销大"><span class="toc-number">8.5.2.</span> <span class="toc-text"> 2 循环时间长开销大</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-只能保证一个共享变量的原子操作"><span class="toc-number">8.5.3.</span> <span class="toc-text"> 3 只能保证一个共享变量的原子操作</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Mysql面试题" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mysql面试题
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-date">
+	  <time datetime="2020-05-15T00:31:54.000Z" itemprop="datePublished">2020-05-15</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/MySQL/" rel="tag">MySQL</a>, <a class="article-tag-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/#comments" class="article-comment-link">Comments</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 6.6k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 23(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="什么是mysql"><a class="markdownIt-Anchor" href="#什么是mysql"></a> 什么是MySQL?</h2>
+<p>MySQL 是一种关系型数据库，在Java企业级开发中非常常用，因为 MySQL 是开源免费的，并且方便扩展。阿里巴巴数据库系统也大量用到了 MySQL，因此它的稳定性是有保障的。MySQL是开放源代码的，因此任何人都可以在 GPL(General Public License) 的许可下下载并根据个性化的需要对其进行修改。MySQL的默认端口号是<strong>3306</strong>。</p>
+<h2 id="什么是数据库连接池"><a class="markdownIt-Anchor" href="#什么是数据库连接池"></a> 什么是数据库连接池？</h2>
+<p>从上一个sql生命周期题目，可以看到其中的连接在里面发挥着重大作用，但频繁的创建和销毁，非常浪费系统资源。由于数据库更适合长连接，也就有个连接池，能对连接复用，维护连接对象、分配、管理、释放，也可以避免创建大量的连接对DB引发的各种问题；另外通过请求排队，也缓解对DB的冲击。</p>
+<h2 id="存储引擎"><a class="markdownIt-Anchor" href="#存储引擎"></a> 存储引擎</h2>
+<p>存储引擎负责对表中的数据进行<strong>读取</strong>和<strong>写入</strong>，常用的<strong>存储引擎</strong>有<strong>InnoDB</strong>、<strong>MyISAM</strong>、<strong>Menory</strong>等。</p>
+<h3 id="innodb和myisam的区别"><a class="markdownIt-Anchor" href="#innodb和myisam的区别"></a> InnoDB和MyISAM的区别</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">InnoDB</th>
+<th style="text-align:center">MyISAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">事务</td>
+<td style="text-align:center">支持</td>
+<td style="text-align:center">不支持</td>
+</tr>
+<tr>
+<td style="text-align:center">锁</td>
+<td style="text-align:center">支持<strong>MVCC</strong>行锁、表锁</td>
+<td style="text-align:center">表锁</td>
+</tr>
+<tr>
+<td style="text-align:center">外键</td>
+<td style="text-align:center">支持</td>
+<td style="text-align:center">不支持</td>
+</tr>
+<tr>
+<td style="text-align:center">存储空间</td>
+<td style="text-align:center">由于需要高速缓存，较大</td>
+<td style="text-align:center">可压缩</td>
+</tr>
+<tr>
+<td style="text-align:center">适用场景</td>
+<td style="text-align:center">有一定量的update和Insert</td>
+<td style="text-align:center">大量的查询</td>
+</tr>
+</tbody>
+</table>
+<h2 id="事务相关"><a class="markdownIt-Anchor" href="#事务相关"></a> 事务相关</h2>
+<h3 id="什么是事务"><a class="markdownIt-Anchor" href="#什么是事务"></a> 什么是事务?</h3>
+<p><strong>事务是逻辑上的一组操作，要么都执行，要么都不执行。</strong></p>
+<p>事务最经典也经常被拿出来说例子就是转账了。假如小明要给小红转账1000元，这个转账会涉及到两个关键操作就是：将小明的余额减少1000元，将小红的余额增加1000元。万一在这两个操作之间突然出现错误比如银行系统崩溃，导致小明余额减少而小红的余额没有增加，这样就不对了。事务就是保证这两个关键操作要么都成功，要么都要失败。</p>
+<h3 id="事物的四大特性acid"><a class="markdownIt-Anchor" href="#事物的四大特性acid"></a> 事物的四大特性(ACID)</h3>
+<p><strong>原子性：</strong> 事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；</p>
+<p><strong>一致性：</strong> 执行事务前后，数据保持一致，多个事务对同一个数据读取的结果是相同的；</p>
+<p><strong>隔离性：</strong> 并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间数据库是独立的；</p>
+<p><strong>持久性：</strong> 一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。</p>
+<h3 id="并发事务带来哪些问题"><a class="markdownIt-Anchor" href="#并发事务带来哪些问题"></a> 并发事务带来哪些问题?</h3>
+<p>在典型的应用程序中，多个事务并发运行，经常会操作相同的数据来完成各自的任务（多个用户对统一数据进行操作）。并发虽然是必须的，但可能会导致以下的问题。</p>
+<ul>
+<li><strong>脏读（Dirty read）:</strong> 当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据，那么另外一个事务读到的这个数据是“脏数据”，依据“脏数据”所做的操作可能是不正确的。</li>
+<li><strong>丢失修改（Lost to modify）:</strong> 指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。	例如：事务1读取某表中的数据A=20，事务2也读取A=20，事务1修改A=A-1，事务2也修改A=A-1，最终结果A=19，事务1的修改被丢失。</li>
+<li><strong>不可重复读（Unrepeatableread）:</strong> 指在一个事务内多次读同一数据。在这个事务还没有结束时，另一个事务也访问该数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。</li>
+<li><strong>幻读（Phantom read）:</strong> 幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。</li>
+</ul>
+<p><strong>不可重复度和幻读区别：</strong></p>
+<p>不可重复读的重点是修改，幻读的重点在于新增或者删除。</p>
+<p>例1（同样的条件, 你读取过的数据, 再次读取出来发现值不一样了 ）：事务1中的A先生读取自己的工资为     1000的操作还没完成，事务2中的B先生就修改了A的工资为2000，导致A再读自己的工资时工资变为  2000；这就是不可重复读。</p>
+<p>例2（同样的条件, 第1次和第2次读出来的记录数不一样 ）：假某工资单表中工资大于3000的有4人，事务1读取了所有工资大于3000的人，共查到4条记录，这时事务2 又插入了一条工资大于3000的记录，事务1再次读取时查到的记录就变为了5条，这样就导致了幻读。</p>
+<h3 id="事务隔离级别有哪些"><a class="markdownIt-Anchor" href="#事务隔离级别有哪些"></a> 事务隔离级别有哪些?</h3>
+<p><strong>SQL 标准定义了四个隔离级别：</strong></p>
+<ul>
+<li><strong>READ-UNCOMMITTED(读取未提交)：</strong> 最低的隔离级别，允许读取尚未提交的数据变更，<strong>可能会导致脏读、幻读或不可重复读</strong>。</li>
+<li><strong>READ-COMMITTED(读取已提交)：</strong> 允许读取并发事务已经提交的数据，<strong>可以阻止脏读，但是幻读或不可重复读仍有可能发生</strong>。</li>
+<li><strong>REPEATABLE-READ(可重复读)：</strong>  对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，<strong>可以阻止脏读和不可重复读，但幻读仍有可能发生</strong>。</li>
+<li><strong>SERIALIZABLE(可串行化)：</strong> 最高的隔离级别，完全服从ACID的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，<strong>该级别可以防止脏读、不可重复读以及幻读</strong>。</li>
+</ul>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align:center">隔离级别</th>
+<th style="text-align:center">脏读</th>
+<th style="text-align:center">不可重复读</th>
+<th style="text-align:center">幻影读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">READ-UNCOMMITTED</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td style="text-align:center">READ-COMMITTED</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td style="text-align:center">REPEATABLE-READ</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td style="text-align:center">SERIALIZABLE</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+</tr>
+</tbody>
+</table>
+<p>MySQL InnoDB 存储引擎的默认支持的隔离级别是 <strong>REPEATABLE-READ（可重读）</strong>。我们可以通过<code>SELECT @@tx_isolation;</code>命令来查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT @@tx_isolation;</span><br><span class="line">+-----------------+</span><br><span class="line">| @@tx_isolation  |</span><br><span class="line">+-----------------+</span><br><span class="line">| REPEATABLE-READ |</span><br><span class="line">+-----------------+</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是：与 SQL 标准不同的地方在于InnoDB 存储引擎在 **REPEATABLE-READ（可重读）<strong>事务隔离级别下使用的是Next-Key Lock 锁算法，因此可以避免幻读的产生，这与其他数据库系统(如 SQL Server)是不同的。所以说InnoDB 存储引擎的默认支持的隔离级别是 *<em>REPEATABLE-READ（可重读）*</em> 已经可以完全保证事务的隔离性要求，即达到了 SQL标准的</strong>SERIALIZABLE(可串行化)**隔离级别。</p>
+<p>因为隔离级别越低，事务请求的锁越少，所以大部分数据库系统的隔离级别都是<strong>READ-COMMITTED(读取提交内容):</strong>，但是你要知道的是InnoDB 存储引擎默认使用 **REPEATABLE-READ（可重读）**并不会有任何性能损失。</p>
+<p>InnoDB 存储引擎在 <strong>分布式事务</strong> 的情况下一般会用到**SERIALIZABLE(可串行化)**隔离级别。</p>
+<h2 id="索引相关"><a class="markdownIt-Anchor" href="#索引相关"></a> 索引相关</h2>
+<p>常见的索引种类有：<strong>主键索引</strong>(primary)、唯一索引(unique)、普通索引(indx)、联合索引。</p>
+<p>主键索引又称<strong>聚簇索引</strong>，其余的都成为<strong>非聚簇索引</strong>，或者也称为<strong>非主键索引</strong>，或者<strong>二级索引</strong>。</p>
+<h3 id="聚簇索引和非聚簇索引"><a class="markdownIt-Anchor" href="#聚簇索引和非聚簇索引"></a> 聚簇索引和非聚簇索引</h3>
+<p>聚集索引采用的数据结构是B+树。</p>
+<p>聚集索引的叶子节点存储的是<strong>整行数据</strong>，非聚集索引的叶子节点存储的是<strong>索引列和主键</strong>。</p>
+<p>如果要是通过非聚集索引获取整行数据的某个字段值，那么流程应该是这样的：</p>
+<ul>
+<li>首先通过查询条件找到对应的主键id</li>
+<li>从id主键的B+树上找到对应id的数据。</li>
+<li>从整行数据中获取对应的字段值。</li>
+</ul>
+<p>这个流程的过程叫做<strong>回表</strong>。</p>
+<h3 id="回表查询"><a class="markdownIt-Anchor" href="#回表查询"></a> 回表查询</h3>
+<p>回表是对Innodb存储引擎而言的，在<code>InnoDB</code>存储引擎中，主键索引的叶子节点存储的记录的数据，而普通索引的叶子节点存储的主键索引的地点。</p>
+<p>当我们通过主键查询时，只需要搜索主键索引的搜索树，直接可以得到记录的数据。</p>
+<p>当我们通过普通索引进行查询时，通过搜索普通索引的搜索树得到主键的地址之后，还要再使用该主键对主键搜索树进行搜索，这个过程称为回表。</p>
+<h3 id="覆盖索引"><a class="markdownIt-Anchor" href="#覆盖索引"></a> 覆盖索引</h3>
+<p>覆盖索引，即从非聚簇索引中就能查到记录，不需要再次从主键索引中获取记录。</p>
+<p><strong>优点</strong>：避免回表的产生，减少I/O，提高性能。</p>
+<p>可以通过explain命令，查看Extra中是否有Using index。</p>
+<h3 id="建立索引的原则"><a class="markdownIt-Anchor" href="#建立索引的原则"></a> 建立索引的原则</h3>
+<ul>
+<li>符合最左前缀原则，联合索引要把查询频率最高的列放在最左边。</li>
+<li>查询频率比较高的列。</li>
+<li>索引列不能参与计算，最好使用简单的数字类型。</li>
+<li>主键自增</li>
+<li>尽量使用<strong>覆盖索引</strong>进行查询，避免<strong>回表</strong>带来的性能损耗。</li>
+</ul>
+<p><strong>最左前缀</strong></p>
+<ul>
+<li>顾名思义，就是最左优先，在创建多列索引时，要根据业务需求，where子句中使用最频繁的一列放在最左边。</li>
+<li>还有一个就是生效原则 比如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">index(a,b,c)</span><br><span class="line">where a&#x3D;3	只使用了a</span><br><span class="line">where a&#x3D;3 and b&#x3D;5	使用了a,b</span><br><span class="line">where a&#x3D;3 and b&#x3D;5 and c&#x3D;4	使用了a,b,c</span><br><span class="line">where b&#x3D;3 or where c&#x3D;4	没有使用索引</span><br><span class="line">where a&#x3D;3 and c&#x3D;4	仅使用了a</span><br><span class="line">where a&#x3D;3 and b&gt;10 and c&#x3D;7	使用了a,b</span><br><span class="line">where a&#x3D;3 and b like &#39;xx%&#39; and c&#x3D;7	使用了a,b</span><br></pre></td></tr></table></figure>
+<h3 id="做过哪些mysql索引相关优化"><a class="markdownIt-Anchor" href="#做过哪些mysql索引相关优化"></a> 做过哪些MySQL索引相关优化</h3>
+<ul>
+<li>尽量使用主键查询: 聚簇索引上存储了全部数据, 相比普通索引查询, 减少了回表的消耗.</li>
+<li>MySQL5.6之后引入了索引下推优化, 通过适当的使用联合索引, 减少回表判断的消耗.</li>
+<li>若频繁查询某一列数据, 可以考虑利用覆盖索引避免回表.</li>
+<li>联合索引将高频字段放在最左边.</li>
+</ul>
+<h3 id="简要说一下数据库范式"><a class="markdownIt-Anchor" href="#简要说一下数据库范式"></a> 简要说一下数据库范式</h3>
+<ul>
+<li>第一范式: 每个字段都不可再分.</li>
+<li>第二范式: 在一范式的基础上, 要求数据库表中的每个实例或行必须可以被惟一地区分. 通常需要为表加上一个列, 以存储各个实例的惟一标识. 这个惟一属性列被称为主关键字或主键.</li>
+<li>第三范式: 在二范式的基础上, 要求一个数据库表中不包含已在其它表中已包含的非主关键字信息. 所以第三范式具有如下特征：1). 每一列只有一个值. 2). 每一行都能区分. 3). 每一个表都不包含其他表已经包含的非主关键字信息.</li>
+</ul>
+<h3 id="mysql如何为表字段添加索引"><a class="markdownIt-Anchor" href="#mysql如何为表字段添加索引"></a> Mysql如何为表字段添加索引？</h3>
+<p>1.添加PRIMARY KEY（主键索引）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &#96;table_name&#96; ADD PRIMARY KEY ( &#96;column&#96; )</span><br></pre></td></tr></table></figure>
+<p>2.添加UNIQUE(唯一索引)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &#96;table_name&#96; ADD UNIQUE ( &#96;column&#96; )</span><br></pre></td></tr></table></figure>
+<p>3.添加INDEX(普通索引)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &#96;table_name&#96; ADD INDEX index_name ( &#96;column&#96; )</span><br></pre></td></tr></table></figure>
+<p>4.添加FULLTEXT(全文索引)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &#96;table_name&#96; ADD FULLTEXT ( &#96;column&#96;)</span><br></pre></td></tr></table></figure>
+<p>5.添加多列索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &#96;table_name&#96; ADD INDEX index_name ( &#96;column1&#96;, &#96;column2&#96;, &#96;column3&#96; )</span><br></pre></td></tr></table></figure>
+<h2 id="大表优化"><a class="markdownIt-Anchor" href="#大表优化"></a> 大表优化</h2>
+<p>当MySQL单表记录数过大时，数据库的CRUD性能会明显下降，一些常见的优化措施如下：</p>
+<h3 id="1-限定数据的范围"><a class="markdownIt-Anchor" href="#1-限定数据的范围"></a> 1. 限定数据的范围</h3>
+<p>务必禁止不带任何限制数据范围条件的查询语句。比如：我们当用户在查询订单历史的时候，我们可以控制在一个月的范围内；</p>
+<h3 id="2-读写分离"><a class="markdownIt-Anchor" href="#2-读写分离"></a> 2. 读/写分离</h3>
+<p>经典的数据库拆分方案，主库负责写，从库负责读；</p>
+<h3 id="3-垂直分区"><a class="markdownIt-Anchor" href="#3-垂直分区"></a> 3. 垂直分区</h3>
+<p><strong>根据数据库里面数据表的相关性进行拆分。</strong> 例如，用户表中既有用户的登录信息又有用户的基本信息，可以将用户表拆分成两个单独的表，甚至放到单独的库做分库。</p>
+<p><strong>简单来说垂直拆分是指数据表列的拆分，把一张列比较多的表拆分为多张表。</strong> 如下图所示，这样来说大家应该就更容易理解了。</p>
+<ul>
+<li><strong>垂直拆分的优点：</strong> 可以使得列数据变小，在查询时减少读取的Block数，减少I/O次数。此外，垂直分区可以简化表的结构，易于维护。</li>
+<li><strong>垂直拆分的缺点：</strong> 主键会出现冗余，需要管理冗余列，并会引起Join操作，可以通过在应用层进行Join来解决。此外，垂直分区会让事务变得更加复杂；</li>
+</ul>
+<h3 id="4-水平分区"><a class="markdownIt-Anchor" href="#4-水平分区"></a> 4. 水平分区</h3>
+<p><strong>保持数据表结构不变，通过某种策略存储数据分片。这样每一片数据分散到不同的表或者库中，达到了分布式的目的。 水平拆分可以支撑非常大的数据量。</strong></p>
+<p>水平拆分是指数据表行的拆分，表的行数超过200万行时，就会变慢，这时可以把一张的表的数据拆成多张表来存放。举个例子：我们可以将用户信息表拆分成多个用户信息表，这样就可以避免单一表数据量过大对性能造成影响。</p>
+<h2 id="锁"><a class="markdownIt-Anchor" href="#锁"></a> 锁</h2>
+<h3 id="概念"><a class="markdownIt-Anchor" href="#概念"></a> 概念</h3>
+<p>MySQL中的锁，对于MySQL来说，锁是一个很重要的特性，数据库的锁是为了支持对共享资源进行并发访问，提供数据的完整性和一致性，这样才能保证在高并发的情况下，访问数据库的时候，数据不会出现问题。</p>
+<h3 id="innodb存储引擎中的锁"><a class="markdownIt-Anchor" href="#innodb存储引擎中的锁"></a> InnoDB存储引擎中的锁</h3>
+<h4 id="表锁"><a class="markdownIt-Anchor" href="#表锁"></a> 表锁</h4>
+<p>表级别的锁定是MySQL各存储引擎中最大颗粒度的锁定机制。该锁定机制最大的特点是实现逻辑非常简单，带来的系统负面影响最小。所以获取锁和释放锁的速度很快。由于表级锁一次会将整个表锁定，所以可以很好的避免困扰我们的死锁问题。</p>
+<p>当然，锁定颗粒度大所带来最大的负面影响就是出现锁定资源争用的概率也会最高，致使并大度大打折扣。</p>
+<p>使用表级锁定的主要是MyISAM，MEMORY，CSV等一些非事务性存储引擎。</p>
+<p><strong>特点：</strong> 开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。</p>
+<h4 id="页锁"><a class="markdownIt-Anchor" href="#页锁"></a> 页锁</h4>
+<p>页级锁定是MySQL中比较独特的一种锁定级别，在其他数据库管理软件中也并不是太常见。页级锁定的特点是锁定颗粒度介于行级锁定与表级锁之间，所以获取锁定所需要的资源开销，以及所能提供的并发处理能力也同样是介于上面二者之间。另外，页级锁定和行级锁定一样，会发生死锁。在数据库实现资源锁定的过程中，随着锁定资源颗粒度的减小，锁定相同数据量的数据所需要消耗的内存数量是越来越多的，实现算法也会越来越复杂。不过，随着锁定资源 颗粒度的减小，应用程序的访问请求遇到锁等待的可能性也会随之降低，系统整体并发度也随之提升。使用页级锁定的主要是BerkeleyDB存储引擎。</p>
+<p><strong>特点：</strong> 开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。</p>
+<h4 id="行锁"><a class="markdownIt-Anchor" href="#行锁"></a> 行锁</h4>
+<p>行级锁定最大的特点就是锁定对象的粒度很小，也是目前各大数据库管理软件所实现的锁定颗粒度最小的。由于锁定颗粒度很小，所以发生锁定资源争用的概率也最小，能够给予应用程序尽可能大的并发处理能力而提高一些需要高并发应用系统的整体性能。</p>
+<p>虽然能够在并发处理能力上面有较大的优势，但是行级锁定也因此带来了不少弊端。由于锁定资源的颗粒度很小，所以每次获取锁和释放锁需要做的事情也更多，带来的消耗自然也就更大了。此外，行级锁定也最容易发生死锁。</p>
+<p><strong>特点：</strong> 开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。</p>
+<p>比较表锁我们可以发现，这两种锁的特点基本都是相反的，而从锁的角度来说，<strong>表级锁</strong>更适合于以查询为主，只有少量按索引条件更新数据的应用，如Web应用；而<strong>行级锁</strong>则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用，如一些在线事务处理（OLTP）系统。</p>
+<h3 id="锁的类型"><a class="markdownIt-Anchor" href="#锁的类型"></a> 锁的类型</h3>
+<p>InnoDB存储引擎中存在着不同类型的锁，下面一一介绍一下。</p>
+<p><strong>S or X (共享锁、排他锁)</strong></p>
+<p>数据的操作其实只有两种，也就是读和写，而数据库在实现锁时，也会对这两种操作使用不同的锁；InnoDB 实现了标准的<strong>行级锁</strong>，也就是<strong>共享锁（Shared Lock）和互斥锁（Exclusive Lock）</strong>。</p>
+<ul>
+<li>共享锁（读锁）（S Lock），允许事务读一行数据。</li>
+<li>排他锁（写锁）（X Lock），允许事务删除或更新一行数据。</li>
+</ul>
+<p><strong>IS or IX (共享、排他)意向锁</strong></p>
+<p>为了允许行锁和表锁共存，实现多粒度锁机制，InnoDB存储引擎支持一种额外的锁方式，就称为<strong>意向锁</strong>，意向锁在 InnoDB 中是<strong>表级锁</strong>，意向锁分为：</p>
+<ul>
+<li>意向共享锁：表达一个事务想要获取一张表中某几行的共享锁。</li>
+<li>意向排他锁：表达一个事务想要获取一张表中某几行的排他锁。</li>
+</ul>
+<p>另外，这些锁之间的并不是一定可以共存的，有些锁之间是不兼容的，所谓<strong>兼容性</strong>就是指事务 A 获得一个某行某种锁之后，事务 B 同样的在这个行上尝试获取某种锁，如果能立即获取，则称锁兼容，反之叫冲突。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/10/22/16df1abc22e9484a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="img" /></p>
+<h2 id="乐观锁与悲观锁的区别"><a class="markdownIt-Anchor" href="#乐观锁与悲观锁的区别"></a> 乐观锁与悲观锁的区别</h2>
+<h3 id="悲观锁"><a class="markdownIt-Anchor" href="#悲观锁"></a> 悲观锁</h3>
+<p>总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（<strong>共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程</strong>）。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。Java中<code>synchronized</code>和<code>ReentrantLock</code>等独占锁就是悲观锁思想的实现。</p>
+<h3 id="乐观锁"><a class="markdownIt-Anchor" href="#乐观锁"></a> 乐观锁</h3>
+<p>总是假设最好的情况，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号机制和CAS算法实现。<strong>乐观锁适用于多读的应用类型，这样可以提高吞吐量</strong>，像数据库提供的类似于<strong>write_condition机制</strong>，其实都是提供的乐观锁。在Java中<code>java.util.concurrent.atomic</code>包下面的原子变量类就是使用了乐观锁的一种实现方式<strong>CAS</strong>实现的。</p>
+<h3 id="两种锁的使用场景"><a class="markdownIt-Anchor" href="#两种锁的使用场景"></a> 两种锁的使用场景</h3>
+<p>从上面对两种锁的介绍，我们知道两种锁各有优缺点，不可认为一种好于另一种，像<strong>乐观锁适用于写比较少的情况下（多读场景）</strong>，即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果是多写的情况，一般会经常产生冲突，这就会导致上层应用会不断的进行retry，这样反倒是降低了性能，所以<strong>一般多写的场景下用悲观锁就比较合适。</strong></p>
+<h3 id="乐观锁常见的两种实现方式"><a class="markdownIt-Anchor" href="#乐观锁常见的两种实现方式"></a> 乐观锁常见的两种实现方式</h3>
+<blockquote>
+<p><strong>乐观锁一般会使用版本号机制或CAS算法实现。</strong></p>
+</blockquote>
+<h4 id="1-版本号机制"><a class="markdownIt-Anchor" href="#1-版本号机制"></a> 1. 版本号机制</h4>
+<p>一般是在数据表中加上一个数据版本号version字段，表示数据被修改的次数，当数据被修改时，version值会加一。当线程A要更新数据值时，在读取数据的同时也会读取version值，在提交更新时，若刚才读取到的version值为当前数据库中的version值相等时才更新，否则重试更新操作，直到更新成功。</p>
+<p><strong>举一个简单的例子：</strong> 假设数据库中帐户信息表中有一个 version 字段，当前值为 1；而当前帐户余额字段（ balance ）为 $100 ；</p>
+<ol>
+<li>操作员 A 此时将其读出（ version=1 ），并从其帐户余额中扣除 $50（ $100-$50 ）。</li>
+<li>在操作员 A 操作的过程中，操作员B 也读入此用户信息（ version=1 ），并从其帐户余额中扣除 $20 （ $100-$20 ）。</li>
+<li>操作员 A 完成了修改工作，将数据版本号加一（ version=2 ），连同帐户扣除后余额（ balance=$50 ），提交至数据库更新，此时由于提交数据版本大于数据库记录当前版本，数据被更新，数据库记录 version 更新为 2 。</li>
+<li>操作员 B 完成了操作，也将版本号加一（ version=2 ）试图向数据库提交数据（ balance=$80 ），但此时比对数据库记录版本时发现，操作员 B 提交的数据版本号为 2 ，数据库记录当前版本也为 2 ，不满足 “ 提交版本必须大于记录当前版本才能执行更新 “ 的乐观锁策略，因此，操作员 B 的提交被驳回。</li>
+</ol>
+<p>这样，就避免了操作员 B 用基于 version=1 的旧数据修改的结果覆盖操作员A 的操作结果的可能。</p>
+<h4 id="2-cas算法"><a class="markdownIt-Anchor" href="#2-cas算法"></a> 2. CAS算法</h4>
+<p>即<strong>compare and swap（比较与交换）</strong>，是一种有名的<strong>无锁算法</strong>。无锁编程，即不使用锁的情况下实现多线程之间的变量同步，也就是在没有线程被阻塞的情况下实现变量的同步，所以也叫非阻塞同步（Non-blocking Synchronization）。<strong>CAS算法</strong>涉及到三个操作数</p>
+<ul>
+<li>需要读写的内存值 V</li>
+<li>进行比较的值 A</li>
+<li>拟写入的新值 B</li>
+</ul>
+<p>当且仅当 V 的值等于 A时，CAS通过原子方式用新值B来更新V的值，否则不会执行任何操作（比较和替换是一个原子操作）。一般情况下是一个<strong>自旋操作</strong>，即<strong>不断的重试</strong>。</p>
+<h3 id="乐观锁的缺点"><a class="markdownIt-Anchor" href="#乐观锁的缺点"></a> 乐观锁的缺点</h3>
+<blockquote>
+<p>ABA 问题是乐观锁一个常见的问题</p>
+</blockquote>
+<h4 id="1-aba-问题"><a class="markdownIt-Anchor" href="#1-aba-问题"></a> 1 ABA 问题</h4>
+<p>如果一个变量V初次读取的时候是A值，并且在准备赋值的时候检查到它仍然是A值，那我们就能说明它的值没有被其他线程修改过了吗？很明显是不能的，因为在这段时间它的值可能被改为其他值，然后又改回A，那CAS操作就会误认为它从来没有被修改过。这个问题被称为CAS操作的 <strong>&quot;ABA&quot;问题。</strong></p>
+<p>JDK 1.5 以后的 <code>AtomicStampedReference 类</code>就提供了此种能力，其中的 <code>compareAndSet 方法</code>就是首先检查当前引用是否等于预期引用，并且当前标志是否等于预期标志，如果全部相等，则以原子方式将该引用和该标志的值设置为给定的更新值。</p>
+<h4 id="2-循环时间长开销大"><a class="markdownIt-Anchor" href="#2-循环时间长开销大"></a> 2 循环时间长开销大</h4>
+<p><strong>自旋CAS（也就是不成功就一直循环执行直到成功）如果长时间不成功，会给CPU带来非常大的执行开销。</strong> 如果JVM能支持处理器提供的pause指令那么效率会有一定的提升，pause指令有两个作用，第一它可以延迟流水线执行指令（de-pipeline）,使CPU不会消耗过多的执行资源，延迟的时间取决于具体实现的版本，在一些处理器上延迟时间是零。第二它可以避免在退出循环的时候因内存顺序冲突（memory order violation）而引起CPU流水线被清空（CPU pipeline flush），从而提高CPU的执行效率。</p>
+<h4 id="3-只能保证一个共享变量的原子操作"><a class="markdownIt-Anchor" href="#3-只能保证一个共享变量的原子操作"></a> 3 只能保证一个共享变量的原子操作</h4>
+<p>CAS 只对单个共享变量有效，当操作涉及跨多个共享变量时 CAS 无效。但是从 JDK 1.5开始，提供了<code>AtomicReference类</code>来保证引用对象之间的原子性，你可以把多个变量放在一个对象里来进行 CAS 操作.所以我们可以使用锁或者利用<code>AtomicReference类</code>把多个共享变量合并成一个共享变量来操作。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/" title="Mysql面试题" target="_blank" rel="external">http://ctrl98.github.io/2020/05/15/Mysql%E9%9D%A2%E8%AF%95%E9%A2%98/</a>
+    </li>
+    
+    <!-- <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">23h59m59s</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>无名无迹 得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/05/15/SSM%E9%9D%A2%E8%AF%95%E9%A2%98/" title="SSM面试题"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
