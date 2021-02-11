@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-11T04:04:15.776Z</updated>
+  <updated>2021-02-11T05:38:14.052Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -17,13 +17,46 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Jna调用dll动态库</title>
+    <link href="http://ctrl98.github.io/2021/02/11/Jna%E8%B0%83%E7%94%A8dll%E5%8A%A8%E6%80%81%E5%BA%93/"/>
+    <id>http://ctrl98.github.io/2021/02/11/Jna%E8%B0%83%E7%94%A8dll%E5%8A%A8%E6%80%81%E5%BA%93/</id>
+    <published>2021-02-11T04:57:19.000Z</published>
+    <updated>2021-02-11T05:38:14.052Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;哪些项目使用了-jna&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#哪些项目使用了-jna&quot;&gt;&lt;/a&gt; 哪些项目使用了 JNA&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Apache Cassandra：大型NoSQL数据存储&lt;/li&gt;
+&lt;li&gt;J
+      
+    
+    </summary>
+    
+    
+      <category term="Jna" scheme="http://ctrl98.github.io/categories/Jna/"/>
+    
+    
+      <category term="Jna" scheme="http://ctrl98.github.io/tags/Jna/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Jfinal框架学习</title>
     <link href="http://ctrl98.github.io/2021/02/11/Jfinal%E6%A1%86%E6%9E%B6/"/>
     <id>http://ctrl98.github.io/2021/02/11/Jfinal%E6%A1%86%E6%9E%B6/</id>
     <published>2021-02-11T03:59:06.000Z</published>
-    <updated>2021-02-11T04:04:15.776Z</updated>
+    <updated>2021-02-11T04:55:40.786Z</updated>
     
     <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;jfinal框架&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#jfinal框架&quot;&gt;&lt;/a&gt; Jfinal框架&lt;/h2&gt;
+&lt;p&gt;官方文档链接：&lt;a href=&quot;https://jfinal.com/doc&quot; target=&quot;_blank
+      
     
     </summary>
     
@@ -492,33 +525,6 @@
       
         &lt;h4 id=&quot;什么是dockerfile文件&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是dockerfile文件&quot;&gt;&lt;/a&gt; 什么是Dockerfile文件&lt;/h4&gt;
 &lt;p&gt;Dockerfile文件其实就是一个文本文件，由一系列命令和参数构
-      
-    
-    </summary>
-    
-    
-      <category term="容器引擎" scheme="http://ctrl98.github.io/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/"/>
-    
-    
-      <category term="Docker" scheme="http://ctrl98.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker容器的备份、迁移与恢复</title>
-    <link href="http://ctrl98.github.io/2020/02/27/Docker5/"/>
-    <id>http://ctrl98.github.io/2020/02/27/Docker5/</id>
-    <published>2020-02-27T04:13:17.000Z</published>
-    <updated>2020-02-27T05:08:04.763Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;容器的备份-迁移与恢复&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#容器的备份-迁移与恢复&quot;&gt;&lt;/a&gt; 容器的备份、迁移与恢复&lt;/h3&gt;
-&lt;p&gt;其中涉及到的命令：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;docker commit&lt;
       
     
     </summary>
