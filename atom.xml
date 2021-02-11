@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-11T06:00:56.708Z</updated>
+  <updated>2021-02-11T07:14:27.893Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日志框架 Log4j2</title>
+    <link href="http://ctrl98.github.io/2021/02/11/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6-Log4j2/"/>
+    <id>http://ctrl98.github.io/2021/02/11/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6-Log4j2/</id>
+    <published>2021-02-11T06:40:56.000Z</published>
+    <updated>2021-02-11T07:14:27.893Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;简介&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#简介&quot;&gt;&lt;/a&gt; 简介&lt;/h4&gt;
+&lt;p&gt;在Java项目中，日志是必不可少的功能，日志对于快速定位问题，检查日常项目运行状态等有非常重要的作用，但是目前Java日志存在多种框架，如：Lo
+      
+    
+    </summary>
+    
+    
+      <category term="日志框架" scheme="http://ctrl98.github.io/categories/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="框架学习" scheme="http://ctrl98.github.io/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>synchronized 使用注意</title>
@@ -505,35 +530,6 @@
     
     
       <category term="MySQL" scheme="http://ctrl98.github.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git Bash基础操作</title>
-    <link href="http://ctrl98.github.io/2020/03/06/Git1/"/>
-    <id>http://ctrl98.github.io/2020/03/06/Git1/</id>
-    <published>2020-03-06T00:48:45.000Z</published>
-    <updated>2020-03-25T06:57:58.675Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;git基本操作&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#git基本操作&quot;&gt;&lt;/a&gt; Git基本操作&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;安装：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;根据系统自己选择下载傻瓜式安装&lt;/p&gt;
-&lt;p&gt;&lt;stron
-      
-    
-    </summary>
-    
-    
-      <category term="Git" scheme="http://ctrl98.github.io/categories/Git/"/>
-    
-    
-      <category term="Git" scheme="http://ctrl98.github.io/tags/Git/"/>
-    
-      <category term="版本控制工具" scheme="http://ctrl98.github.io/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
