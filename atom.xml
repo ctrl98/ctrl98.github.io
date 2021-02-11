@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Lee&#39;s Notes</title>
+  <title>Lee&#39;s Blog</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-11T05:59:49.592Z</updated>
+  <updated>2021-02-11T06:00:56.708Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -21,13 +21,23 @@
     <link href="http://ctrl98.github.io/2021/02/11/synchronized-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/"/>
     <id>http://ctrl98.github.io/2021/02/11/synchronized-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/</id>
     <published>2021-02-11T05:59:49.000Z</published>
-    <updated>2021-02-11T05:59:49.592Z</updated>
+    <updated>2021-02-11T06:00:56.708Z</updated>
     
     <summary type="html">
+    
+      
+      
+        &lt;h5 id=&quot;synchronized&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#synchronized&quot;&gt;&lt;/a&gt; synchronized&lt;/h5&gt;
+&lt;p&gt;1、synchronized 是针对对象的，如果你在此类之上创建了多个对象，即便这个
+      
     
     </summary>
     
     
+      <category term="Java基础" scheme="http://ctrl98.github.io/categories/Java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="并发" scheme="http://ctrl98.github.io/tags/%E5%B9%B6%E5%8F%91/"/>
     
   </entry>
   
