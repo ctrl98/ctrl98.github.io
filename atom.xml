@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-12T06:46:09.982Z</updated>
+  <updated>2021-02-12T10:10:18.005Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>什么是WebService</title>
+    <link href="http://ctrl98.github.io/2021/02/12/%E4%BB%80%E4%B9%88%E6%98%AFWebService/"/>
+    <id>http://ctrl98.github.io/2021/02/12/%E4%BB%80%E4%B9%88%E6%98%AFWebService/</id>
+    <published>2021-02-12T09:59:34.000Z</published>
+    <updated>2021-02-12T10:10:18.005Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;webservice是什么&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#webservice是什么&quot;&gt;&lt;/a&gt; WebService是什么&lt;/h4&gt;
+&lt;p&gt;Web service是一个平台独立的，低耦合的，自包含的、基于可编程的web
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Webservice" scheme="http://ctrl98.github.io/tags/Webservice/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于RPC和Http的那些事儿</title>
+    <link href="http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"/>
+    <id>http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</id>
+    <published>2021-02-12T08:11:38.000Z</published>
+    <updated>2021-02-12T09:51:21.850Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;首先来看一个问题&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#首先来看一个问题&quot;&gt;&lt;/a&gt; 首先来看一个问题&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;既然有 HTTP 请求，为什么还要用 RPC 调用？&lt;/p&gt;
+&lt;/blockquo
+      
+    
+    </summary>
+    
+    
+    
+      <category term="RPC" scheme="http://ctrl98.github.io/tags/RPC/"/>
+    
+  </entry>
   
   <entry>
     <title>使用JCEF开发浏览器</title>
@@ -468,59 +516,6 @@
         &lt;h4 id=&quot;什么是分布式锁&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是分布式锁&quot;&gt;&lt;/a&gt; 什么是分布式锁&lt;/h4&gt;
 &lt;p&gt;分布式锁在分布式系统中非常常见，比如对公共资源进行操作。&lt;/p&gt;
 &lt;p&gt;如卖车票，同一时刻只能有一个节点将某个特定
-      
-    
-    </summary>
-    
-    
-      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis主从、哨兵及集群模式的配置</title>
-    <link href="http://ctrl98.github.io/2020/03/07/Redis2/"/>
-    <id>http://ctrl98.github.io/2020/03/07/Redis2/</id>
-    <published>2020-03-07T13:02:19.000Z</published>
-    <updated>2020-03-08T01:44:30.300Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;redis主从模式的配置&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#redis主从模式的配置&quot;&gt;&lt;/a&gt; redis主从模式的配置&lt;/h3&gt;
-&lt;p&gt;redis单例提供了一种数据缓存方式和丰富的数据操作&lt;code&gt;api&lt;/code&gt;
-      
-    
-    </summary>
-    
-    
-      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis数据缓存 基础知识</title>
-    <link href="http://ctrl98.github.io/2020/03/06/Redis1/"/>
-    <id>http://ctrl98.github.io/2020/03/06/Redis1/</id>
-    <published>2020-03-06T01:12:22.000Z</published>
-    <updated>2020-03-08T07:47:46.848Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;主流应用架构&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#主流应用架构&quot;&gt;&lt;/a&gt; 主流应用架构&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;穿透查询：请求数据的时候先到缓存
       
     
     </summary>

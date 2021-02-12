@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>关于RPC和Http的那些事儿 | Lee&#39;s Blog</title>
+  <meta name="description" content="首先来看一个问题  既然有 HTTP 请求，为什么还要用 RPC 调用？  回答这个问题，需要了解rpc通信协议的细节，但是在这里强调一遍通信协议不是rpc最重要的部分 这个问题其实是有理解误区的，首先 http 和 rpc 并不是一个并行概念。 rpc是远端过程调用，其调用协议通常包含传输协议和序列化协议。   传输协议包含: 如著名的 gRPC 使用的 http2 协议，也有如dubbo一类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于RPC和Http的那些事儿">
+<meta property="og:url" content="http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="首先来看一个问题  既然有 HTTP 请求，为什么还要用 RPC 调用？  回答这个问题，需要了解rpc通信协议的细节，但是在这里强调一遍通信协议不是rpc最重要的部分 这个问题其实是有理解误区的，首先 http 和 rpc 并不是一个并行概念。 rpc是远端过程调用，其调用协议通常包含传输协议和序列化协议。   传输协议包含: 如著名的 gRPC 使用的 http2 协议，也有如dubbo一类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic2.zhimg.com/50/v2-89c905b0806577471aa7789a25ac0d44_hd.jpg?source=1940ef5c">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-89c905b0806577471aa7789a25ac0d44_720w.jpg?source=1940ef5c">
+<meta property="article:published_time" content="2021-02-12T08:11:38.000Z">
+<meta property="article:modified_time" content="2021-02-12T09:51:21.850Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="RPC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic2.zhimg.com/50/v2-89c905b0806577471aa7789a25ac0d44_hd.jpg?source=1940ef5c">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Rich7Pro</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Java后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JCEF/">JCEF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jna/">Jna</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E6%A1%86%E6%9E%B6/">Web框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6/">日志框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/">权限框架</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jna/" rel="tag">Jna</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2-0/" rel="tag">OAuth2.0</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM%E6%A1%86%E6%9E%B6/" rel="tag">SSM框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webservice/" rel="tag">Webservice</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" rel="tag">框架学习</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-关于RPC和Http的那些事儿" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于RPC和Http的那些事儿
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/" class="article-date">
+	  <time datetime="2021-02-12T08:11:38.000Z" itemprop="datePublished">2021-02-12</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/RPC/" rel="tag">RPC</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.8k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 10(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="首先来看一个问题"><a class="markdownIt-Anchor" href="#首先来看一个问题"></a> 首先来看一个问题</h4>
+<blockquote>
+<p>既然有 HTTP 请求，为什么还要用 RPC 调用？</p>
+</blockquote>
+<p>回答这个问题，需要了解rpc通信协议的细节，但是在这里强调一遍通信协议<strong>不是</strong>rpc最重要的部分</p>
+<p>这个问题其实是有理解误区的，首先 http 和 rpc <strong>并不是一个并行概念</strong>。</p>
+<p>rpc是远端过程调用，其调用协议通常包含<strong>传输协议和序列化协议</strong>。</p>
+<ul>
+<li>
+<p>传输协议包含: 如著名的 gRPC 使用的 http2 协议，也有如dubbo一类的自定义报文的tcp协议。</p>
+</li>
+<li>
+<p>序列化协议包含: 如基于文本编码的 xml json，也有二进制编码的 protobuf hessian等。</p>
+</li>
+</ul>
+<p>因此我理解的你想问的问题应该是：<strong>为什么要使用自定义 tcp 协议的 rpc 做后端进程通信？</strong></p>
+<p>要解决这个问题就应该搞清楚 http 使用的 tcp 协议，和我们自定义的 tcp 协议在报文上的区别</p>
+<p>首先要否认</p>
+<ul>
+<li>
+<p>http 协议相较于自定义tcp报文协议，增加的开销在于连接的建立与断开。http协议是支持连接池复用的，也就是建立一定数量的连接不断开，并不会频繁的创建和销毁连接。</p>
+</li>
+<li>
+<p>http也可以使用protobuf这种二进制编码协议对内容进行编码，因此<strong>二者最大的区别还是在传输协议上</strong>。</p>
+</li>
+</ul>
+<h4 id="区别"><a class="markdownIt-Anchor" href="#区别"></a> 区别</h4>
+<p>通用定义的http1.1协议的tcp报文包含太多废信息，一个POST协议的格式大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.0 200 OK </span><br><span class="line">Content-Type: text&#x2F;plain</span><br><span class="line">Content-Length: 137582</span><br><span class="line">Expires: Thu, 05 Dec 1997 16:00:00 GMT</span><br><span class="line">Last-Modified: Wed, 5 August 1996 15:55:28 GMT</span><br><span class="line">Server: Apache 0.84</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;body&gt;Hello World&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>即使编码协议也就是body是使用二进制编码协议，报文元数据也就是header头的键值对却用了文本编码，非常占字节数。如上图所使用的报文中有效字节数仅仅占约 30%，也就是70%的时间用于传输元数据废编码。当然实际情况下报文内容可能会比这个长，但是报头所占的比例也是非常可观的。</p>
+<p>那么假如我们使用自定义tcp协议的报文如下</p>
+<p><img src="https://pic2.zhimg.com/50/v2-89c905b0806577471aa7789a25ac0d44_hd.jpg?source=1940ef5c" alt="img" /><img src="https://pic2.zhimg.com/80/v2-89c905b0806577471aa7789a25ac0d44_720w.jpg?source=1940ef5c" alt="img" /></p>
+<p>报头占用的字节数也就只有16个byte，极大地<strong>精简了传输内容</strong>。</p>
+<p>这也就是为什么后端进程间通常会采用自定义tcp协议的rpc来进行通信的原因。</p>
+<h4 id="什么是rpc"><a class="markdownIt-Anchor" href="#什么是rpc"></a> 什么是RPC？</h4>
+<blockquote>
+<p>RPC(Remote Procedure Call)是远程过程调用，比如说现在有两台服务器A, B，一个在A服务器上的应用想要调用B服务器上的应用提供的某个，由于不在两个方法不在一个内存空间，不能直接调用，需要通过网络表达调用的语义和传达调用的数据。常存在于分布式系统中。</p>
+</blockquote>
+<h4 id="为何有http协议之后还要rpc调用"><a class="markdownIt-Anchor" href="#为何有http协议之后还要rpc调用"></a> 为何有http协议之后，还要RPC调用？</h4>
+<blockquote>
+<p>RPC跟HTTP不是对立面，RPC中可以使用HTTP作为通讯协议。<strong>RPC是一种设计、实现框架，通讯协议只是其中一部分。</strong></p>
+<p><strong>RPC的本质是提供了一种轻量无感知的跨进程通信的方式</strong>，在分布式机器上调用其他方法与本地调用无异（远程调用的过程是透明的，你并不知道这个调用的方法是部署在哪里，通过PRC能够解耦服务）。RPC是根据语言的API来定义的，而不是基于网络的应用来定义的，调用更方便，协议私密更安全、内容更小效率更高。</p>
+<p>http接口是在接口不多、系统与系统交互较少的情况下，解决信息孤岛初期常使用的一种通信手段；优点就是简单、直接、开发方便。利用现成的http协议 进行传输。但是如果是一个大型的网站，内部子系统较多、接口非常多的情况下，RPC框架的好处就显示出来了，首先（基于TCP协议的情况下）就是长链接，不必每次通信都要像http 一样去3次握手什么的，减少了网络开销；其次就是RPC框架一般都有注册中心，有丰富的监控管理；发布、下线接口、动态扩展等，对调用方来说是无感知、统 一化的操作。第三个来说就是安全性。最后就是最近流行的服务化架构、服务化治理，RPC框架是一个强力的支撑。</p>
+</blockquote>
+<h4 id="开源-rpc-框架有哪些"><a class="markdownIt-Anchor" href="#开源-rpc-框架有哪些"></a> 开源 RPC 框架有哪些</h4>
+<p>一类是跟某种特定语言平台绑定的，另一类是与语言无关即跨语言平台的。</p>
+<p>跟语言平台绑定的开源 RPC 框架主要有下面几种。</p>
+<ul>
+<li>Dubbo：国内最早开源的 RPC 框架，由阿里巴巴公司开发并于 2011 年末对外开源，仅支持 Java 语言。</li>
+<li>Motan：微博内部使用的 RPC 框架，于 2016 年对外开源，仅支持 Java 语言。</li>
+<li>Tars：腾讯内部使用的 RPC 框架，于 2017 年对外开源，仅支持 C++ 语言。</li>
+<li>Spring Cloud：国外 Pivotal 公司 2014 年对外开源的 RPC 框架，仅支持 Java 语言</li>
+</ul>
+<p>而跨语言平台的开源 RPC 框架主要有以下几种。</p>
+<ul>
+<li>gRPC：Google 于 2015 年对外开源的跨语言 RPC 框架，支持多种语言。</li>
+<li>Thrift：最初是由 Facebook 开发的内部系统跨语言的 RPC 框架，2007 年贡献给了 Apache 基金，成为 Apache 开源项目之一，支持多种语言。</li>
+<li>hprose：一个MIT开源许可的新型轻量级跨语言跨平台的面向对象的高性能远程动态通讯中间件。它支持众多语言:nodeJs, C++, .NET, Java, Delphi, Objective-C, ActionScript, JavaScript, ASP, PHP, Python, Ruby, Perl, Golang 。</li>
+</ul>
+<p>如果你的业务场景仅仅局限于一种语言的话，可以选择跟语言绑定的 RPC 框架中的一种；</p>
+<p>如果涉及多个语言平台之间的相互调用，就应该选择跨语言平台的 RPC 框架。</p>
+<h4 id="这里复习一下网络知识"><a class="markdownIt-Anchor" href="#这里复习一下网络知识"></a> 这里复习一下网络知识</h4>
+<p>下面的图表试图显示不同的TCP/IP和其他的协议在最初OSI模型中的位置：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">层数</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:left">协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center"><strong>应用层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/wiki/HTTP" target="_blank" rel="noopener">HTTP</a>、<a href="http://zh.wikipedia.org/wiki/SMTP" target="_blank" rel="noopener">SMTP</a>、<a href="http://zh.wikipedia.org/wiki/SNMP" target="_blank" rel="noopener">SNMP</a>、<a href="http://zh.wikipedia.org/wiki/FTP" target="_blank" rel="noopener">FTP</a>、<a href="http://zh.wikipedia.org/wiki/Telnet" target="_blank" rel="noopener">Telnet</a>、<a href="http://zh.wikipedia.org/wiki/SIP" target="_blank" rel="noopener">SIP</a>、<a href="http://zh.wikipedia.org/wiki/SSH" target="_blank" rel="noopener">SSH</a>、<a href="http://zh.wikipedia.org/wiki/NFS" target="_blank" rel="noopener">NFS</a>、<a href="http://zh.wikipedia.org/wiki/RTSP" target="_blank" rel="noopener">RTSP</a>、<a href="http://zh.wikipedia.org/wiki/XMPP" target="_blank" rel="noopener">XMPP</a>、<a href="http://zh.wikipedia.org/wiki/Whois" target="_blank" rel="noopener">Whois</a>、<a href="http://zh.wikipedia.org/w/index.php?title=ENRP&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">ENRP</a></td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center"><strong>表示层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/w/index.php?title=External_Data_Representation&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">XDR</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Abstract_Syntax_Notation_1&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">ASN.1</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Server_message_block&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">SMB</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Apple_Filing_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">AFP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=NetWare_Core_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">NCP</a></td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center"><strong>会话层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/w/index.php?title=Aggregate_Server_Access_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">ASAP</a>、<a href="http://zh.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="noopener">TLS</a>、<a href="http://zh.wikipedia.org/wiki/SSH" target="_blank" rel="noopener">SSH</a>、ISO 8327 / CCITT X.225、<a href="http://zh.wikipedia.org/w/index.php?title=Remote_procedure_call&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">RPC</a>、<a href="http://zh.wikipedia.org/w/index.php?title=NetBIOS&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">NetBIOS</a>、<a href="http://zh.wikipedia.org/w/index.php?title=AppleTalk&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">ASP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Winsock&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Winsock</a>、<a href="http://zh.wikipedia.org/wiki/Berkeley_sockets" target="_blank" rel="noopener">BSD sockets</a></td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><strong>传输层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/wiki/TCP" target="_blank" rel="noopener">TCP</a>、<a href="http://zh.wikipedia.org/wiki/User_Datagram_Protocol" target="_blank" rel="noopener">UDP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Real-time_Transport_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">RTP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Stream_Control_Transmission_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">SCTP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=Sequenced_packet_exchange&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">SPX</a>、<a href="http://zh.wikipedia.org/w/index.php?title=AppleTalk&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">ATP</a>、<a href="http://zh.wikipedia.org/w/index.php?title=IL_Protocol&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">IL</a></td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center"><strong>网络层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/wiki/%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">IP</a>、<a href="http://zh.wikipedia.org/wiki/ICMP" target="_blank" rel="noopener">ICMP</a>、<a href="http://zh.wikipedia.org/wiki/IGMP" target="_blank" rel="noopener">IGMP</a>、<a href="http://zh.wikipedia.org/wiki/IPX" target="_blank" rel="noopener">IPX</a>、<a href="http://zh.wikipedia.org/wiki/BGP" target="_blank" rel="noopener">BGP</a>、<a href="http://zh.wikipedia.org/wiki/OSPF" target="_blank" rel="noopener">OSPF</a>、<a href="http://zh.wikipedia.org/wiki/RIP" target="_blank" rel="noopener">RIP</a>、<a href="http://zh.wikipedia.org/wiki/IGRP" target="_blank" rel="noopener">IGRP</a>、<a href="http://zh.wikipedia.org/wiki/EIGRP" target="_blank" rel="noopener">EIGRP</a>、<a href="http://zh.wikipedia.org/wiki/ARP" target="_blank" rel="noopener">ARP</a>、<a href="http://zh.wikipedia.org/wiki/RARP" target="_blank" rel="noopener">RARP</a>、 <a href="http://zh.wikipedia.org/wiki/X.25" target="_blank" rel="noopener">X.25</a></td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center"><strong>数据链路层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/wiki/%E4%BB%A5%E5%A4%AA%E7%BD%91" target="_blank" rel="noopener">以太网</a>、<a href="http://zh.wikipedia.org/wiki/%E4%BB%A4%E7%89%8C%E7%8E%AF" target="_blank" rel="noopener">令牌环</a>、<a href="http://zh.wikipedia.org/wiki/HDLC" target="_blank" rel="noopener">HDLC</a>、<a href="http://zh.wikipedia.org/wiki/%E5%B8%A7%E4%B8%AD%E7%BB%A7" target="_blank" rel="noopener">帧中继</a>、<a href="http://zh.wikipedia.org/wiki/ISDN" target="_blank" rel="noopener">ISDN</a>、<a href="http://zh.wikipedia.org/wiki/%E5%BC%82%E6%AD%A5%E4%BC%A0%E8%BE%93%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">ATM</a>、<a href="http://zh.wikipedia.org/wiki/IEEE_802.11" target="_blank" rel="noopener">IEEE 802.11</a>、<a href="http://zh.wikipedia.org/wiki/FDDI" target="_blank" rel="noopener">FDDI</a>、<a href="http://zh.wikipedia.org/wiki/PPP" target="_blank" rel="noopener">PPP</a></td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><strong>物理层</strong></td>
+<td style="text-align:left">例如<a href="http://zh.wikipedia.org/w/index.php?title=%E7%BA%BF%E8%B7%AF&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">线路</a>、<a href="http://zh.wikipedia.org/wiki/%E6%97%A0%E7%BA%BF%E7%94%B5" target="_blank" rel="noopener">无线电</a>、<a href="http://zh.wikipedia.org/wiki/%E5%85%89%E7%BA%A4" target="_blank" rel="noopener">光纤</a>、<a href="http://zh.wikipedia.org/wiki/%E4%BF%A1%E9%B8%BD" target="_blank" rel="noopener">信鸽</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>解析：</p>
+</blockquote>
+<p><strong>TPC/IP协议是传输层协议，主要解决数据如何在网络中传输，而HTTP是应用层协议，主要解决如何包装数据。</strong></p>
+<p><strong>关于TCP/IP和HTTP协议的关系</strong>，网络有一段比较容易理解的介绍：“我们在传输数据时，可以只使用（传输层）TCP/IP协议，但是那样的话，如果没有应用层，便无法识别数据内容，如果想要使传输的数据有意义，则必须使用到应用层协议。</p>
+<p>应用层协议有很多，比如HTTP、FTP、TELNET等，也可以自己定义应用层协议。WEB使用HTTP协议作应用层协议，以封装HTTP 文本信息，然后使用TCP/IP做传输层协议将它发到网络上。</p>
+<p>术语“TCP/IP“代表”传输控制协议/网际协议“，指的是一系列协议。“IP”代表网际协议，TCP和UDP使用该协议从一个网络传送数据包到另一个网络。把<strong>IP想像成一种高速公路</strong>，它允许其它协议在上面行驶并找到到其它电脑的出口。<strong>TCP和UDP是高速公路上的“卡车”，它们携带的货物就是像HTTP</strong>，文件传输协议<strong>FTP</strong>这样的协议等。</p>
+<p>你应该能理解，TCP和UDP是FTP，HTTP和SMTP之类使用的传输层协议。虽然TCP和UDP都是用来传输其他协议的，它们却有一个显著的不同：TCP提供有保证的数据传输，而UDP不提供。这意味着TCP有一个特殊的机制来确保数据安全的不出错的从一个端点传到另一个端点，而UDP不提供任何这样的保证。</p>
+<p>HTTP(超文本传输协议)是利用TCP在两台电脑(通常是Web服务器和客户端)之间传输信息的协议。客户端使用Web浏览器发起HTTP请求给Web服务器，Web服务器发送被请求的信息给客户端。</p>
+<h4 id="tcphttp与socket"><a class="markdownIt-Anchor" href="#tcphttp与socket"></a> TCP/HTTP与socket</h4>
+<p>首先回顾下计算机网络的五(七)层协议：物理层、数据链路层、网络层、传输层、(会话层、表示层)和应用层。那么从协议上来讲：</p>
+<ul>
+<li>TCP是传输层协议，主要解决数据如何在网络中传输</li>
+<li>HTTP 是应用层协议，主要解决如何包装数据（文本信息），是建立在tcp协议之上的应用。TCP协议是以二进制数据流的形式解决传输层的事儿，但对上层的应用开发极不友好，所以面向应用层的开发又产生了HTTP协议。</li>
+</ul>
+<p>而socket 是针对TCP或UDP的具体接口实现，提供了在传输层进行网络编程的方法。</p>
+<h4 id="http长连接和短连接"><a class="markdownIt-Anchor" href="#http长连接和短连接"></a> Http长连接和短连接</h4>
+<p>1）在HTTP 1.0中，客户端的每次请求都要求建立一次单独的连接，在处理完本次请求后，就自动释放连接，这是一种“短连接”。</p>
+<p>2）在HTTP 1.1中则可以在一次连接中处理多个请求，并且多个请求可以重叠进行，不需要等待一个请求结束后再发送下一个请求，这是一种“长连接”。在Http 1.1 中只需要在请求头配置<code>keep-alive : true</code>即可实现长连接。此时，服务端返回的请求头中会有 <code>connection : keep-alive</code> 表明这是一个长连接。</p>
+<p>在HTTP/1.0中，默认使用的是短连接。但从 HTTP/1.1起，默认使用长连接。</p>
+<h4 id="关于socket套接字"><a class="markdownIt-Anchor" href="#关于socket套接字"></a> 关于Socket（套接字）</h4>
+<p>现在我们了解到TCP/IP只是一个协议栈，就像操作系统的运行机制一样，必须要具体实现，同时还要提供对外的操作接口。就像操作系统会提供标准的编程接口，比如Win32编程接口一样，TCP/IP也必须对外提供编程接口，这就是Socket。现在我们知道，<strong>Socket跟TCP/IP并没有必然的联系</strong>。Socket编程接口在设计的时候，就希望也能适应其他的网络协议。所以，Socket的出现只是可以更方便的使用TCP/IP协议栈而已，其对TCP/IP进行了抽象，形成了几个最基本的函数接口。比如create，listen，accept，connect，read和write等等。</p>
+<blockquote>
+<p>其中以上某些参考资料来自：</p>
+<p>链接：<a href="https://www.zhihu.com/question/41609070/answer/191965937" target="_blank" rel="noopener">https://www.zhihu.com/question/41609070/answer/191965937</a></p>
+<p>链接：<a href="https://www.cnblogs.com/xianlei/p/tcpip_http.html" target="_blank" rel="noopener">https://www.cnblogs.com/xianlei/p/tcpip_http.html</a></p>
+<p>链接：<a href="https://www.jianshu.com/p/959030de7f1c" target="_blank" rel="noopener">https://www.jianshu.com/p/959030de7f1c</a></p>
+<p>链接：<a href="https://www.jianshu.com/p/959030de7f1c" target="_blank" rel="noopener">https://www.jianshu.com/p/959030de7f1c</a></p>
+<p>链接：<a href="https://juejin.cn/post/6844903609138692110" target="_blank" rel="noopener">https://juejin.cn/post/6844903609138692110</a></p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <!-- 
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/" title="关于RPC和Http的那些事儿" target="_blank" rel="external">http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</a>
+    </li>
+     -->
+    <!-- <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">Rich7Pro</span><small class="ml-1x">Java后端开发</small></a></h3>
+        <div>无名无迹 得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/02/12/%E4%BB%80%E4%B9%88%E6%98%AFWebService/" title="什么是WebService"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/" title="使用JCEF开发浏览器"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
