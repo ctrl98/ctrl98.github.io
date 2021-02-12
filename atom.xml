@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-11T07:14:27.893Z</updated>
+  <updated>2021-02-12T06:46:09.982Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用JCEF开发浏览器</title>
+    <link href="http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
+    <id>http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/</id>
+    <published>2021-02-12T05:40:21.000Z</published>
+    <updated>2021-02-12T06:46:09.982Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;简介&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#简介&quot;&gt;&lt;/a&gt; 简介&lt;/h4&gt;
+&lt;p&gt;Java Chromium Embedded Framework 嵌入式框架，一个简单的框架，用于使用Java编程语言在其他应用程序中嵌入基于C
+      
+    
+    </summary>
+    
+    
+      <category term="JCEF" scheme="http://ctrl98.github.io/categories/JCEF/"/>
+    
+    
+      <category term="框架学习" scheme="http://ctrl98.github.io/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>日志框架 Log4j2</title>
@@ -505,31 +530,6 @@
     
     
       <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mysql 基础知识（一）</title>
-    <link href="http://ctrl98.github.io/2020/03/06/Mysql1/"/>
-    <id>http://ctrl98.github.io/2020/03/06/Mysql1/</id>
-    <published>2020-03-06T01:05:41.000Z</published>
-    <updated>2020-03-24T12:10:02.092Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;where子句&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#where子句&quot;&gt;&lt;/a&gt; where子句&lt;/h4&gt;
-&lt;p&gt;**where：**数据库中常用的是where关键字，用于在初始表中筛选查询。它是一个约束声明，用于约束数据，在返
-      
-    
-    </summary>
-    
-    
-      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="MySQL" scheme="http://ctrl98.github.io/tags/MySQL/"/>
     
   </entry>
   

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>使用JCEF开发浏览器 | Lee&#39;s Blog</title>
+  <meta name="description" content="简介 Java Chromium Embedded Framework 嵌入式框架，一个简单的框架，用于使用Java编程语言在其他应用程序中嵌入基于Chromium的浏览器 JCEF官方项目地址：https:&#x2F;&#x2F;bitbucket.org&#x2F;chromiumembedded&#x2F;java-cef&#x2F;src&#x2F;master&#x2F; JCEF简单的使用文档：http:&#x2F;&#x2F;www.xuanyimao.com&#x2F;jcef">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用JCEF开发浏览器">
+<meta property="og:url" content="http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="简介 Java Chromium Embedded Framework 嵌入式框架，一个简单的框架，用于使用Java编程语言在其他应用程序中嵌入基于Chromium的浏览器 JCEF官方项目地址：https:&#x2F;&#x2F;bitbucket.org&#x2F;chromiumembedded&#x2F;java-cef&#x2F;src&#x2F;master&#x2F; JCEF简单的使用文档：http:&#x2F;&#x2F;www.xuanyimao.com&#x2F;jcef">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-12T05:40:21.000Z">
+<meta property="article:modified_time" content="2021-02-12T06:46:09.982Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="框架学习">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Rich7Pro</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Java后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JCEF/">JCEF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Jna/">Jna</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E6%A1%86%E6%9E%B6/">Web框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6/">日志框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/">权限框架</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jna/" rel="tag">Jna</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2-0/" rel="tag">OAuth2.0</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM%E6%A1%86%E6%9E%B6/" rel="tag">SSM框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" rel="tag">框架学习</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/" rel="tag">版本控制工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text"> 简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么要使用jcef"><span class="toc-number">2.</span> <span class="toc-text"> 为什么要使用JCEF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#入门"><span class="toc-number">3.</span> <span class="toc-text"> 入门</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#js调用java代码"><span class="toc-number">4.</span> <span class="toc-text"> Js调用Java代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开发遇到的问题"><span class="toc-number">5.</span> <span class="toc-text"> 开发遇到的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编译32位的cef二进制文件"><span class="toc-number">6.</span> <span class="toc-text"> 编译32位的CEF二进制文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#完成项目打成可运行jar包"><span class="toc-number">7.</span> <span class="toc-text"> 完成项目打成可运行jar包</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-使用JCEF开发浏览器" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用JCEF开发浏览器
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/" class="article-date">
+	  <time datetime="2021-02-12T05:40:21.000Z" itemprop="datePublished">2021-02-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/JCEF/">JCEF</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" rel="tag">框架学习</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 14(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h4>
+<p>Java Chromium Embedded Framework 嵌入式框架，一个简单的框架，用于使用Java编程语言在其他应用程序中嵌入基于Chromium的浏览器</p>
+<p>JCEF官方项目地址：<a href="https://bitbucket.org/chromiumembedded/java-cef/src/master/" target="_blank" rel="noopener">https://bitbucket.org/chromiumembedded/java-cef/src/master/</a></p>
+<p>JCEF简单的使用文档：<a href="http://www.xuanyimao.com/jcef/index.html#jcef" target="_blank" rel="noopener">http://www.xuanyimao.com/jcef/index.html#jcef</a></p>
+<p>JCEF API 开发文档：<a href="http://www.xuanyimao.com/jcef/doc/index.html" target="_blank" rel="noopener">http://www.xuanyimao.com/jcef/doc/index.html</a></p>
+<h4 id="为什么要使用jcef"><a class="markdownIt-Anchor" href="#为什么要使用jcef"></a> 为什么要使用JCEF</h4>
+<ul>
+<li>BS结构的优点在于,软件维护和升级方便,只要能上网就能升级了,而且在很多地方都能够直接使用软件,而不需要安装,前提要能登陆到服务器。</li>
+<li>CS结构缺乏通用性，具有较大的局限性，维护和管理的难度大，但是CS结构的交互性强，而且使用CS能与本地的硬件进行交互（如小票打印机、银联pos机、钱箱等……）</li>
+<li>虽然BS结构有诸多优点，但当遇到需要与硬件进行交互时，并不能完全满足业务需求，故而采用了BS+CS结合的方式，希望能同时具有CS结构的交互性与BS的灵活性，使用JxBrowser后，客户端相当于一个带有谷歌浏览器内核的定制浏览器，负责与硬件（如打印机、钱箱、POS机等）的交互，同时负责业务网页的显示，而业务的处理仍是在服务端后台。</li>
+</ul>
+<h4 id="入门"><a class="markdownIt-Anchor" href="#入门"></a> 入门</h4>
+<ol>
+<li>
+<p>用Eclipse简单新建一个Java工程</p>
+</li>
+<li>
+<p>新建lib文件夹，加入jcef相关jar包，并添加到构建路径中 build path—Add to Build path</p>
+</li>
+<li>
+<p>新建binary_win64，把binary_win64.zip（编译好的jcef二进制文件）放进来然后解压到当前文件夹</p>
+</li>
+<li>
+<p>项目&gt;Properties(属性)&gt;Java Build Path，展开Jdk，选中Native library location，点击Edit，选择JCEF的二进制文件目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">idea : -Djava.library.path&#x3D;D:\IntelliJ\Project\demo\binary_win32</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>下面就开始正式代码阶段了，官方提供的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> official_demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.awt.BorderLayout;</span><br><span class="line"><span class="keyword">import</span> java.awt.Component;</span><br><span class="line"><span class="keyword">import</span> java.awt.KeyboardFocusManager;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionEvent;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.ActionListener;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.FocusAdapter;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.FocusEvent;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.WindowAdapter;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.WindowEvent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.JFrame;</span><br><span class="line"><span class="keyword">import</span> javax.swing.JTextField;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.cef.CefApp;</span><br><span class="line"><span class="keyword">import</span> org.cef.CefApp.CefAppState;</span><br><span class="line"><span class="keyword">import</span> org.cef.CefClient;</span><br><span class="line"><span class="keyword">import</span> org.cef.CefSettings;</span><br><span class="line"><span class="keyword">import</span> org.cef.browser.CefBrowser;</span><br><span class="line"><span class="keyword">import</span> org.cef.browser.CefFrame;</span><br><span class="line"><span class="keyword">import</span> org.cef.handler.CefAppHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> org.cef.handler.CefDisplayHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> org.cef.handler.CefFocusHandlerAdapter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This is a simple example application using JCEF. It displays a JFrame with a</span></span><br><span class="line"><span class="comment"> * JTextField at its top and a CefBrowser in its center. The JTextField is used</span></span><br><span class="line"><span class="comment"> * to enter and assign an URL to the browser UI. No additional handlers or</span></span><br><span class="line"><span class="comment"> * callbacks are used in this example.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The number of used JCEF classes is reduced (nearly) to its minimum and should</span></span><br><span class="line"><span class="comment"> * assist you to get familiar with JCEF.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * For a more feature complete example have also a look onto the example code</span></span><br><span class="line"><span class="comment"> * within the package "tests.detailed".</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 翻译： 这是一个使用JCEF的简单示例应用程序。</span></span><br><span class="line"><span class="comment"> * 它显示一个JFrame，顶部有一个JTextField，中心有一个CefBrowser。JTextField用于输入URL并将其分配给浏览器UI。</span></span><br><span class="line"><span class="comment"> * 本例中没有使用其他处理程序或回调。 使用的JCEF类的数量减少（几乎）到最小值，应该有助于您熟悉JCEF.代表还有一个完整的程序包示例“详细测试".</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OfficalDemo</span> <span class="keyword">extends</span> <span class="title">JFrame</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">5570653778104813836L</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> JTextField address_;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> CefApp cefApp_;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> CefClient client_;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> CefBrowser browser_;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Component browerUI_;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> browserFocus_ = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * To display a simple browser window, it suffices completely to create an</span></span><br><span class="line"><span class="comment">	 * instance of the class CefBrowser and to assign its UI component to your</span></span><br><span class="line"><span class="comment">	 * application (e.g. to your content pane). But to be more verbose, this CTOR</span></span><br><span class="line"><span class="comment">	 * keeps an instance of each object on the way to the browser UI.</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * 翻译： 要显示一个简单的浏览器窗口，只需创建一个 实例，并将其UI组件分配给 应用程序（例如内容窗格）。但更详细的说，这个CTOR</span></span><br><span class="line"><span class="comment">	 * 在访问浏览器UI的过程中保留每个对象的实例。</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">OfficalDemo</span><span class="params">(String startURL, <span class="keyword">boolean</span> useOSR, <span class="keyword">boolean</span> isTransparent)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// (1) The entry point to JCEF is always the class CefApp. There is only one</span></span><br><span class="line">		<span class="comment">// instance per application and therefore you have to call the method</span></span><br><span class="line">		<span class="comment">// "getInstance()" instead of a CTOR.</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">// CefApp is responsible for the global CEF context. It loads all</span></span><br><span class="line">		<span class="comment">// required native libraries, initializes CEF accordingly, starts a</span></span><br><span class="line">		<span class="comment">// background task to handle CEF's message loop and takes care of</span></span><br><span class="line">		<span class="comment">// shutting down CEF after disposing it.</span></span><br><span class="line">		CefApp.addAppHandler(<span class="keyword">new</span> CefAppHandlerAdapter(<span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stateHasChanged</span><span class="params">(org.cef.CefApp.CefAppState state)</span> </span>&#123;</span><br><span class="line">				<span class="comment">// Shutdown the app if the native CEF part is terminated</span></span><br><span class="line">				<span class="keyword">if</span> (state == CefAppState.TERMINATED)</span><br><span class="line">					System.exit(<span class="number">0</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		CefSettings settings = <span class="keyword">new</span> CefSettings();</span><br><span class="line">		settings.windowless_rendering_enabled = useOSR;</span><br><span class="line">		cefApp_ = CefApp.getInstance(settings);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// (2) JCEF can handle one to many browser instances simultaneous. These</span></span><br><span class="line">		<span class="comment">// browser instances are logically grouped together by an instance of</span></span><br><span class="line">		<span class="comment">// the class CefClient. In your application you can create one to many</span></span><br><span class="line">		<span class="comment">// instances of CefClient with one to many CefBrowser instances per</span></span><br><span class="line">		<span class="comment">// client. To get an instance of CefClient you have to use the method</span></span><br><span class="line">		<span class="comment">// "createClient()" of your CefApp instance. Calling an CTOR of</span></span><br><span class="line">		<span class="comment">// CefClient is not supported.</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">// CefClient is a connector to all possible events which come from the</span></span><br><span class="line">		<span class="comment">// CefBrowser instances. Those events could be simple things like the</span></span><br><span class="line">		<span class="comment">// change of the browser title or more complex ones like context menu</span></span><br><span class="line">		<span class="comment">// events. By assigning handlers to CefClient you can control the</span></span><br><span class="line">		<span class="comment">// behavior of the browser. See tests.detailed.MainFrame for an example</span></span><br><span class="line">		<span class="comment">// of how to use these handlers.</span></span><br><span class="line">		client_ = cefApp_.createClient();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// (3) One CefBrowser instance is responsible to control what you'll see on</span></span><br><span class="line">		<span class="comment">// the UI component of the instance. It can be displayed off-screen</span></span><br><span class="line">		<span class="comment">// rendered or windowed rendered. To get an instance of CefBrowser you</span></span><br><span class="line">		<span class="comment">// have to call the method "createBrowser()" of your CefClient</span></span><br><span class="line">		<span class="comment">// instances.</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">// CefBrowser has methods like "goBack()", "goForward()", "loadURL()",</span></span><br><span class="line">		<span class="comment">// and many more which are used to control the behavior of the displayed</span></span><br><span class="line">		<span class="comment">// content. The UI is held within a UI-Compontent which can be accessed</span></span><br><span class="line">		<span class="comment">// by calling the method "getUIComponent()" on the instance of CefBrowser.</span></span><br><span class="line">		<span class="comment">// The UI component is inherited from a java.awt.Component and therefore</span></span><br><span class="line">		<span class="comment">// it can be embedded into any AWT UI.</span></span><br><span class="line">		browser_ = client_.createBrowser(startURL, useOSR, isTransparent);</span><br><span class="line">		browerUI_ = browser_.getUIComponent();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// (4) For this minimal browser, we need only a text field to enter an URL</span></span><br><span class="line">		<span class="comment">// we want to navigate to and a CefBrowser window to display the content</span></span><br><span class="line">		<span class="comment">// of the URL. To respond to the input of the user, we're registering an</span></span><br><span class="line">		<span class="comment">// anonymous ActionListener. This listener is performed each time the</span></span><br><span class="line">		<span class="comment">// user presses the "ENTER" key within the address field.</span></span><br><span class="line">		<span class="comment">// If this happens, the entered value is passed to the CefBrowser</span></span><br><span class="line">		<span class="comment">// instance to be loaded as URL.</span></span><br><span class="line">		address_ = <span class="keyword">new</span> JTextField(startURL, <span class="number">100</span>);<span class="comment">// 添加一个地址栏实例，并且监听地址栏，当用户按回车间后传递给浏览器实例重新加载页面</span></span><br><span class="line">		address_.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">				browser_.loadURL(address_.getText());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Update the address field when the browser URL changes.</span></span><br><span class="line">		<span class="comment">// 当用户访问新的网址时，浏览器的地址要随着更新显示，不然访问新的网页时，地址栏上还是显示旧的地址</span></span><br><span class="line">		client_.addDisplayHandler(<span class="keyword">new</span> CefDisplayHandlerAdapter() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAddressChange</span><span class="params">(CefBrowser browser, CefFrame frame, String url)</span> </span>&#123;</span><br><span class="line">				address_.setText(url);</span><br><span class="line">				System.out.println(<span class="string">"更新地址栏"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Clear focus from the browser when the address field gains focus.</span></span><br><span class="line">		<span class="comment">// 当地址栏获取鼠标焦点时，清楚浏览器上的焦点</span></span><br><span class="line">		address_.addFocusListener(<span class="keyword">new</span> FocusAdapter() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">focusGained</span><span class="params">(FocusEvent e)</span> </span>&#123;</span><br><span class="line">				<span class="keyword">if</span> (!browserFocus_)</span><br><span class="line">					<span class="keyword">return</span>;</span><br><span class="line">				browserFocus_ = <span class="keyword">false</span>;</span><br><span class="line">				KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();</span><br><span class="line">				address_.requestFocus();</span><br><span class="line">				System.out.println(<span class="string">"地址栏获取焦点"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Clear focus from the address field when the browser gains focus.</span></span><br><span class="line">		<span class="comment">// 当浏览器上获取鼠标焦点时，清楚地址栏的焦点</span></span><br><span class="line">		client_.addFocusHandler(<span class="keyword">new</span> CefFocusHandlerAdapter() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onGotFocus</span><span class="params">(CefBrowser browser)</span> </span>&#123;</span><br><span class="line">				<span class="keyword">if</span> (browserFocus_)</span><br><span class="line">					<span class="keyword">return</span>;</span><br><span class="line">				browserFocus_ = <span class="keyword">true</span>;</span><br><span class="line">				KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();</span><br><span class="line">				browser.setFocus(<span class="keyword">true</span>);</span><br><span class="line">				System.out.println(<span class="string">"页面内容获取焦点"</span>);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTakeFocus</span><span class="params">(CefBrowser browser, <span class="keyword">boolean</span> next)</span> </span>&#123;</span><br><span class="line">				browserFocus_ = <span class="keyword">false</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// (5) All UI components are assigned to the default content pane of this</span></span><br><span class="line">		<span class="comment">// JFrame and afterwards the frame is made visible to the user.</span></span><br><span class="line">		getContentPane().add(address_, BorderLayout.NORTH);</span><br><span class="line">		getContentPane().add(browerUI_, BorderLayout.CENTER);</span><br><span class="line">		pack();</span><br><span class="line">		setSize(<span class="number">800</span>, <span class="number">600</span>);</span><br><span class="line">		setVisible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// (6) To take care of shutting down CEF accordingly, it's important to call</span></span><br><span class="line">		<span class="comment">// the method "dispose()" of the CefApp instance if the Java</span></span><br><span class="line">		<span class="comment">// application will be closed. Otherwise you'll get asserts from CEF.</span></span><br><span class="line">		addWindowListener(<span class="keyword">new</span> WindowAdapter() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">windowClosing</span><span class="params">(WindowEvent e)</span> </span>&#123;</span><br><span class="line">				CefApp.getInstance().dispose();</span><br><span class="line">				dispose();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入口启动</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// Perform startup initialization on platforms that require it.	需要初始化</span></span><br><span class="line">		<span class="keyword">if</span> (!CefApp.startup()) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Startup initialization failed!"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// The simple example application is created as anonymous class and points</span></span><br><span class="line">		<span class="comment">// to Google as the very first loaded page. Windowed rendering mode is used by</span></span><br><span class="line">		<span class="comment">// default. If you want to test OSR mode set |useOsr| to true and recompile.</span></span><br><span class="line">		<span class="comment">// 这个简单的示例应用程序被创建为匿名类和点</span></span><br><span class="line">		<span class="comment">// 作为第一个加载的页面。默认情况下使用窗口渲染模式。如果要测试OSR模式，请将| useOsr |设置为true并重新编译。</span></span><br><span class="line">		<span class="keyword">boolean</span> useOsr = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">new</span> OfficalDemo(<span class="string">"http://www.baidu.com"</span>, useOsr, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后会弹出一个框，相当于一个简易版的浏览器，默认打开百度搜索</p>
+</li>
+</ol>
+<p>更多的官方例子，查看官方项目中的java-cef/java/tests/detailed包下的</p>
+<h4 id="js调用java代码"><a class="markdownIt-Anchor" href="#js调用java代码"></a> Js调用Java代码</h4>
+<p>基本流程：</p>
+<ol>
+<li>首先需要通过调用 CefMessageRouter.create(); 方法创建查询路由对象 CefMessageRouter</li>
+<li>使用路由对象调用 <strong>addHandler</strong>(CefMessageRouterHandler handler, boolean first)去添加一个处理器</li>
+<li>其中参数一，通过 <strong>new MessageRouterHandler()</strong> 来创建handler实例，MessageRouterHandler类需要自己创建
+<ul>
+<li>使 MessageRouterHandler 类继承自 CefMessageRouterHandlerAdapter 类</li>
+<li>因为 CefMessageRouterHandlerAdapter 类是 CefMessageRouterHandler 类的子类，继承父类的方法</li>
+</ul>
+</li>
+<li>通过 MessageRouterHandler类 中复写 <strong>onQuery</strong> 方法来执行处理 js 的调用</li>
+<li>页面脚本使用 <strong>window.cefQuery</strong> 方法来触发上面所复写的 onQuery 函数，执行相关处理返回给页面
+<ul>
+<li>注意：可以通过 CefMessageRouterConfig 对象配置页面所使用的查询函数名(默认是：cefQuery)</li>
+</ul>
+</li>
+<li>最后用客户端对象 client 调用添加路由查询 的方法 addMessageRouter(CefMessageRouter msgRouter) 添加查询路由对象</li>
+</ol>
+<p>提醒：</p>
+<p>了解基本流程后，通过回调函数去返回数据，如果交互步骤比较多，js代码会嵌套很多层，而且好像只能传字符串类型数据</p>
+<h4 id="开发遇到的问题"><a class="markdownIt-Anchor" href="#开发遇到的问题"></a> 开发遇到的问题</h4>
+<ul>
+<li>调用第三方jar包，需要用到Java的基础----反射机制去完成整个过程，需要自己手动去实现</li>
+</ul>
+<p>如调用 身份证读卡器 和 车票打印 的外接设备控件jar包里的方法</p>
+<ul>
+<li>
+<p>打印接口的问题已解决：因为jar包冲突，引用了新版本的jar里的接口类，导致打印接口报找不到类，无法打印出发票！！！！！！！！！！！！！！！</p>
+</li>
+<li>
+<p>动态加载jar包需求：</p>
+</li>
+</ul>
+<p>发送http请求，检测服务器上的jar包，根据返回的响应报文提供的时间戳，是否有更新，如果有更新，就删除lib目录下的全部jar包，重新把全部jar包下载下来。</p>
+<p>其中，链接和返回的报文响应体大概是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;update_time&quot;:&quot;2020-02-02 00:00:00&quot;,</span><br><span class="line">    &quot;jars&quot;:[&quot;Printer.jar&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>针对动态加载jar包需求提出的思路：</p>
+<p>做成循环下载，就是根据提供响应返回的时间戳和jar包清单数组对象的json数据。把时间戳保存到配置文件，每次启动应用，就发请求检测时间戳是否相同，不同的话，就把jar包清单数组拿出来都放到数组里面，然后去循环去调用下载方法去下载更新，再更新配置文件中的时间戳。</p>
+<ul>
+<li>浏览器cookies保存问题</li>
+</ul>
+<h4 id="编译32位的cef二进制文件"><a class="markdownIt-Anchor" href="#编译32位的cef二进制文件"></a> 编译32位的CEF二进制文件</h4>
+<p>编译所需软件</p>
+<ul>
+<li>CMake 2.8.12.2或者更新的版本（我用的免装版，bin目录要手动配置环境变量）</li>
+<li>Git</li>
+<li>Visual Studio 2015（官网推荐2015，原因是开发者使用的就是2015版本，实测VS2010和VS2013编译均会报错）安装时别默认，默认不安装Visual C++，勾选&quot;Visual C++&quot;和&quot;通用windows开发工具&quot;下的&quot;tools和Windows 10 SDK&quot;安装。</li>
+<li>Java 1.8 32位 （官网写的是1.7或者1.8，实际上使用1.7编译java部分会有语法错误，可以修改源码规避，建议使用1.8，编译64位版本使用64位的jdk）</li>
+<li>Python 2.6或者更新的版本（不支持Python3）</li>
+</ul>
+<ol>
+<li>
+<p>克隆官方项目到本地任意文件路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;bitbucket.org&#x2F;chromiumembedded&#x2F;java-cef.git src</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在克隆项目下创建新目录jcef_build（不可随意命名）</p>
+</li>
+<li>
+<p>打开DOS进入到新目录中，执行一下命令：（如果需要编译64位的话 命令换成这样：cmake -G “Visual Studio 14 Win64” …）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -G &quot;Visual Studio 14 2015&quot; ..</span><br></pre></td></tr></table></figure>
+<p>这个过程会自动去下载当前Jcef对应的CEF的版本，若果下载不成功可以自己下载之后放到/java-cef/third_party/cef目录中。CEF版本号可以从源码目录下的CMakeLists.txt文件中找到</p>
+<p>CEF下载地址：<a href="http://opensource.spotify.com/cefbuilds/index.html" target="_blank" rel="noopener">http://opensource.spotify.com/cefbuilds/index.html</a>  (经常打不开，我翻墙才能稳定打开)</p>
+</li>
+<li>
+<p>命令执行完后会在jcef_build目录生成一个C++项目</p>
+</li>
+<li>
+<p>使用VS打开jcef_build中的jcef.sln文件，选择&quot;生成–&gt;配置管理器–&gt;修改为Release和Win32&quot;，然后选择&quot;生成–&gt;生成解决方案&quot;，然后等待构建完成。</p>
+</li>
+<li>
+<p>使用dos进入到源码目录的tools目录里，执行命令：compile.bat win32</p>
+</li>
+<li>
+<p>同样是tools目录，执行run.bat win32 Release simple或者run.bat win32 Release detailed，浏览器正常运行，编译成功。</p>
+</li>
+<li>
+<p>打包，tools目录下执行 make_distrib.bat win32，源码目录下会自动创建打包目录binary_distrib，里面包含了api文档，浏览器Demo，使用到的jar和dll以及资源文件</p>
+</li>
+</ol>
+<h4 id="完成项目打成可运行jar包"><a class="markdownIt-Anchor" href="#完成项目打成可运行jar包"></a> 完成项目打成可运行jar包</h4>
+<ol>
+<li>先把java程序按照正常打包成jar包，-Djava.library.path需要运行时设置（在代码里实现一个方法，传入你需要设置的路径）</li>
+<li>把jcef二进制文件复制到打包后的jar所在的目录</li>
+<li>通过：java -jar demo.jar 命令，运行demo.jar</li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <!-- 
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/" title="使用JCEF开发浏览器" target="_blank" rel="external">http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/</a>
+    </li>
+     -->
+    <!-- <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">Rich7Pro</span><small class="ml-1x">Java后端开发</small></a></h3>
+        <div>无名无迹 得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2021/02/11/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6-Log4j2/" title="日志框架 Log4j2"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
