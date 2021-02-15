@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-15T03:14:49.993Z</updated>
+  <updated>2021-02-15T04:30:17.469Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Springboot 注解学习</title>
+    <link href="http://ctrl98.github.io/2021/02/15/Springboot-%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://ctrl98.github.io/2021/02/15/Springboot-%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/</id>
+    <published>2021-02-15T03:46:18.000Z</published>
+    <updated>2021-02-15T04:30:17.469Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;qualifier-和-resource&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#qualifier-和-resource&quot;&gt;&lt;/a&gt; @Qualifier 和 @Resource&lt;/h4&gt;
+&lt;p&gt;如果一个接口有2个不同的实现, 
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Spring boot" scheme="http://ctrl98.github.io/tags/Spring-boot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Springboot定时作业注解</title>
+    <link href="http://ctrl98.github.io/2021/02/15/Springboot%E5%AE%9A%E6%97%B6%E4%BD%9C%E4%B8%9A%E6%B3%A8%E8%A7%A3/"/>
+    <id>http://ctrl98.github.io/2021/02/15/Springboot%E5%AE%9A%E6%97%B6%E4%BD%9C%E4%B8%9A%E6%B3%A8%E8%A7%A3/</id>
+    <published>2021-02-15T03:33:00.000Z</published>
+    <updated>2021-02-15T03:44:05.902Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Springboot 定时任务配置：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;在Springboot启动类上添加 @EnableScheduling 开启对定时任务的支持&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td clas
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Spring boot" scheme="http://ctrl98.github.io/tags/Spring-boot/"/>
+    
+  </entry>
   
   <entry>
     <title>Websocket基础知识</title>
@@ -470,58 +519,6 @@
     
     
       <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Security OAuth2.0 认证授权</title>
-    <link href="http://ctrl98.github.io/2020/03/10/Spring-Security-Oauth2/"/>
-    <id>http://ctrl98.github.io/2020/03/10/Spring-Security-Oauth2/</id>
-    <published>2020-03-10T08:09:22.000Z</published>
-    <updated>2020-03-10T09:00:06.959Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;基本概念&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#基本概念&quot;&gt;&lt;/a&gt; 基本概念&lt;/h4&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;h5 id=&quot;什么是认证&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是认证&quot;&gt;&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="权限框架" scheme="http://ctrl98.github.io/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="OAuth2.0" scheme="http://ctrl98.github.io/tags/OAuth2-0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>浅谈Spring的IOC/AOP</title>
-    <link href="http://ctrl98.github.io/2020/03/09/Spring1/"/>
-    <id>http://ctrl98.github.io/2020/03/09/Spring1/</id>
-    <published>2020-03-09T02:14:25.000Z</published>
-    <updated>2020-04-05T01:27:02.455Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;什么是耦合高低&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是耦合高低&quot;&gt;&lt;/a&gt; 什么是耦合（高/低？）&lt;/h4&gt;
-&lt;p&gt;耦合，就是模块间关联的程度，每个模块之间的联系越多，也就是其耦合性越强，那么独立性也就越差了，所以我们在软
-      
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://ctrl98.github.io/categories/Spring/"/>
-    
-    
-      <category term="Spring" scheme="http://ctrl98.github.io/tags/Spring/"/>
     
   </entry>
   
