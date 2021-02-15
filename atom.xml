@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-12T10:10:18.005Z</updated>
+  <updated>2021-02-15T03:14:49.993Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Websocket基础知识</title>
+    <link href="http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <id>http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
+    <published>2021-02-15T02:42:06.000Z</published>
+    <updated>2021-02-15T03:14:49.993Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;http-socket-websocket之间联系与区别&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#http-socket-websocket之间联系与区别&quot;&gt;&lt;/a&gt; Http、Socket、WebSocket之间联系与区别&lt;/h
+      
+    
+    </summary>
+    
+    
+      <category term="Websocket" scheme="http://ctrl98.github.io/categories/Websocket/"/>
+    
+    
+      <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于微服务</title>
+    <link href="http://ctrl98.github.io/2021/02/15/%E5%85%B3%E4%BA%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    <id>http://ctrl98.github.io/2021/02/15/%E5%85%B3%E4%BA%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1/</id>
+    <published>2021-02-15T02:21:54.000Z</published>
+    <updated>2021-02-15T02:34:13.511Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;微服务概述&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#微服务概述&quot;&gt;&lt;/a&gt; 微服务概述&lt;/h4&gt;
+&lt;p&gt;要实际的应用微服务，需要解决以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端如何访问这些服务？&lt;/li&gt;
+&lt;li&gt;每个服务之间如何
+      
+    
+    </summary>
+    
+    
+    
+      <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>什么是WebService</title>
@@ -115,11 +165,11 @@
   </entry>
   
   <entry>
-    <title>synchronized 使用注意</title>
+    <title>Synchronized 使用注意</title>
     <link href="http://ctrl98.github.io/2021/02/11/synchronized-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/"/>
     <id>http://ctrl98.github.io/2021/02/11/synchronized-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/</id>
     <published>2021-02-11T05:59:49.000Z</published>
-    <updated>2021-02-11T06:00:56.708Z</updated>
+    <updated>2021-02-15T03:21:31.313Z</updated>
     
     <summary type="html">
     
@@ -472,59 +522,6 @@
     
     
       <category term="Spring" scheme="http://ctrl98.github.io/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud Netflix核心组件介绍及搭建</title>
-    <link href="http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/"/>
-    <id>http://ctrl98.github.io/2020/03/08/SpringBoot-Netflix1/</id>
-    <published>2020-03-08T08:08:24.000Z</published>
-    <updated>2020-03-26T08:02:12.619Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;单体应用存在的问题耦合度过高&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#单体应用存在的问题耦合度过高&quot;&gt;&lt;/a&gt; 单体应用存在的问题(耦合度过高)&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;随着业务的发展，开发变得越来越&lt;code&gt;复杂&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis实现一个简单的分布锁</title>
-    <link href="http://ctrl98.github.io/2020/03/08/Redis3/"/>
-    <id>http://ctrl98.github.io/2020/03/08/Redis3/</id>
-    <published>2020-03-08T01:41:07.000Z</published>
-    <updated>2020-03-08T04:06:13.246Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;什么是分布式锁&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是分布式锁&quot;&gt;&lt;/a&gt; 什么是分布式锁&lt;/h4&gt;
-&lt;p&gt;分布式锁在分布式系统中非常常见，比如对公共资源进行操作。&lt;/p&gt;
-&lt;p&gt;如卖车票，同一时刻只能有一个节点将某个特定
-      
-    
-    </summary>
-    
-    
-      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
     
   </entry>
   
