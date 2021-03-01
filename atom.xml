@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-15T04:30:17.469Z</updated>
+  <updated>2021-02-15T06:19:46.332Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -15,6 +15,108 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>什么是Zookeeper</title>
+    <link href="http://ctrl98.github.io/2021/02/15/%E4%BB%80%E4%B9%88%E6%98%AFZookeeper/"/>
+    <id>http://ctrl98.github.io/2021/02/15/%E4%BB%80%E4%B9%88%E6%98%AFZookeeper/</id>
+    <published>2021-02-15T05:44:17.000Z</published>
+    <updated>2021-02-15T06:19:46.332Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;概述&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#概述&quot;&gt;&lt;/a&gt; 概述&lt;/h4&gt;
+&lt;p&gt;ZooKeeper 是一种分布式协调服务，用于管理大型主机。在分布式环境中协调和管理服务是一个复杂的过程。ZooKeeper 通过其简单的架构和
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Zookeeper" scheme="http://ctrl98.github.io/tags/Zookeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zookeeper 什么是分布式锁</title>
+    <link href="http://ctrl98.github.io/2021/02/15/Zookeeper-%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
+    <id>http://ctrl98.github.io/2021/02/15/Zookeeper-%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</id>
+    <published>2021-02-15T05:15:32.000Z</published>
+    <updated>2021-02-15T05:40:50.105Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;概述&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#概述&quot;&gt;&lt;/a&gt; 概述&lt;/h4&gt;
+&lt;p&gt;为了防止分布式系统中的多个进程之间相互干扰，我们需要一种分布式协调技术来对这些进程进行调度。而这个分布式协调技术的核心就是来实现这个&lt;stron
+      
+    
+    </summary>
+    
+    
+      <category term="Zookeeper" scheme="http://ctrl98.github.io/categories/Zookeeper/"/>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zookeeper 什么是分布式协调服务</title>
+    <link href="http://ctrl98.github.io/2021/02/15/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%9C%8D%E5%8A%A1/"/>
+    <id>http://ctrl98.github.io/2021/02/15/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%9C%8D%E5%8A%A1/</id>
+    <published>2021-02-15T05:02:24.000Z</published>
+    <updated>2021-02-15T05:14:52.557Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;概述&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#概述&quot;&gt;&lt;/a&gt; 概述&lt;/h4&gt;
+&lt;p&gt;分布式协调技术主要用来解决分布式环境当中多个进程之间的同步控制，让他们有序的去访问某种临界资源，防止造成&amp;quot;脏数据&amp;quot;的后果。&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Zookeeper" scheme="http://ctrl98.github.io/tags/Zookeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dubbo学习篇之微服务架构回顾</title>
+    <link href="http://ctrl98.github.io/2021/02/15/Dubbo%E5%AD%A6%E4%B9%A0%E7%AF%87%E4%B9%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%9E%E9%A1%BE/"/>
+    <id>http://ctrl98.github.io/2021/02/15/Dubbo%E5%AD%A6%E4%B9%A0%E7%AF%87%E4%B9%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%9E%E9%A1%BE/</id>
+    <published>2021-02-15T04:39:09.000Z</published>
+    <updated>2021-02-15T04:59:22.288Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;微服务架构特性&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#微服务架构特性&quot;&gt;&lt;/a&gt; 微服务架构特性&lt;/h4&gt;
+&lt;p&gt;高可用-----------一直可以用&lt;/p&gt;
+&lt;p&gt;高并发-----------&lt;/p&gt;
+&lt;p&gt;高性能-----
+      
+    
+    </summary>
+    
+    
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+    
+      <category term="Dubbo" scheme="http://ctrl98.github.io/tags/Dubbo/"/>
+    
+  </entry>
   
   <entry>
     <title>Springboot 注解学习</title>
@@ -66,11 +168,11 @@
   </entry>
   
   <entry>
-    <title>Websocket基础知识</title>
+    <title>WebSocket基础知识</title>
     <link href="http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
     <published>2021-02-15T02:42:06.000Z</published>
-    <updated>2021-02-15T03:14:49.993Z</updated>
+    <updated>2021-03-01T11:09:57.316Z</updated>
     
     <summary type="html">
     
@@ -82,7 +184,7 @@
     </summary>
     
     
-      <category term="Websocket" scheme="http://ctrl98.github.io/categories/Websocket/"/>
+      <category term="WebSocket" scheme="http://ctrl98.github.io/categories/WebSocket/"/>
     
     
       <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
@@ -419,106 +521,6 @@
       <category term="Java多线程" scheme="http://ctrl98.github.io/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
       <category term="并发" scheme="http://ctrl98.github.io/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud Alibaba 异步通信</title>
-    <link href="http://ctrl98.github.io/2020/03/15/Spring-Cloud-Alibaba4/"/>
-    <id>http://ctrl98.github.io/2020/03/15/Spring-Cloud-Alibaba4/</id>
-    <published>2020-03-15T06:48:20.000Z</published>
-    <updated>2020-03-16T10:45:33.101Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;消息队列的流派&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#消息队列的流派&quot;&gt;&lt;/a&gt; 消息队列的流派&lt;/h2&gt;
-&lt;h3 id=&quot;什么是-mq&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是-mq&quot;&gt;
-      
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud Alibaba 链路追踪</title>
-    <link href="http://ctrl98.github.io/2020/03/14/Spring-Cloud-Alibaba3/"/>
-    <id>http://ctrl98.github.io/2020/03/14/Spring-Cloud-Alibaba3/</id>
-    <published>2020-03-14T01:46:06.000Z</published>
-    <updated>2020-03-15T01:49:16.108Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;链路追踪&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#链路追踪&quot;&gt;&lt;/a&gt; 链路追踪&lt;/h2&gt;
-&lt;h3 id=&quot;什么是链路追踪&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#什么是链路追踪&quot;&gt;&lt;/a&gt; 什么
-      
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud Alibaba 服务配置</title>
-    <link href="http://ctrl98.github.io/2020/03/13/Spring-Cloud-Alibaba2/"/>
-    <id>http://ctrl98.github.io/2020/03/13/Spring-Cloud-Alibaba2/</id>
-    <published>2020-03-13T11:49:38.000Z</published>
-    <updated>2020-03-13T13:08:28.742Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;nacos-config-服务端初始化&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#nacos-config-服务端初始化&quot;&gt;&lt;/a&gt; Nacos Config 服务端初始化&lt;/h2&gt;
-&lt;h3 id=&quot;分布式配置中心&quot;&gt;&lt;a clas
-      
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud Alibaba 微服务框架入门</title>
-    <link href="http://ctrl98.github.io/2020/03/11/Spring-Cloud-Alibaba1/"/>
-    <id>http://ctrl98.github.io/2020/03/11/Spring-Cloud-Alibaba1/</id>
-    <published>2020-03-11T07:49:49.000Z</published>
-    <updated>2020-03-13T11:50:59.041Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;简介&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#简介&quot;&gt;&lt;/a&gt; 简介&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;2018 年 10 月 31 日&lt;/strong&gt; ，&lt;strong&gt;Spring Cloud Alibaba 正式入驻了 Sp
-      
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="Spring Cloud" scheme="http://ctrl98.github.io/tags/Spring-Cloud/"/>
     
   </entry>
   
