@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ctrl98.github.io/"/>
-  <updated>2021-02-15T06:19:46.332Z</updated>
+  <updated>2021-03-06T04:42:54.350Z</updated>
   <id>http://ctrl98.github.io/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Redis在linux下集群搭建</title>
+    <link href="http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/"/>
+    <id>http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</id>
+    <published>2021-03-06T04:41:10.000Z</published>
+    <updated>2021-03-06T04:42:54.350Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;redis集群搭建&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#redis集群搭建&quot;&gt;&lt;/a&gt; Redis集群搭建&lt;/h3&gt;
+&lt;h4 id=&quot;环境&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#环境&quot;&gt;&lt;/
+      
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="http://ctrl98.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
     <title>什么是Zookeeper</title>
     <link href="http://ctrl98.github.io/2021/02/15/%E4%BB%80%E4%B9%88%E6%98%AFZookeeper/"/>
     <id>http://ctrl98.github.io/2021/02/15/%E4%BB%80%E4%B9%88%E6%98%AFZookeeper/</id>
     <published>2021-02-15T05:44:17.000Z</published>
-    <updated>2021-02-15T06:19:46.332Z</updated>
+    <updated>2021-03-06T04:32:56.907Z</updated>
     
     <summary type="html">
     
@@ -34,7 +59,7 @@
     </summary>
     
     
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="分布式" scheme="http://ctrl98.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
     
       <category term="Zookeeper" scheme="http://ctrl98.github.io/tags/Zookeeper/"/>
@@ -46,7 +71,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/Zookeeper-%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
     <id>http://ctrl98.github.io/2021/02/15/Zookeeper-%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</id>
     <published>2021-02-15T05:15:32.000Z</published>
-    <updated>2021-02-15T05:40:50.105Z</updated>
+    <updated>2021-03-06T04:32:01.042Z</updated>
     
     <summary type="html">
     
@@ -59,7 +84,7 @@
     </summary>
     
     
-      <category term="Zookeeper" scheme="http://ctrl98.github.io/categories/Zookeeper/"/>
+      <category term="分布式" scheme="http://ctrl98.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
     
       <category term="微服务" scheme="http://ctrl98.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
@@ -71,7 +96,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%9C%8D%E5%8A%A1/"/>
     <id>http://ctrl98.github.io/2021/02/15/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E6%9C%8D%E5%8A%A1/</id>
     <published>2021-02-15T05:02:24.000Z</published>
-    <updated>2021-02-15T05:14:52.557Z</updated>
+    <updated>2021-03-06T04:32:31.114Z</updated>
     
     <summary type="html">
     
@@ -84,7 +109,7 @@
     </summary>
     
     
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="分布式" scheme="http://ctrl98.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
     
       <category term="Zookeeper" scheme="http://ctrl98.github.io/tags/Zookeeper/"/>
@@ -96,7 +121,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/Dubbo%E5%AD%A6%E4%B9%A0%E7%AF%87%E4%B9%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%9E%E9%A1%BE/"/>
     <id>http://ctrl98.github.io/2021/02/15/Dubbo%E5%AD%A6%E4%B9%A0%E7%AF%87%E4%B9%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%9E%E9%A1%BE/</id>
     <published>2021-02-15T04:39:09.000Z</published>
-    <updated>2021-03-03T11:43:12.046Z</updated>
+    <updated>2021-03-06T04:33:41.455Z</updated>
     
     <summary type="html">
     
@@ -111,7 +136,7 @@
     </summary>
     
     
-      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="分布式" scheme="http://ctrl98.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
     
       <category term="Dubbo" scheme="http://ctrl98.github.io/tags/Dubbo/"/>
@@ -123,7 +148,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/Springboot-%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/"/>
     <id>http://ctrl98.github.io/2021/02/15/Springboot-%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/</id>
     <published>2021-02-15T03:46:18.000Z</published>
-    <updated>2021-03-01T11:40:30.665Z</updated>
+    <updated>2021-03-06T04:38:10.668Z</updated>
     
     <summary type="html">
     
@@ -136,6 +161,8 @@
     </summary>
     
     
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
     
       <category term="Spring Boot" scheme="http://ctrl98.github.io/tags/Spring-Boot/"/>
     
@@ -146,7 +173,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/Springboot%E5%AE%9A%E6%97%B6%E4%BD%9C%E4%B8%9A%E6%B3%A8%E8%A7%A3/"/>
     <id>http://ctrl98.github.io/2021/02/15/Springboot%E5%AE%9A%E6%97%B6%E4%BD%9C%E4%B8%9A%E6%B3%A8%E8%A7%A3/</id>
     <published>2021-02-15T03:33:00.000Z</published>
-    <updated>2021-03-01T11:40:21.940Z</updated>
+    <updated>2021-03-06T04:37:44.872Z</updated>
     
     <summary type="html">
     
@@ -162,6 +189,8 @@
     </summary>
     
     
+      <category term="微服务" scheme="http://ctrl98.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
     
       <category term="Spring Boot" scheme="http://ctrl98.github.io/tags/Spring-Boot/"/>
     
@@ -172,7 +201,7 @@
     <link href="http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>http://ctrl98.github.io/2021/02/15/websocket%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
     <published>2021-02-15T02:42:06.000Z</published>
-    <updated>2021-03-01T11:09:57.316Z</updated>
+    <updated>2021-03-06T04:35:26.366Z</updated>
     
     <summary type="html">
     
@@ -184,7 +213,7 @@
     </summary>
     
     
-      <category term="WebSocket" scheme="http://ctrl98.github.io/categories/WebSocket/"/>
+      <category term="网络通信协议" scheme="http://ctrl98.github.io/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
     
     
       <category term="面试" scheme="http://ctrl98.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
@@ -241,11 +270,11 @@
   </entry>
   
   <entry>
-    <title>关于RPC和Http的那些事儿</title>
+    <title>关于RPC和HTTP的那些事儿</title>
     <link href="http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"/>
     <id>http://ctrl98.github.io/2021/02/12/%E5%85%B3%E4%BA%8ERPC%E5%92%8CHttp%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</id>
     <published>2021-02-12T08:11:38.000Z</published>
-    <updated>2021-02-12T09:51:21.850Z</updated>
+    <updated>2021-03-06T04:47:01.026Z</updated>
     
     <summary type="html">
     
@@ -260,6 +289,8 @@
     </summary>
     
     
+      <category term="网络通信协议" scheme="http://ctrl98.github.io/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
+    
     
       <category term="RPC" scheme="http://ctrl98.github.io/tags/RPC/"/>
     
@@ -270,7 +301,7 @@
     <link href="http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
     <id>http://ctrl98.github.io/2021/02/12/%E4%BD%BF%E7%94%A8JCEF%E5%BC%80%E5%8F%91%E6%B5%8F%E8%A7%88%E5%99%A8/</id>
     <published>2021-02-12T05:40:21.000Z</published>
-    <updated>2021-02-12T06:46:09.982Z</updated>
+    <updated>2021-03-06T04:36:28.383Z</updated>
     
     <summary type="html">
     
@@ -283,10 +314,8 @@
     </summary>
     
     
-      <category term="JCEF" scheme="http://ctrl98.github.io/categories/JCEF/"/>
     
-    
-      <category term="框架学习" scheme="http://ctrl98.github.io/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"/>
+      <category term="JCEF" scheme="http://ctrl98.github.io/tags/JCEF/"/>
     
   </entry>
   
@@ -345,7 +374,7 @@
     <link href="http://ctrl98.github.io/2021/02/11/Jna%E8%B0%83%E7%94%A8dll%E5%8A%A8%E6%80%81%E5%BA%93/"/>
     <id>http://ctrl98.github.io/2021/02/11/Jna%E8%B0%83%E7%94%A8dll%E5%8A%A8%E6%80%81%E5%BA%93/</id>
     <published>2021-02-11T04:57:19.000Z</published>
-    <updated>2021-02-11T05:38:14.052Z</updated>
+    <updated>2021-03-06T04:36:08.990Z</updated>
     
     <summary type="html">
     
@@ -359,8 +388,6 @@
     
     </summary>
     
-    
-      <category term="Jna" scheme="http://ctrl98.github.io/categories/Jna/"/>
     
     
       <category term="Jna" scheme="http://ctrl98.github.io/tags/Jna/"/>
@@ -494,33 +521,6 @@
     
     
       <category term="Redis" scheme="http://ctrl98.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java 多线程与并发基础原理一</title>
-    <link href="http://ctrl98.github.io/2020/03/24/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%911/"/>
-    <id>http://ctrl98.github.io/2020/03/24/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%911/</id>
-    <published>2020-03-24T02:33:16.000Z</published>
-    <updated>2020-03-24T08:08:03.670Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;进程与线程的区别&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#进程与线程的区别&quot;&gt;&lt;/a&gt; 进程与线程的区别&lt;/h2&gt;
-&lt;p&gt;注意：Oracle官方公布将支持jdk8版本到2025年、支持jdk11版本到2026年，一般不用jdk9或
-      
-    
-    </summary>
-    
-    
-      <category term="Java基础" scheme="http://ctrl98.github.io/categories/Java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="Java多线程" scheme="http://ctrl98.github.io/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-      <category term="并发" scheme="http://ctrl98.github.io/tags/%E5%B9%B6%E5%8F%91/"/>
     
   </entry>
   

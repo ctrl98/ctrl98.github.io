@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Redis在linux下集群搭建 | Lee&#39;s Blog</title>
+  <meta name="description" content="Redis集群搭建  环境 两台服务器：  192.168.168.170 192.168.168.171   安装Redis redis版本：3.2.0 安装目录：&#x2F;redis 集群目录：&#x2F;redis&#x2F;redis-cluster 下载Redis： 123#在&#x2F;下创建redis目录#在该目录下执行[root@localhost redis]# wget https:&#x2F;&#x2F;download.redi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis在linux下集群搭建">
+<meta property="og:url" content="http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Lee&#39;s Blog">
+<meta property="og:description" content="Redis集群搭建  环境 两台服务器：  192.168.168.170 192.168.168.171   安装Redis redis版本：3.2.0 安装目录：&#x2F;redis 集群目录：&#x2F;redis&#x2F;redis-cluster 下载Redis： 123#在&#x2F;下创建redis目录#在该目录下执行[root@localhost redis]# wget https:&#x2F;&#x2F;download.redi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-06T04:41:10.000Z">
+<meta property="article:modified_time" content="2021-03-06T04:42:54.350Z">
+<meta property="article:author" content="unknown">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Lee&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/logo.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ctrl98" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Rich7Pro</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Java后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> GuangZhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E6%A1%86%E6%9E%B6/">Web框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E/">容器引擎</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6/">日志框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/">权限框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/">版本控制工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">网络通信协议</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dubbo/" rel="tag">Dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JCEF/" rel="tag">JCEF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jna/" rel="tag">Jna</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2-0/" rel="tag">OAuth2.0</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM%E6%A1%86%E6%9E%B6/" rel="tag">SSM框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebService/" rel="tag">WebService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zookeeper/" rel="tag">Zookeeper</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" rel="tag">框架学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis集群搭建"><span class="toc-number">1.</span> <span class="toc-text"> Redis集群搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#环境"><span class="toc-number">1.1.</span> <span class="toc-text"> 环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安装redis"><span class="toc-number">1.2.</span> <span class="toc-text"> 安装Redis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开启服务"><span class="toc-number">1.3.</span> <span class="toc-text"> 开启服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建集群"><span class="toc-number">1.4.</span> <span class="toc-text"> 创建集群</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#确认防火墙状态"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 确认防火墙状态</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#开始创建集群"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 开始创建集群</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redis50开始不用-redis-tribrb-创建集群"><span class="toc-number">1.5.</span> <span class="toc-text"> Redis5.0开始不用 redis-trib.rb 创建集群</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注意因为测试中两台机器ping不同所以只能在一台机器上创建集群"><span class="toc-number">1.6.</span> <span class="toc-text"> 注意：因为测试中两台机器ping不同，所以只能在一台机器上创建集群</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-number">2.</span> <span class="toc-text"> 问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令"><span class="toc-number">3.</span> <span class="toc-text"> 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java-操作-redis-集群"><span class="toc-number">4.</span> <span class="toc-text"> Java 操作 Redis 集群</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Redis在linux下集群搭建" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis在linux下集群搭建
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" class="article-date">
+	  <time datetime="2021-03-06T04:41:10.000Z" itemprop="datePublished">2021-03-06</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Redis/" rel="tag">Redis</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 22(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="redis集群搭建"><a class="markdownIt-Anchor" href="#redis集群搭建"></a> Redis集群搭建</h3>
+<h4 id="环境"><a class="markdownIt-Anchor" href="#环境"></a> 环境</h4>
+<p>两台服务器：</p>
+<ul>
+<li>192.168.168.170</li>
+<li>192.168.168.171</li>
+</ul>
+<h4 id="安装redis"><a class="markdownIt-Anchor" href="#安装redis"></a> 安装Redis</h4>
+<p>redis版本：3.2.0</p>
+<p>安装目录：/redis</p>
+<p>集群目录：/redis/redis-cluster</p>
+<p>下载Redis：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#在/下创建redis目录</span><br><span class="line">#在该目录下执行</span><br><span class="line">[root@localhost redis]# wget https://download.redis.io/releases/redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压Redis：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# tar xvf redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>.tar.gz</span><br></pre></td></tr></table></figure>
+<p>安装编译：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# <span class="built_in">cd</span> redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span></span><br><span class="line">[root@localhost redis]# make</span><br></pre></td></tr></table></figure>
+<p>此处可能会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;bin&#x2F;sh: cc: 未找到命令</span><br><span class="line">make[1]: *** [adlist.o] 错误 127</span><br><span class="line">make[1]: 离开目录“&#x2F;redis&#x2F;redis-3.2.0&#x2F;src”</span><br><span class="line">make: *** [all] 错误 2</span><br></pre></td></tr></table></figure>
+<p>原因是系统没有安装gcc环境，解决：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# yum install gcc-c++</span><br></pre></td></tr></table></figure>
+<p>安装完gcc后，清空一下刚才安装失败的文件：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# make distclean</span><br></pre></td></tr></table></figure>
+<p>然后接着安装：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# make</span><br></pre></td></tr></table></figure>
+<h4 id="开启服务"><a class="markdownIt-Anchor" href="#开启服务"></a> 开启服务</h4>
+<p>开启redis服务，进入客户端，成功：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>]# ./src/redis-server redis_6379.conf</span><br><span class="line">[root@localhost redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>]# ./src/redis-cli -p <span class="number">6379</span></span><br></pre></td></tr></table></figure>
+<p>在/redis目录下创建redis-cluster目录：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# <span class="built_in">mkdir</span> redis-cluster</span><br></pre></td></tr></table></figure>
+<p>在redis-cluster分别创建三个目录，代表三个节点：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-cluster]# <span class="built_in">mkdir</span> <span class="number">7000</span> <span class="number">7001</span> <span class="number">7002</span></span><br></pre></td></tr></table></figure>
+<p>复制redis3.2.0目录下的redis.conf文件到7000、7001、7002</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-cluster]# cp /redis/redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/redis.conf ./<span class="number">7000</span></span><br><span class="line">[root@localhost redis-cluster]# cp /redis/redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/redis.conf ./<span class="number">7001</span></span><br><span class="line">[root@localhost redis-cluster]# cp /redis/redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/redis.conf ./<span class="number">7002</span></span><br></pre></td></tr></table></figure>
+<p>分别修改配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">daemonize    yes                          &#x2F;&#x2F;redis后台运行</span><br><span class="line">pidfile  &#x2F;var&#x2F;run&#x2F;redis_7000.pid          &#x2F;&#x2F;pidfile文件对应7000,7001,7002</span><br><span class="line">port  7000                                &#x2F;&#x2F;端口7000,7002,7003</span><br><span class="line">cluster-enabled  yes                      &#x2F;&#x2F;开启集群  把注释#去掉</span><br><span class="line">cluster-config-file  nodes_7000.conf      &#x2F;&#x2F;集群的配置  配置文件首次启动自动生成 7000,7001,7002</span><br><span class="line">cluster-node-timeout  5000                &#x2F;&#x2F;请求超时  设置5秒够了</span><br><span class="line">appendonly  yes                           &#x2F;&#x2F;aof日志开启  有需要就开启，它会每次写操作都记录一条日志</span><br><span class="line">#bind 127.0.0.1                           #去掉bind绑定访问ip信息</span><br></pre></td></tr></table></figure>
+<p>把文件传送到171上，做对应的修改：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="number">7000</span>]# scp ./redis.conf <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:/redis/redis-cluster/<span class="number">7003</span></span><br></pre></td></tr></table></figure>
+<p>启动这6个示例：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7000</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7001</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7002</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7003</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7004</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7005</span>/redis.conf</span><br></pre></td></tr></table></figure>
+<p>查看redis运行情况：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ps -ef|grep redis</span><br><span class="line">root      <span class="number">4874</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7001</span> [cluster]</span><br><span class="line">root      <span class="number">4886</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7002</span> [cluster]</span><br><span class="line">root      <span class="number">4898</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7000</span> [cluster]</span><br><span class="line">root      <span class="number">4918</span> <span class="number">14253</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --<span class="built_in">color</span>=auto redis</span><br></pre></td></tr></table></figure>
+<p>查看端口监听：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# netstat -tnlp | grep redis</span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">17000</span>           <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4898</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">17001</span>           <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4874</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">17002</span>           <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4886</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">7000</span>            <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4898</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">7001</span>            <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4874</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">7002</span>            <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">4886</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">17000</span>                :::*                    LISTEN      <span class="number">4898</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">17001</span>                :::*                    LISTEN      <span class="number">4874</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">17002</span>                :::*                    LISTEN      <span class="number">4886</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">7000</span>                 :::*                    LISTEN      <span class="number">4898</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">7001</span>                 :::*                    LISTEN      <span class="number">4874</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/ </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">7002</span>                 :::*                    LISTEN      <span class="number">4886</span>/./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/</span><br></pre></td></tr></table></figure>
+<h4 id="创建集群"><a class="markdownIt-Anchor" href="#创建集群"></a> 创建集群</h4>
+<p>redis5.0版本之前使用的ruby脚本 redis-trib.rb 来创建，官方提供了一个工具：redis-trib.rb(/usr/local/redis-3.2.1/src/redis-trib.rb) 看后缀就知道这鸟东西不能直接执行，它是用ruby写的一个程序，所以我们先得安装ruby。</p>
+<p>安装ruby</p>
+<p>注意：centos7默认的ruby版本太低(2.0)，要卸载重装(最低2.2)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove ruby</span><br></pre></td></tr></table></figure>
+<p>方法一：换yum源安装</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# yum install centos-release-scl-rh　　　　//会在/etc/yum.repos.d/目录下多出一个CentOS-SCLo-scl-rh.repo源</span><br><span class="line">[root@localhost redis]# yum install rh-ruby23 -y　　　　//直接yum安装即可　　</span><br><span class="line">[root@localhost redis]# scl enable rh-ruby23 bash　　　　//必要一步</span><br><span class="line">[root@localhost redis]# ruby -v　　　　//查看安装版本</span><br></pre></td></tr></table></figure>
+<p>再用 gem 这个命令来安装 redis接口  gem是ruby的一个工具包，两台Server都要安装：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# gem install redis</span><br><span class="line"><span class="function">Fetching: <span class="title">redis</span>-4.2.5.<span class="title">gem</span> (100%)</span></span><br><span class="line"><span class="function"><span class="title">Successfully</span> <span class="title">installed</span> <span class="title">redis</span>-4.2.5</span></span><br><span class="line"><span class="function"><span class="title">Parsing</span> <span class="title">documentation</span> <span class="title">for</span> <span class="title">redis</span>-4.2.5</span></span><br><span class="line"><span class="function"><span class="title">Installing</span> <span class="title">ri</span> <span class="title">documentation</span> <span class="title">for</span> <span class="title">redis</span>-4.2.5</span></span><br><span class="line"><span class="function"><span class="title">Done</span> <span class="title">installing</span> <span class="title">documentation</span> <span class="title">for</span> <span class="title">redis</span> <span class="title">after</span> 2 <span class="title">seconds</span></span></span><br><span class="line"><span class="function">1 <span class="title">gem</span> <span class="title">installed</span></span></span><br></pre></td></tr></table></figure>
+<p>查看redis-trib.rb程序：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb</span><br><span class="line"><span class="function">Usage: <span class="title">redis</span>-<span class="title">trib</span> &lt;<span class="title">command</span>&gt; &lt;<span class="title">options</span>&gt; &lt;<span class="title">arguments</span> ...&gt;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  <span class="title">create</span>          <span class="title">host1:port1</span> ... <span class="title">hostN:portN</span></span></span><br><span class="line"><span class="function">                  --<span class="title">replicas</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">  <span class="title">check</span>           <span class="title">host:port</span></span></span><br><span class="line"><span class="function">  <span class="title">info</span>            <span class="title">host:port</span></span></span><br><span class="line"><span class="function">  <span class="title">fix</span>             <span class="title">host:port</span></span></span><br><span class="line"><span class="function">                  --<span class="title">timeout</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">  <span class="title">reshard</span>         <span class="title">host:port</span></span></span><br><span class="line"><span class="function">                  --<span class="title">from</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">to</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">slots</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">yes</span></span></span><br><span class="line"><span class="function">                  --<span class="title">timeout</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">pipeline</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">  <span class="title">rebalance</span>       <span class="title">host:port</span></span></span><br><span class="line"><span class="function">                  --<span class="title">weight</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">auto</span>-<span class="title">weights</span></span></span><br><span class="line"><span class="function">                  --<span class="title">use</span>-<span class="title">empty</span>-<span class="title">masters</span></span></span><br><span class="line"><span class="function">                  --<span class="title">timeout</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">simulate</span></span></span><br><span class="line"><span class="function">                  --<span class="title">pipeline</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">threshold</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">  <span class="title">add</span>-<span class="title">node</span>        <span class="title">new_host:new_port</span> <span class="title">existing_host:existing_port</span></span></span><br><span class="line"><span class="function">                  --<span class="title">slave</span></span></span><br><span class="line"><span class="function">                  --<span class="title">master</span>-<span class="title">id</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">  <span class="title">del</span>-<span class="title">node</span>        <span class="title">host:port</span> <span class="title">node_id</span></span></span><br><span class="line"><span class="function">  <span class="title">set</span>-<span class="title">timeout</span>     <span class="title">host:port</span> <span class="title">milliseconds</span></span></span><br><span class="line"><span class="function">  <span class="title">call</span>            <span class="title">host:port</span> <span class="title">command</span> <span class="title">arg</span> <span class="title">arg</span> .. <span class="title">arg</span></span></span><br><span class="line"><span class="function">  <span class="title">import</span>          <span class="title">host:port</span></span></span><br><span class="line"><span class="function">                  --<span class="title">from</span> &lt;<span class="title">arg</span>&gt;</span></span><br><span class="line"><span class="function">                  --<span class="title">copy</span></span></span><br><span class="line"><span class="function">                  --<span class="title">replace</span></span></span><br><span class="line"><span class="function">  <span class="title">help</span>            (<span class="title">show</span> <span class="title">this</span> <span class="title">help</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">For</span> <span class="title">check</span>, <span class="title">fix</span>, <span class="title">reshard</span>, <span class="title">del</span>-<span class="title">node</span>, <span class="title">set</span>-<span class="title">timeout</span> <span class="title">you</span> <span class="title">can</span> <span class="title">specify</span> <span class="title">the</span> <span class="title">host</span> <span class="title">and</span> <span class="title">port</span> <span class="title">of</span> <span class="title">any</span> <span class="title">working</span> <span class="title">node</span> <span class="title">in</span> <span class="title">the</span> <span class="title">cluster</span>.</span></span><br></pre></td></tr></table></figure>
+<p>看到这，redis-trib.rb可以运行，就可以开始搭建集群了。</p>
+<p>确认所有的节点都启动，接下来使用参数create 创建 (在192.168.168.170中来创建)</p>
+<h5 id="确认防火墙状态"><a class="markdownIt-Anchor" href="#确认防火墙状态"></a> 确认防火墙状态</h5>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# firewall-<span class="built_in">cmd</span> --state</span><br><span class="line"><span class="keyword">not</span> running</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>CentOS 防火墙常用命令</p>
+</blockquote>
+<p>1.查看防火墙状态：</p>
+<p>firewall-cmd --state</p>
+<p>2.启动防火墙</p>
+<p>systemctl start firewalld</p>
+<p>3.关闭防火墙</p>
+<p>systemctl stop firewalld</p>
+<p>4.检查防火墙开放的端口</p>
+<p>firewall-cmd --permanent --zone=public --list-ports</p>
+<p>5.开放一个新的端口</p>
+<p>firewall-cmd --zone=public --add-port=8080/tcp --permanent</p>
+<p>6.重启防火墙</p>
+<p>firewall-cmd --reload</p>
+<p>7.验证新增加端口是否生效</p>
+<p>firewall-cmd --zone=public --query-port=8080/tcp</p>
+<p>8.防火墙开机自启动</p>
+<p>systemctl enable firewalld.service</p>
+<p>9.防火墙取消某一开放端口</p>
+<p>firewall-cmd --zone=public --remove-port=9200/tcp --permanent</p>
+<h5 id="开始创建集群"><a class="markdownIt-Anchor" href="#开始创建集群"></a> 开始创建集群</h5>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb create --replicas <span class="number">1</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">170</span>:<span class="number">7000</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">170</span>:<span class="number">7001</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">170</span>:<span class="number">7002</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7003</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7004</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7005</span></span><br><span class="line"></span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb create --replicas <span class="number">1</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7003</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7004</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7005</span></span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<p>–replicas 1 表示 自动为每一个master节点分配一个slave节点，上面有6个节点，程序会按照一定规则生成 3个master（主）3个slave（从）</p>
+<p>运行中，提示Can I set the above configuration? (type ‘yes’ to accept)：yes	//输入yes</p>
+<p>接下来 提示 Waiting for the cluster to join… 安装的时候在这里就一直等，没反应，看这句提示上面一句，Sending Cluster Meet Message to join the Cluster.</p>
+<p>这下明白了，我刚开始在一台Server上去配，也是不需要等的，这里还需要跑到Server2上做一些这样的操作。</p>
+<p>在192.168.168.171，redis-cli -c -p 700* 分别进入redis各节点的客户端命令窗口，依次输入 cluster meet 192.168.1.238 7000……</p>
+<p>回到Server1，已经创建完毕了。</p>
+<p>查看一下 /usr/local/redis/src/redis-trib.rb check 192.168.1.237:7000</p>
+<p>到这里集群已经初步搭建好了。</p>
+<blockquote>
+<h4 id="redis50开始不用-redis-tribrb-创建集群"><a class="markdownIt-Anchor" href="#redis50开始不用-redis-tribrb-创建集群"></a> Redis5.0开始不用 redis-trib.rb 创建集群</h4>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">5</span>.<span class="number">0</span>.<span class="number">0</span>/src/redis-cli -a redis-pw --cluster create --cluster-replicas <span class="number">1</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7003</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7004</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">168</span>.<span class="number">171</span>:<span class="number">7005</span></span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<p>-a ：集群密码</p>
+<p>当连接客户端时需要输入密码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;redis-5.0.0&#x2F;src&#x2F;redis-cli -a redis-pw -c -h 192.168.1.1 -p 8001</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="注意因为测试中两台机器ping不同所以只能在一台机器上创建集群"><a class="markdownIt-Anchor" href="#注意因为测试中两台机器ping不同所以只能在一台机器上创建集群"></a> 注意：因为测试中两台机器ping不同，所以只能在一台机器上创建集群</h4>
+</blockquote>
+<p>把192.168.168.171的7003、7004、7005文件夹复制到170的集群目录下</p>
+<p>然后启动：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ps -ef|grep redis</span><br><span class="line">root      <span class="number">4874</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7001</span> [cluster]</span><br><span class="line">root      <span class="number">4886</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7002</span> [cluster]</span><br><span class="line">root      <span class="number">4898</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7000</span> [cluster]</span><br><span class="line">root     <span class="number">11208</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7003</span> [cluster]</span><br><span class="line">root     <span class="number">11221</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7004</span> [cluster]</span><br><span class="line">root     <span class="number">11233</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7005</span> [cluster]</span><br><span class="line">root     <span class="number">11249</span>  <span class="number">6554</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --<span class="built_in">color</span>=auto redis</span><br></pre></td></tr></table></figure>
+<p>开始创建集群：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb create --replicas <span class="number">1</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7003</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7004</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7005</span></span><br><span class="line">&gt;&gt;&gt; Creating cluster</span><br><span class="line">&gt;&gt;&gt; Performing hash slots allocation on <span class="number">6</span> nodes...</span><br><span class="line">Using <span class="number">3</span> masters:</span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span></span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span></span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span></span><br><span class="line">Adding replica <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7003</span> to <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span></span><br><span class="line">Adding replica <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7004</span> to <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span></span><br><span class="line">Adding replica <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7005</span> to <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span></span><br><span class="line"><span class="function">M: 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span> 127.0.0.1:7000</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:0-5460 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span> 127.0.0.1:7001</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:5461-10922 (5462 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 86<span class="title">ae4df359c4d355b38a8d6852c30844fadd569f</span> 127.0.0.1:7002</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:10923-16383 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 4<span class="title">a2ea1a4bda614ad6e4003b91f8cc19b531da4ea</span> 127.0.0.1:7003</span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 983<span class="title">da6d28d3a818cefc8f8d208dc641e6d607ad3</span> 127.0.0.1:7004</span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 9<span class="title">fe3d2fe0bd3352961dc85964d24b2b338f269ae</span> 127.0.0.1:7005</span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 86<span class="title">ae4df359c4d355b38a8d6852c30844fadd569f</span></span></span><br><span class="line"><span class="function"><span class="title">Can</span> <span class="title">I</span> <span class="title">set</span> <span class="title">the</span> <span class="title">above</span> <span class="title">configuration</span>? (<span class="title">type</span> '<span class="title">yes</span>' <span class="title">to</span> <span class="title">accept</span>): <span class="title">yes</span></span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Nodes</span> <span class="title">configuration</span> <span class="title">updated</span></span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Assign</span> <span class="title">a</span> <span class="title">different</span> <span class="title">config</span> <span class="title">epoch</span> <span class="title">to</span> <span class="title">each</span> <span class="title">node</span></span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Sending</span> <span class="title">CLUSTER</span> <span class="title">MEET</span> <span class="title">messages</span> <span class="title">to</span> <span class="title">join</span> <span class="title">the</span> <span class="title">cluster</span></span></span><br><span class="line"><span class="function"><span class="title">Waiting</span> <span class="title">for</span> <span class="title">the</span> <span class="title">cluster</span> <span class="title">to</span> <span class="title">join</span>..</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Performing</span> <span class="title">Cluster</span> <span class="title">Check</span> (<span class="title">using</span> <span class="title">node</span> 127.0.0.1:7000)</span></span><br><span class="line"><span class="function"><span class="title">M</span>: 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span> 127.0.0.1:7000</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:0-5460 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span> 127.0.0.1:7001</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:5461-10922 (5462 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 86<span class="title">ae4df359c4d355b38a8d6852c30844fadd569f</span> 127.0.0.1:7002</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:10923-16383 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 4<span class="title">a2ea1a4bda614ad6e4003b91f8cc19b531da4ea</span> 127.0.0.1:7003</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 983<span class="title">da6d28d3a818cefc8f8d208dc641e6d607ad3</span> 127.0.0.1:7004</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 9<span class="title">fe3d2fe0bd3352961dc85964d24b2b338f269ae</span> 127.0.0.1:7005</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 86<span class="title">ae4df359c4d355b38a8d6852c30844fadd569f</span></span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> <span class="title">nodes</span> <span class="title">agree</span> <span class="title">about</span> <span class="title">slots</span> <span class="title">configuration</span>.</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">for</span> <span class="title">open</span> <span class="title">slots</span>...</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">slots</span> <span class="title">coverage</span>...</span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> 16384 <span class="title">slots</span> <span class="title">covered</span>.</span></span><br></pre></td></tr></table></figure>
+<p>上面显示创建成功，有3个主节点，3个从节点，每个节点都是成功连接状态。</p>
+<p>redis集群的测试</p>
+<p>测试存取值，客户端连接集群redis-cli需要带上 -c ，redis-cli -c -p 端口号：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-cli -c -p <span class="number">7001</span></span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt; <span class="built_in">set</span> name andy</span><br><span class="line">OK</span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt; get name</span><br><span class="line">"andy"</span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt; <span class="keyword">exit</span></span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-cli -c -p <span class="number">7000</span></span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span>&gt; get name</span><br><span class="line">-&gt; Redirected to slot [<span class="number">5798</span>] located <span class="built_in">at</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span></span><br><span class="line">"andy"</span><br><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>根据redis-cluster的key值分配，name应该分配到节点7001[5461-10922]上，上面显示redis cluster自动从7000跳转到了7001节点。</p>
+<p>集群节点选举，把7002节点关闭：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ps -ef | grep redis</span><br><span class="line">root      <span class="number">4874</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7001</span> [cluster]</span><br><span class="line">root      <span class="number">4886</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7002</span> [cluster]</span><br><span class="line">root      <span class="number">4898</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7000</span> [cluster]</span><br><span class="line">root     <span class="number">11208</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7003</span> [cluster]</span><br><span class="line">root     <span class="number">11221</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7004</span> [cluster]</span><br><span class="line">root     <span class="number">11233</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7005</span> [cluster]</span><br><span class="line">root     <span class="number">12181</span>  <span class="number">6554</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">35</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --<span class="built_in">color</span>=auto redis</span><br><span class="line">[root@localhost redis]# kill <span class="number">4886</span></span><br><span class="line">[root@localhost redis]# ps -ef | grep redis</span><br><span class="line">root      <span class="number">4874</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7001</span> [cluster]</span><br><span class="line">root      <span class="number">4898</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">02</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7000</span> [cluster]</span><br><span class="line">root     <span class="number">11208</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7003</span> [cluster]</span><br><span class="line">root     <span class="number">11221</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7004</span> [cluster]</span><br><span class="line">root     <span class="number">11233</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7005</span> [cluster]</span><br><span class="line">root     <span class="number">12219</span>  <span class="number">6554</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">35</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --<span class="built_in">color</span>=auto redis</span><br></pre></td></tr></table></figure>
+<p>查看以下集群状态：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb check <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span></span><br><span class="line">&gt;&gt;&gt; Performing Cluster Check (using node <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span>)</span><br><span class="line"><span class="function">M: 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span> 127.0.0.1:7000</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:0-5460 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   1 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function"><span class="title">M</span>: 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span> 127.0.0.1:7001</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:5461-10922 (5462 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   1 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function"><span class="title">S</span>: 983<span class="title">da6d28d3a818cefc8f8d208dc641e6d607ad3</span> 127.0.0.1:7004</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">slave</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 4<span class="title">a2ea1a4bda614ad6e4003b91f8cc19b531da4ea</span> 127.0.0.1:7003</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">slave</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 9<span class="title">fe3d2fe0bd3352961dc85964d24b2b338f269ae</span> 127.0.0.1:7005</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:10923-16383 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   0 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> <span class="title">nodes</span> <span class="title">agree</span> <span class="title">about</span> <span class="title">slots</span> <span class="title">configuration</span>.</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">for</span> <span class="title">open</span> <span class="title">slots</span>...</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">slots</span> <span class="title">coverage</span>...</span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> 16384 <span class="title">slots</span> <span class="title">covered</span>.</span></span><br></pre></td></tr></table></figure>
+<p>可以看到7002节点的从节点7005成为了主节点，代替了7002。</p>
+<p>现在我们把7002节点恢复，看是不是会变成7005的从节点：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server ./redis-cluster/<span class="number">7002</span>/redis.conf</span><br><span class="line">[root@localhost redis]# ps -ef|grep redis</span><br><span class="line">root      <span class="number">4874</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7001</span> [cluster]</span><br><span class="line">root      <span class="number">4898</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">09</span>:<span class="number">35</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7000</span> [cluster]</span><br><span class="line">root     <span class="number">11208</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7003</span> [cluster]</span><br><span class="line">root     <span class="number">11221</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7004</span> [cluster]</span><br><span class="line">root     <span class="number">11233</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">26</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7005</span> [cluster]</span><br><span class="line">root     <span class="number">12699</span>     <span class="number">1</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">39</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-server *:<span class="number">7002</span> [cluster]</span><br><span class="line">root     <span class="number">12717</span>  <span class="number">6554</span>  <span class="number">0</span> <span class="number">10</span>:<span class="number">39</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --<span class="built_in">color</span>=auto redis</span><br><span class="line">[root@localhost redis]# ./redis-<span class="number">3</span>.<span class="number">2</span>.<span class="number">0</span>/src/redis-trib.rb check <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span></span><br><span class="line">&gt;&gt;&gt; Performing Cluster Check (using node <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span>)</span><br><span class="line"><span class="function">M: 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span> 127.0.0.1:7000</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:0-5460 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   1 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function"><span class="title">M</span>: 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span> 127.0.0.1:7001</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:5461-10922 (5462 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   1 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function"><span class="title">S</span>: 983<span class="title">da6d28d3a818cefc8f8d208dc641e6d607ad3</span> 127.0.0.1:7004</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">slave</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 77<span class="title">bc20b41db150744cb38865c0aa35f95505c034</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 86<span class="title">ae4df359c4d355b38a8d6852c30844fadd569f</span> 127.0.0.1:7002</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">slave</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 9<span class="title">fe3d2fe0bd3352961dc85964d24b2b338f269ae</span></span></span><br><span class="line"><span class="function"><span class="title">S</span>: 4<span class="title">a2ea1a4bda614ad6e4003b91f8cc19b531da4ea</span> 127.0.0.1:7003</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>: (0 <span class="title">slots</span>) <span class="title">slave</span></span></span><br><span class="line"><span class="function">   <span class="title">replicates</span> 80<span class="title">ed66fe0b3145e05c118595fd7d6eb4c706f4be</span></span></span><br><span class="line"><span class="function"><span class="title">M</span>: 9<span class="title">fe3d2fe0bd3352961dc85964d24b2b338f269ae</span> 127.0.0.1:7005</span></span><br><span class="line"><span class="function">   <span class="title">slots</span>:10923-16383 (5461 <span class="title">slots</span>) <span class="title">master</span></span></span><br><span class="line"><span class="function">   1 <span class="title">additional</span> <span class="title">replica</span>(<span class="title">s</span>)</span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> <span class="title">nodes</span> <span class="title">agree</span> <span class="title">about</span> <span class="title">slots</span> <span class="title">configuration</span>.</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">for</span> <span class="title">open</span> <span class="title">slots</span>...</span></span><br><span class="line"><span class="function">&gt;&gt;&gt; <span class="title">Check</span> <span class="title">slots</span> <span class="title">coverage</span>...</span></span><br><span class="line"><span class="function">[<span class="title">OK</span>] <span class="title">All</span> 16384 <span class="title">slots</span> <span class="title">covered</span>.</span></span><br></pre></td></tr></table></figure>
+<p>可以看到7002变成了从节点。</p>
+<h3 id="问题"><a class="markdownIt-Anchor" href="#问题"></a> 问题</h3>
+<p>报错信息：</p>
+<p>当配置Redis集群时，会提示报无法连接到一个节点的错误如下内容</p>
+<p>[root@localhost redis-cluster]# ./redis-trib.rb create --replicas 1 192.168.1.13:7001 192.168.1.13:7002 192.168.1.13:7003 192.168.1.13:7004 192.168.1.13:7005  192.168.1.13:7006</p>
+<blockquote>
+<p>Creating cluster<br />
+[ERR] Sorry, can’t connect to node 192.168.1.13:7001</p>
+</blockquote>
+<p>解决方法：</p>
+<p>当报无法连接的时候，通过telnet192.168.1.13:7001 是无法连接通，则说明配置的哪里有问题导致的</p>
+<p>可能导致问题的原因</p>
+<p>原因1：redis的配置文件，发现，在配置文件中配置bind 127.0.0.1这个地址,修改指定的IP地址，可以同时指定127.0.0.1，这样本机和ip地址都可以访问</p>
+<p>参考：bind 192.168.1.13 127.0.0.1</p>
+<p>当通过原因1解决后，发现还是报错，虽然telnet是可以正常连接了，但是还是报上面的错误</p>
+<p>原因2：因为在复制集群的时候，原来安装好的Redis是配置了账号密码，必须要每个redis去掉密码后再配置集群，再在集群中配置账号密码</p>
+<p>注释掉配置文件中的配置密码位置</p>
+<p>#requirepass 123456</p>
+<h3 id="命令"><a class="markdownIt-Anchor" href="#命令"></a> 命令</h3>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt; cluster info</span><br><span class="line"><span class="function">cluster_state:<span class="title">ok</span></span></span><br><span class="line"><span class="function"><span class="title">cluster_slots_assigned</span>:16384</span></span><br><span class="line"><span class="function"><span class="title">cluster_slots_ok</span>:16384</span></span><br><span class="line"><span class="function"><span class="title">cluster_slots_pfail</span>:0</span></span><br><span class="line"><span class="function"><span class="title">cluster_slots_fail</span>:0</span></span><br><span class="line"><span class="function"><span class="title">cluster_known_nodes</span>:6</span></span><br><span class="line"><span class="function"><span class="title">cluster_size</span>:3</span></span><br><span class="line"><span class="function"><span class="title">cluster_current_epoch</span>:7</span></span><br><span class="line"><span class="function"><span class="title">cluster_my_epoch</span>:2</span></span><br><span class="line"><span class="function"><span class="title">cluster_stats_messages_sent</span>:13167</span></span><br><span class="line"><span class="function"><span class="title">cluster_stats_messages_received</span>:10553</span></span><br><span class="line"><span class="function">127.0.0.1:7001&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span>&gt; cluster nodes</span><br><span class="line"><span class="number">77</span>bc20b41db150744cb38865c0aa35f95505c034 <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7001</span> myself,master - <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> connected <span class="number">5461</span>-<span class="number">10922</span></span><br><span class="line"><span class="number">80</span>ed66fe0b3145e05c118595fd7d6eb4c706f4be <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7000</span> master - <span class="number">0</span> <span class="number">1614741040372</span> <span class="number">1</span> connected <span class="number">0</span>-<span class="number">5460</span></span><br><span class="line"><span class="number">9</span>fe3d2fe0bd3352961dc85964d24b2b338f269ae <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7005</span> master - <span class="number">0</span> <span class="number">1614741038367</span> <span class="number">7</span> connected <span class="number">10923</span>-<span class="number">16383</span></span><br><span class="line"><span class="number">983</span>da6d28d3a818cefc8f8d208dc641e6d607ad3 <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7004</span> slave <span class="number">77</span>bc20b41db150744cb38865c0aa35f95505c034 <span class="number">0</span> <span class="number">1614741039870</span> <span class="number">5</span> connected</span><br><span class="line"><span class="number">86</span>ae4df359c4d355b38a8d6852c30844fadd569f <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7002</span> slave <span class="number">9</span>fe3d2fe0bd3352961dc85964d24b2b338f269ae <span class="number">0</span> <span class="number">1614741039368</span> <span class="number">7</span> connected</span><br><span class="line"><span class="number">4</span>a2ea1a4bda614ad6e4003b91f8cc19b531da4ea <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">7003</span> slave <span class="number">80</span>ed66fe0b3145e05c118595fd7d6eb4c706f4be <span class="number">0</span> <span class="number">1614741038867</span> <span class="number">1</span> connected</span><br></pre></td></tr></table></figure>
+<h3 id="java-操作-redis-集群"><a class="markdownIt-Anchor" href="#java-操作-redis-集群"></a> Java 操作 Redis 集群</h3>
+<p><strong>方式一</strong>（Jedis）：</p>
+<p>（1）引入jedis的maven坐标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（2）Java编写的代码，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisClusterTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"> </span><br><span class="line">        JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(<span class="number">20</span>);</span><br><span class="line">        config.setMaxIdle(<span class="number">10</span>);</span><br><span class="line">        config.setMinIdle(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">        Set&lt;HostAndPort&gt; jedisClusterNode = <span class="keyword">new</span> HashSet&lt;HostAndPort&gt;();</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7000</span>));</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7001</span>));</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7002</span>));</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7003</span>));</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7004</span>));</span><br><span class="line">        jedisClusterNode.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.168.170"</span>, <span class="number">7005</span>));</span><br><span class="line">        JedisCluster jedisCluster = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">             <span class="comment">//connectionTimeout：指的是连接一个url的连接等待时间</span></span><br><span class="line">             <span class="comment">//soTimeout：指的是连接上一个url，获取response的返回等待时间</span></span><br><span class="line">             <span class="comment">//"redis-pw" 登录密码</span></span><br><span class="line">             jedisCluster = <span class="keyword">new</span> JedisCluster(jedisClusterNode, <span class="number">6000</span>, <span class="number">5000</span>, <span class="number">10</span>, <span class="string">"redis-pw"</span>, config);</span><br><span class="line">             System.out.println(jedisCluster.set(<span class="string">"name"</span>, <span class="string">"zhangsan"</span>));</span><br><span class="line">             System.out.println(jedisCluster.get(<span class="string">"name"</span>));</span><br><span class="line">         &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">         &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">             <span class="keyword">if</span> (jedisCluster != <span class="keyword">null</span>) &#123;</span><br><span class="line">                jedisCluster.close();</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>方式二</strong>：SpringBoot 整合 Redis</p>
+<p>（1）引入maven坐标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring‐boot‐starter‐data‐redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons‐pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（2）配置文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">port</span>: <span class="string">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">redis</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">database</span>: <span class="string">0</span></span><br><span class="line">  <span class="attr">timeout</span>: <span class="string">3000</span></span><br><span class="line">  <span class="attr">password</span>: <span class="string">redis-pw</span></span><br><span class="line">  <span class="attr">cluster</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">nodes</span>: <span class="string">192.168.168.170:7000,192.168.168.170:7001,192.168.168.170:7002,192.168.168.170:7003,192.168.168.170:7004,192.168.168.170:7005</span></span><br><span class="line">  <span class="attr">lettuce</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">pool</span>:<span class="string"></span></span><br><span class="line">  <span class="meta">max‐idle</span>: <span class="string">50</span></span><br><span class="line">  <span class="meta">min‐idle</span>: <span class="string">10</span></span><br><span class="line">  <span class="meta">max‐active</span>: <span class="string">100</span></span><br><span class="line">  <span class="meta">max‐wait</span>: <span class="string">1000</span></span><br></pre></td></tr></table></figure>
+<p>（3）java代码，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(TestController<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/test_cluster"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCluster</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(<span class="string">"user:name"</span>, <span class="string">"wangwu"</span>);</span><br><span class="line">        System.out.println(stringRedisTemplate.opsForValue().get(<span class="string">"user:name"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <!-- 
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="Redis在linux下集群搭建" target="_blank" rel="external">http://ctrl98.github.io/2021/03/06/Redis%E5%9C%A8linux%E4%B8%8B%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</a>
+    </li>
+     -->
+    <!-- <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ctrl98" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ctrl98" target="_blank"><span class="text-dark">Rich7Pro</span><small class="ml-1x">Java后端开发</small></a></h3>
+        <div>无名无迹 得闲饮茶</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2021/02/15/%E4%BB%80%E4%B9%88%E6%98%AFZookeeper/" title="什么是Zookeeper"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ctrl98" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'bf59d22c6ae74084069d',
+    clientSecret: '3ffaadce74810c667059e5b18ebfa9bc193bbf10',
+    repo: 'gitalk-comment',
+    owner: 'ctrl98',
+    admin: ['ctrl98'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
